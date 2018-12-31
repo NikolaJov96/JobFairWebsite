@@ -1,0 +1,348 @@
+<mat-tab-group>
+
+  <mat-tab label="Student">
+    <mat-card>
+      <form [formGroup]="studentForm" (ngSubmit)="onRegisterStudent()" novalidate>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            formControlName="username"
+            placeholder="Username">
+          <mat-error *ngIf="studentForm.controls['username'].hasError('required')">
+            Please enter your username.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="password"
+            formControlName="newPass1"
+            placeholder="Password">
+          <mat-error *ngIf="studentForm.controls['newPass1'].hasError('required')">
+            Please enter your password.
+          </mat-error>
+          <mat-error *ngIf="studentForm.controls['newPass1'].hasError('minlength')">
+            Password too short.
+          </mat-error>
+          <mat-error *ngIf="studentForm.controls['newPass1'].hasError('maxlength')">
+            Password too long.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="password"
+            formControlName="newPass2"
+            placeholder="Repeat password">
+          <mat-error *ngIf="studentForm.controls['newPass2'].hasError('required')">
+            Please enter your password.
+          </mat-error>
+          <mat-error *ngIf="studentForm.controls['newPass2'].hasError('minlength')">
+            Password too short.
+          </mat-error>
+          <mat-error *ngIf="studentForm.controls['newPass2'].hasError('maxlength')">
+            Password too long.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            formControlName="firstName"
+            placeholder="First name">
+          <mat-error *ngIf="studentForm.controls['firstName'].hasError('required')">
+            Please enter your first name.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            formControlName="lastName"
+            placeholder="Last name">
+          <mat-error *ngIf="studentForm.controls['lastName'].hasError('required')">
+            Please enter your last name.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="number"
+            formControlName="phone"
+            placeholder="Phone number">
+          <mat-error *ngIf="studentForm.controls['phone'].hasError('required')">
+            Please enter your phone number.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="Email">
+          <mat-error *ngIf="studentForm.controls['email'].hasError('required')">
+            Please enter your email.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="number"
+            formControlName="year"
+            placeholder="Year of studies">
+          <mat-error *ngIf="studentForm.controls['year'].hasError('required')">
+            Please enter your year of studies.
+          </mat-error>
+        </mat-form-field>
+        <mat-checkbox formControlName="graduated">Graduated</mat-checkbox><br>
+        <button
+          mat-raised-button
+          color="accent"
+          [disabled]="!studentForm.valid"
+          type="submit">Register</button>
+      </form>
+    </mat-card>
+  </mat-tab>
+
+
+  <mat-tab label="Company">
+    <mat-card>
+      <form [formGroup]="companyForm" (ngSubmit)="onRegisterCompany()" novalidate>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            formControlName="username"
+            placeholder="Username">
+          <mat-error *ngIf="companyForm.controls['username'].hasError('required')">
+            Please enter your username.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="password"
+            formControlName="newPass1"
+            placeholder="Password">
+          <mat-error *ngIf="companyForm.controls['newPass1'].hasError('required')">
+            Please enter your password.
+          </mat-error>
+          <mat-error *ngIf="companyForm.controls['newPass1'].hasError('minlength')">
+            Password too short.
+          </mat-error>
+          <mat-error *ngIf="companyForm.controls['newPass1'].hasError('maxlength')">
+            Password too long.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="password"
+            formControlName="newPass2"
+            placeholder="Repeat password">
+          <mat-error *ngIf="companyForm.controls['newPass2'].hasError('required')">
+            Please enter your password.
+          </mat-error>
+          <mat-error *ngIf="companyForm.controls['newPass2'].hasError('minlength')">
+            Password too short.
+          </mat-error>
+          <mat-error *ngIf="companyForm.controls['newPass2'].hasError('maxlength')">
+            Password too long.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            formControlName="companyName"
+            placeholder="Company name">
+          <mat-error *ngIf="companyForm.controls['companyName'].hasError('required')">
+            Please enter your company name.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            formControlName="address"
+            placeholder="Company address">
+          <mat-error *ngIf="companyForm.controls['address'].hasError('required')">
+            Please enter your company address.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            formControlName="director"
+            placeholder="Company director's name">
+          <mat-error *ngIf="companyForm.controls['director'].hasError('required')">
+            Please enter your company director's name.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="number"
+            formControlName="taxNumber"
+            placeholder="Tex number">
+          <mat-error *ngIf="companyForm.controls['taxNumber'].hasError('required')">
+            Please enter company's tax number.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="number"
+            formControlName="employees"
+            placeholder="Number of employees">
+          <mat-error *ngIf="companyForm.controls['employees'].hasError('required')">
+            Please enter number of employees.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="Email">
+          <mat-error *ngIf="companyForm.controls['email'].hasError('required')">
+            Please enter your email.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            formControlName="website"
+            placeholder="Website address">
+          <mat-error *ngIf="companyForm.controls['website'].hasError('required')">
+            Please enter website address.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select
+          placeholder="Industry"
+          formControlName="industry">
+            <mat-option value="1">IT</mat-option>
+            <mat-option value="2">Telecommunications</mat-option>
+            <mat-option value="3">Energy</mat-option>
+            <mat-option value="4">Architecture</mat-option>
+            <mat-option value="5">Mechanical engineering</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            formControlName="field"
+            placeholder="Specific field">
+          <mat-error *ngIf="companyForm.controls['field'].hasError('required')">
+            Please enter field of work.
+          </mat-error>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="accent"
+          [disabled]="!companyForm.valid"
+          type="submit">Register</button>
+      </form>
+    </mat-card>
+  </mat-tab>
+
+
+  <mat-tab label="Admin">
+    <mat-card>
+      <form [formGroup]="adminForm" (ngSubmit)="onRegisterAdmin()" novalidate>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            formControlName="username"
+            placeholder="Username">
+          <mat-error *ngIf="adminForm.controls['username'].hasError('required')">
+            Please enter your username.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="password"
+            formControlName="newPass1"
+            placeholder="Password">
+          <mat-error *ngIf="adminForm.controls['newPass1'].hasError('required')">
+            Please enter your password.
+          </mat-error>
+          <mat-error *ngIf="adminForm.controls['newPass1'].hasError('minlength')">
+            Password too short.
+          </mat-error>
+          <mat-error *ngIf="adminForm.controls['newPass1'].hasError('maxlength')">
+            Password too long.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="password"
+            formControlName="newPass2"
+            placeholder="Repeat password">
+          <mat-error *ngIf="adminForm.controls['newPass2'].hasError('required')">
+            Please enter your password.
+          </mat-error>
+          <mat-error *ngIf="adminForm.controls['newPass2'].hasError('minlength')">
+            Password too short.
+          </mat-error>
+          <mat-error *ngIf="adminForm.controls['newPass2'].hasError('maxlength')">
+            Password too long.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            formControlName="firstName"
+            placeholder="First name">
+          <mat-error *ngIf="adminForm.controls['firstName'].hasError('required')">
+            Please enter your first name.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            formControlName="lastName"
+            placeholder="Last name">
+          <mat-error *ngIf="adminForm.controls['lastName'].hasError('required')">
+            Please enter your last name.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="number"
+            formControlName="phone"
+            placeholder="Phone number">
+          <mat-error *ngIf="adminForm.controls['phone'].hasError('required')">
+            Please enter your phone number.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="Email">
+          <mat-error *ngIf="adminForm.controls['email'].hasError('required')">
+            Please enter your email.
+          </mat-error>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="accent"
+          [disabled]="!adminForm.valid"
+          type="submit">Register</button>
+      </form>
+    </mat-card>
+  </mat-tab>
+</mat-tab-group>

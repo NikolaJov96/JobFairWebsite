@@ -1,0 +1,9 @@
+footer {
+  background-color: #ddd;
+  border: 1px solid #bbb;
+  text-align: center;
+}
+
+#footerId {
+  align-self: flex-end;
+}

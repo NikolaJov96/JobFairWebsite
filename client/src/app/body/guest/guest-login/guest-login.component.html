@@ -1,0 +1,37 @@
+<mat-card>
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()" novalidate>
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        formControlName="username"
+        placeholder="Username">
+      <mat-error *ngIf="loginForm.controls['username'].hasError('required')">
+        Please enter your username.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="password"
+        formControlName="password"
+        placeholder="Password">
+      <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+        Please enter your password.
+      </mat-error>
+      <mat-error *ngIf="loginForm.controls['password'].hasError('minlength')">
+        Password too short.
+      </mat-error>
+      <mat-error *ngIf="loginForm.controls['password'].hasError('maxlength')">
+        Password too long.
+      </mat-error>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="!loginForm.valid"
+      type="submit">
+      Login
+    </button>
+  </form>
+</mat-card>
