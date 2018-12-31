@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { normalizePassiveListenerOptions } from '@angular/cdk/platform';
 import { Router, NavigationEnd } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -12,6 +11,11 @@ interface NavEntry {
 export interface NavLists {
   leftList: Array<NavEntry>;
   rightList: Array<NavEntry>;
+}
+
+export interface Industry {
+  value: number;
+  name: string;
 }
 
 @Injectable({
@@ -58,6 +62,16 @@ export class NavProviderService {
 
   getNavListsUpdateListener(): Observable<NavLists> {
     return this.navListsUpdated.asObservable();
+  }
+
+  getIndustries(): Array<Industry> {
+    return [
+      { value: 0, name: 'IT' },
+      { value: 1, name: 'Telecommunications' },
+      { value: 2, name: 'Energy' },
+      { value: 3, name: 'Architecture' },
+      { value: 4, name: 'Mechanical engineering' },
+    ];
   }
 
 }

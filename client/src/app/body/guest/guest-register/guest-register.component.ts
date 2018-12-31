@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { checkPassword, passNoMatch } from '../guest-utils';
+import { Industry, NavProviderService } from 'src/app/header/nav-provider.service';
 
 @Component({
   selector: 'app-guest-register',
@@ -46,9 +47,12 @@ export class GuestRegisterComponent implements OnInit {
     email: new FormControl('', [Validators.required]),
   }, [passNoMatch()]);
 
-  constructor() { }
+  industries: Array<Industry> = [];
+
+  constructor(private navProviderService: NavProviderService) { }
 
   ngOnInit() {
+    this.industries = this.navProviderService.getIndustries();
   }
 
   onRegisterStudent() {
