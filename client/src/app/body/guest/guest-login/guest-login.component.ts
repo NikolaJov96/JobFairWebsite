@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { checkPassword } from '../guest-utils';
 
 @Component({
@@ -11,7 +11,7 @@ export class GuestLoginComponent implements OnInit {
 
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(12)]),
+    password: new FormControl('', [checkPassword()]),
   });
 
   constructor() { }

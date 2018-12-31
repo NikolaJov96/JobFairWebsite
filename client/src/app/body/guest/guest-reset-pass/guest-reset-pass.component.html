@@ -15,49 +15,34 @@
         matInput
         type="password"
         formControlName="password"
-        placeholder="Password">
-      <mat-error *ngIf="resetPassForm.controls['password'].hasError('required')">
-        Please enter your password.
-      </mat-error>
-      <mat-error *ngIf="resetPassForm.controls['password'].hasError('minlength')">
-        Password too short.
-      </mat-error>
-      <mat-error *ngIf="resetPassForm.controls['password'].hasError('maxlength')">
-        Password too long.
-      </mat-error>
+        placeholder="Old password">
+        <mat-error *ngIf="resetPassForm.controls['password'].hasError('checkPassword')">
+          {{ resetPassForm.controls['password'].getError('checkPassword') }}
+        </mat-error>
     </mat-form-field>
     <mat-form-field>
       <input
         matInput
         type="password"
         formControlName="newPass1"
-        placeholder="Password">
-      <mat-error *ngIf="resetPassForm.controls['newPass1'].hasError('required')">
-        Please enter your password.
-      </mat-error>
-      <mat-error *ngIf="resetPassForm.controls['newPass1'].hasError('minlength')">
-        Password too short.
-      </mat-error>
-      <mat-error *ngIf="resetPassForm.controls['newPass1'].hasError('maxlength')">
-        Password too long.
-      </mat-error>
+        placeholder="New password">
+        <mat-error *ngIf="resetPassForm.controls['newPass1'].hasError('checkPassword')">
+          {{ resetPassForm.controls['newPass1'].getError('checkPassword') }}
+        </mat-error>
     </mat-form-field>
     <mat-form-field>
       <input
         matInput
         type="password"
         formControlName="newPass2"
-        placeholder="Password">
-      <mat-error *ngIf="resetPassForm.controls['newPass2'].hasError('required')">
-        Please enter your password.
-      </mat-error>
-      <mat-error *ngIf="resetPassForm.controls['newPass2'].hasError('minlength')">
-        Password too short.
-      </mat-error>
-      <mat-error *ngIf="resetPassForm.controls['newPass2'].hasError('maxlength')">
-        Password too long.
-      </mat-error>
+        placeholder="Repeat new password">
+        <mat-error *ngIf="resetPassForm.controls['newPass2'].hasError('checkPassword')">
+          {{ resetPassForm.controls['newPass2'].getError('checkPassword') }}
+        </mat-error>
     </mat-form-field>
+    <mat-error *ngIf="resetPassForm.hasError('passNoMatch')">
+      {{ resetPassForm.getError('passNoMatch') }}
+    </mat-error>
     <button
       mat-raised-button
       color="accent"

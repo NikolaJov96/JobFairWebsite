@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
-import { timeoutWith } from 'rxjs/operators';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { checkPassword, passNoMatch } from '../guest-utils';
 
 @Component({
   selector: 'app-guest-register',
@@ -11,20 +11,20 @@ export class GuestRegisterComponent implements OnInit {
 
   studentForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
-    newPass1: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(12)]),
-    newPass2: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(12)]),
+    newPass1: new FormControl('', [checkPassword()]),
+    newPass2: new FormControl('', [checkPassword()]),
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
     phone: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
     year: new FormControl('', [Validators.required]),
     graduated: new FormControl('', [Validators.required]),
-  });
+  }, [passNoMatch()]);
 
   companyForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
-    newPass1: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(12)]),
-    newPass2: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(12)]),
+    newPass1: new FormControl('', [checkPassword()]),
+    newPass2: new FormControl('', [checkPassword()]),
     companyName: new FormControl('', [Validators.required]),
     address: new FormControl('', [Validators.required]),
     director: new FormControl('', [Validators.required]),
@@ -34,17 +34,17 @@ export class GuestRegisterComponent implements OnInit {
     website: new FormControl('', [Validators.required]),
     industry: new FormControl('', [Validators.required]),
     field: new FormControl('', [Validators.required]),
-  });
+  }, [passNoMatch()]);
 
   adminForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
-    newPass1: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(12)]),
-    newPass2: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(12)]),
+    newPass1: new FormControl('', [checkPassword()]),
+    newPass2: new FormControl('', [checkPassword()]),
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
     phone: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
-  });
+  }, [passNoMatch()]);
 
   constructor() { }
 

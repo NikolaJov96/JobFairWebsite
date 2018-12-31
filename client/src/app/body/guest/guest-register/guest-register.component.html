@@ -19,15 +19,9 @@
             type="password"
             formControlName="newPass1"
             placeholder="Password">
-          <mat-error *ngIf="studentForm.controls['newPass1'].hasError('required')">
-            Please enter your password.
-          </mat-error>
-          <mat-error *ngIf="studentForm.controls['newPass1'].hasError('minlength')">
-            Password too short.
-          </mat-error>
-          <mat-error *ngIf="studentForm.controls['newPass1'].hasError('maxlength')">
-            Password too long.
-          </mat-error>
+            <mat-error *ngIf="studentForm.controls['newPass1'].hasError('checkPassword')">
+              {{ studentForm.controls['newPass1'].getError('checkPassword') }}
+            </mat-error>
         </mat-form-field>
         <mat-form-field>
           <input
@@ -35,16 +29,13 @@
             type="password"
             formControlName="newPass2"
             placeholder="Repeat password">
-          <mat-error *ngIf="studentForm.controls['newPass2'].hasError('required')">
-            Please enter your password.
-          </mat-error>
-          <mat-error *ngIf="studentForm.controls['newPass2'].hasError('minlength')">
-            Password too short.
-          </mat-error>
-          <mat-error *ngIf="studentForm.controls['newPass2'].hasError('maxlength')">
-            Password too long.
-          </mat-error>
+            <mat-error *ngIf="studentForm.controls['newPass2'].hasError('checkPassword')">
+              {{ studentForm.controls['newPass2'].getError('checkPassword') }}
+            </mat-error>
         </mat-form-field>
+        <mat-error *ngIf="studentForm.hasError('passNoMatch')">
+          {{ studentForm.getError('passNoMatch') }}
+        </mat-error>
         <mat-form-field>
           <input
             matInput
@@ -95,7 +86,10 @@
             Please enter your year of studies.
           </mat-error>
         </mat-form-field>
-        <mat-checkbox formControlName="graduated">Graduated</mat-checkbox><br>
+        <mat-checkbox
+          formControlName="graduated">
+          Graduated
+        </mat-checkbox><br>
         <button
           mat-raised-button
           color="accent"
@@ -125,15 +119,9 @@
             type="password"
             formControlName="newPass1"
             placeholder="Password">
-          <mat-error *ngIf="companyForm.controls['newPass1'].hasError('required')">
-            Please enter your password.
-          </mat-error>
-          <mat-error *ngIf="companyForm.controls['newPass1'].hasError('minlength')">
-            Password too short.
-          </mat-error>
-          <mat-error *ngIf="companyForm.controls['newPass1'].hasError('maxlength')">
-            Password too long.
-          </mat-error>
+            <mat-error *ngIf="companyForm.controls['newPass1'].hasError('checkPassword')">
+              {{ companyForm.controls['newPass1'].getError('checkPassword') }}
+            </mat-error>
         </mat-form-field>
         <mat-form-field>
           <input
@@ -141,16 +129,13 @@
             type="password"
             formControlName="newPass2"
             placeholder="Repeat password">
-          <mat-error *ngIf="companyForm.controls['newPass2'].hasError('required')">
-            Please enter your password.
-          </mat-error>
-          <mat-error *ngIf="companyForm.controls['newPass2'].hasError('minlength')">
-            Password too short.
-          </mat-error>
-          <mat-error *ngIf="companyForm.controls['newPass2'].hasError('maxlength')">
-            Password too long.
-          </mat-error>
+            <mat-error *ngIf="companyForm.controls['newPass2'].hasError('checkPassword')">
+              {{ companyForm.controls['newPass2'].getError('checkPassword') }}
+            </mat-error>
         </mat-form-field>
+        <mat-error *ngIf="companyForm.hasError('passNoMatch')">
+          {{ companyForm.getError('passNoMatch') }}
+        </mat-error>
         <mat-form-field>
           <input
             matInput
@@ -271,15 +256,9 @@
             type="password"
             formControlName="newPass1"
             placeholder="Password">
-          <mat-error *ngIf="adminForm.controls['newPass1'].hasError('required')">
-            Please enter your password.
-          </mat-error>
-          <mat-error *ngIf="adminForm.controls['newPass1'].hasError('minlength')">
-            Password too short.
-          </mat-error>
-          <mat-error *ngIf="adminForm.controls['newPass1'].hasError('maxlength')">
-            Password too long.
-          </mat-error>
+            <mat-error *ngIf="adminForm.controls['newPass1'].hasError('checkPassword')">
+              {{ adminForm.controls['newPass1'].getError('checkPassword') }}
+            </mat-error>
         </mat-form-field>
         <mat-form-field>
           <input
@@ -287,16 +266,13 @@
             type="password"
             formControlName="newPass2"
             placeholder="Repeat password">
-          <mat-error *ngIf="adminForm.controls['newPass2'].hasError('required')">
-            Please enter your password.
-          </mat-error>
-          <mat-error *ngIf="adminForm.controls['newPass2'].hasError('minlength')">
-            Password too short.
-          </mat-error>
-          <mat-error *ngIf="adminForm.controls['newPass2'].hasError('maxlength')">
-            Password too long.
-          </mat-error>
+            <mat-error *ngIf="adminForm.controls['newPass2'].hasError('checkPassword')">
+              {{ adminForm.controls['newPass2'].getError('checkPassword') }}
+            </mat-error>
         </mat-form-field>
+        <mat-error *ngIf="adminForm.hasError('passNoMatch')">
+          {{ adminForm.getError('passNoMatch') }}
+        </mat-error>
         <mat-form-field>
           <input
             matInput

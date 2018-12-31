@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { checkPassword, passNoMatch } from '../guest-utils';
 
 @Component({
   selector: 'app-guest-reset-pass',
@@ -10,10 +11,10 @@ export class GuestResetPassComponent implements OnInit {
 
   resetPassForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(12)]),
-    newPass1: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(12)]),
-    newPass2: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(12)]),
-  });
+    password: new FormControl('', [checkPassword()]),
+    newPass1: new FormControl('', [checkPassword()]),
+    newPass2: new FormControl('', [checkPassword()]),
+  }, [passNoMatch()]);
 
   constructor() { }
 
