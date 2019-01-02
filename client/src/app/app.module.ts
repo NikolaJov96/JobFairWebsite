@@ -27,6 +27,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StudentCvComponent } from './body/student/student-cv/student-cv.component';
+import { StudentOverviewComponent } from './body/student/student-overview/student-overview.component';
+import { StudentCompanyOverviewComponent } from './body/student/student-company-overview/student-company-overview.component';
+import { StudentApplicationsComponent } from './body/student/student-applications/student-applications.component';
+import { StudentConcourseComponent } from './body/student/student-concourse/student-concourse.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +42,10 @@ import { StudentCvComponent } from './body/student/student-cv/student-cv.compone
     GuestResetPassComponent,
     HeaderComponent,
     StudentCvComponent,
+    StudentOverviewComponent,
+    StudentCompanyOverviewComponent,
+    StudentApplicationsComponent,
+    StudentConcourseComponent,
   ],
   imports: [
     AppRoutingModule,

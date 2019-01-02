@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { checkPassword } from '../guest-utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-guest-login',
@@ -14,7 +15,7 @@ export class GuestLoginComponent implements OnInit {
     password: new FormControl('', [checkPassword()]),
   });
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() { }
 
@@ -25,6 +26,8 @@ export class GuestLoginComponent implements OnInit {
     const username = this.loginForm.value.username;
     const password = this.loginForm.value.password;
     console.log('Logging in', username, ',', password);
+
+    this.router.navigate(['/student/cv']);
   }
 
 }

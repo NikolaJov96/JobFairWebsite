@@ -31,32 +31,39 @@ export class NavProviderService {
   constructor(private router: Router) {
     router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(
       (navEnd: NavigationEnd) => {
+        const url = navEnd.url.split('?')[0];
         this.pageTitle = 'JobFairPortal - ';
-        if (navEnd.url.endsWith('overview')) {
+        if (url.endsWith('overview')) {
           this.pageTitle += 'Overview';
-        } else if (navEnd.url.endsWith('login')) {
+        } else if (url.endsWith('login')) {
           this.pageTitle += 'Login';
-        } else if (navEnd.url.endsWith('reset-pass')) {
+        } else if (url.endsWith('reset-pass')) {
           this.pageTitle += 'Reset password';
-        } else if (navEnd.url.endsWith('register')) {
+        } else if (url.endsWith('register')) {
           this.pageTitle += 'Register';
+        } else if (url.endsWith('cv')) {
+          this.pageTitle += 'CV';
+        } else if (url.endsWith('overview-coms')) {
+          this.pageTitle += 'Company overview';
+        } else if (url.endsWith('overview-com')) {
+          this.pageTitle += 'Company overview';
+        } else if (url.endsWith('overview-offer')) {
+          this.pageTitle += 'Concourse overview';
+        } else if (url.endsWith('applications')) {
+          this.pageTitle += 'Application statistics';
         }
 
         this.navLists = { leftList: [], rightList: [] };
-        if (navEnd.url.startsWith('/guest')) {
-          this.navLists.leftList.push({ text: 'Overview', url: '/guest/overview', selected: false });
-          this.navLists.rightList.push({ text: 'Login', url: '/guest/login', selected: false });
-          this.navLists.rightList.push({ text: 'Reset password', url: '/guest/reset-pass', selected: false });
-          this.navLists.rightList.push({ text: 'Register', url: '/guest/register', selected: false });
-          if (navEnd.url.endsWith('overview')) {
-            this.navLists.leftList[0].selected = true;
-          } else if (navEnd.url.endsWith('login')) {
-            this.navLists.rightList[0].selected = true;
-          } else if (navEnd.url.endsWith('reset-pass')) {
-            this.navLists.rightList[1].selected = true;
-          } else if (navEnd.url.endsWith('register')) {
-            this.navLists.rightList[2].selected = true;
-          }
+        if (url.startsWith('/guest')) {
+          this.navLists.leftList.push({ text: 'Overview', url: '/guest/overview', selected: url.endsWith('overview') });
+          this.navLists.rightList.push({ text: 'Login', url: '/guest/login', selected: url.endsWith('login') });
+          this.navLists.rightList.push({ text: 'Reset password', url: '/guest/reset-pass', selected: url.endsWith('reset-pass') });
+          this.navLists.rightList.push({ text: 'Register', url: '/guest/register', selected: url.endsWith('register') });
+        } else if (url.startsWith('/student')) {
+          this.navLists.leftList.push({ text: 'My CV', url: '/student/cv', selected: url.endsWith('cv') });
+          this.navLists.leftList.push({ text: 'Company overviews', url: '/student/overview-com', selected: url.endsWith('overview-com') });
+          this.navLists.leftList.push({ text: 'My applications', url: '/student/applications', selected: url.endsWith('applications') });
+          this.navLists.rightList.push({ text: 'Logout', url: '/student/cv?logout=true', selected: url.endsWith('logout') });
         }
         this.navListsUpdated.next();
       });

@@ -1,3 +1,169 @@
-<p>
-  student-cv works!
-</p>
+<mat-card>Fill out your CV!</mat-card>
+<mat-card>
+  <form [formGroup]="cvForm" (ngSubmit)="onSaveCV()" novalidate>
+    <mat-form-field>
+      <input matInput type="text" formControlName="firstName" placeholder="First name">
+      <mat-error *ngIf="cvForm.controls['firstName'].hasError('required')">
+        Please enter your first name.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="lastName" placeholder="Last name">
+      <mat-error *ngIf="cvForm.controls['lastName'].hasError('required')">
+        Please enter your last name.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="address" placeholder="Address">
+      <mat-error *ngIf="cvForm.controls['address'].hasError('required')">
+        Please enter your address.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="postalCode" placeholder="Postal code">
+      <mat-error *ngIf="cvForm.controls['postalCode'].hasError('required')">
+        Please enter your postal code.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="city" placeholder="City">
+      <mat-error *ngIf="cvForm.controls['city'].hasError('required')">
+        Please enter your city.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="country" placeholder="Country">
+      <mat-error *ngIf="cvForm.controls['country'].hasError('required')">
+        Please enter your country.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="number" formControlName="phone" placeholder="Phone">
+      <mat-error *ngIf="cvForm.controls['phone'].hasError('required')">
+        Please enter your phone number.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="email" formControlName="email" placeholder="Email">
+      <mat-error *ngIf="cvForm.controls['email'].hasError('required')">
+        Please enter your email.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="website" placeholder="Website">
+      <mat-error *ngIf="cvForm.controls['website'].hasError('required')">
+        Please enter your website.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="applicationType" placeholder="Applicatoin type">
+      <mat-error *ngIf="cvForm.controls['applicationType'].hasError('required')">
+        Please enter your application type.
+      </mat-error>
+    </mat-form-field>
+    <mat-card formGroupName="work">
+      <mat-card>Work experience</mat-card>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput type="number" formControlName="fromDay" placeholder="From day">
+      </mat-form-field>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput type="number" formControlName="fromMonth" placeholder="From month">
+      </mat-form-field>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput type="number" formControlName="fromYear" placeholder="From year">
+      </mat-form-field>
+      <br>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput type="number" formControlName="toDay" placeholder="To day">
+      </mat-form-field>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput type="number" formControlName="toMonth" placeholder="To month">
+      </mat-form-field>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput type="number" formControlName="toYear" placeholder="To Year">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <input matInput type="text" formControlName="position" placeholder="Position">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" formControlName="employer" placeholder="Employer">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" formControlName="city" placeholder="City">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" formControlName="country" placeholder="Country">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" formControlName="description" placeholder="Description">
+      </mat-form-field>
+    </mat-card>
+    <mat-card formGroupName="education">
+      <mat-card>Edication</mat-card>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput type="number" formControlName="fromDay" placeholder="From day">
+      </mat-form-field>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput type="number" formControlName="fromMonth" placeholder="From month">
+      </mat-form-field>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput type="number" formControlName="fromYear" placeholder="From year">
+      </mat-form-field>
+      <br>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput type="number" formControlName="toDay" placeholder="To day">
+      </mat-form-field>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput type="number" formControlName="toMonth" placeholder="To month">
+      </mat-form-field>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput type="number" formControlName="toYear" placeholder="To Year">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <input matInput type="text" formControlName="qualificaton" placeholder="Qualificaton">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" formControlName="school" placeholder="School">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" formControlName="city" placeholder="City">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" formControlName="country" placeholder="Country">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" formControlName="description" placeholder="Description">
+      </mat-form-field>
+    </mat-card>
+    <mat-form-field>
+      <input matInput type="text" formControlName="motherTonque" placeholder="Mother tonque">
+      <mat-error *ngIf="cvForm.controls['motherTonque'].hasError('required')">
+        Please enter your last name.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="foreignTonque" placeholder="Foreign tonque">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="communicationSkills" placeholder="Communication skills">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="organisationalSkills" placeholder="Organisational skills">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="jobRelatedSkills" placeholder="Job related skills">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" formControlName="digitalSkills" placeholder="Digital skills">
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="!cvForm.valid"
+      type="submit">
+      Save CV
+    </button>
+  </form>
+</mat-card>

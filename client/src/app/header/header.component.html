@@ -25,7 +25,7 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Job Fair Portal</span>
+      <span style="margin-right: 2rem">Job Fair Portal</span>
       <mat-nav-list class="noPadding" *ngFor="let entry of navLists.leftList">
         <a [class.highlight-link]="entry.selected"
           *ngIf="!(isHandset$ | async)"
