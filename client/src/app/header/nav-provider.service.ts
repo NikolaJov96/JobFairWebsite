@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 interface NavEntry {
   text: string;
   url: string;
+  selected: boolean;
 }
 
 export interface NavLists {
@@ -43,10 +44,19 @@ export class NavProviderService {
 
         this.navLists = { leftList: [], rightList: [] };
         if (navEnd.url.startsWith('/guest')) {
-          this.navLists.leftList.push({ text: 'Overview', url: '/guest/overview' });
-          this.navLists.rightList.push({ text: 'Login', url: '/guest/login' });
-          this.navLists.rightList.push({ text: 'Reset password', url: '/guest/reset-pass' });
-          this.navLists.rightList.push({ text: 'Register', url: '/guest/register' });
+          this.navLists.leftList.push({ text: 'Overview', url: '/guest/overview', selected: false });
+          this.navLists.rightList.push({ text: 'Login', url: '/guest/login', selected: false });
+          this.navLists.rightList.push({ text: 'Reset password', url: '/guest/reset-pass', selected: false });
+          this.navLists.rightList.push({ text: 'Register', url: '/guest/register', selected: false });
+          if (navEnd.url.endsWith('overview')) {
+            this.navLists.leftList[0].selected = true;
+          } else if (navEnd.url.endsWith('login')) {
+            this.navLists.rightList[0].selected = true;
+          } else if (navEnd.url.endsWith('reset-pass')) {
+            this.navLists.rightList[1].selected = true;
+          } else if (navEnd.url.endsWith('register')) {
+            this.navLists.rightList[2].selected = true;
+          }
         }
         this.navListsUpdated.next();
       });

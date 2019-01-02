@@ -9,10 +9,10 @@
     [opened]="!(isHandset$ | async)">
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list *ngFor="let entry of navLists.leftList">
-      <a mat-list-item routerLink="{{entry.url}}">{{entry.text}}</a>
+      <a [class.highlight-link]="entry.selected" mat-list-item routerLink="{{ entry.url }}">{{ entry.text }}</a>
     </mat-nav-list>
     <mat-nav-list *ngFor="let entry of navLists.rightList">
-      <a mat-list-item routerLink="{{entry.url}}">{{entry.text}}</a>
+      <a [class.highlight-link]="entry.selected" mat-list-item routerLink="{{ entry.url }}">{{ entry.text }}</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -27,11 +27,17 @@
       </button>
       <span>Job Fair Portal</span>
       <mat-nav-list class="noPadding" *ngFor="let entry of navLists.leftList">
-        <a *ngIf="!(isHandset$ | async)" mat-list-item routerLink="{{entry.url}}">{{entry.text}}</a>
+        <a [class.highlight-link]="entry.selected"
+          *ngIf="!(isHandset$ | async)"
+          mat-list-item
+          routerLink="{{ entry.url }}">{{ entry.text }}</a>
       </mat-nav-list>
       <span class="spacer"></span>
       <mat-nav-list class="noPadding" *ngFor="let entry of navLists.rightList">
-        <a *ngIf="!(isHandset$ | async)" mat-list-item routerLink="{{entry.url}}">{{entry.text}}</a>
+        <a [class.highlight-link]="entry.selected"
+          *ngIf="!(isHandset$ | async)"
+          mat-list-item
+          routerLink="{{ entry.url }}">{{ entry.text }}</a>
       </mat-nav-list>
     </mat-toolbar>
     <ng-content></ng-content>

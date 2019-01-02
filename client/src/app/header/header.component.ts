@@ -34,4 +34,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {}
 
+  isSelected(entry) {
+    if (entry.selected) {
+      return true;
+    }
+    return false;
+  }
+
 }

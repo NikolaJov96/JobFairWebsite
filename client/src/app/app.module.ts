@@ -26,6 +26,7 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StudentCvComponent } from './body/student/student-cv/student-cv.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     GuestRegisterComponent,
     GuestResetPassComponent,
     HeaderComponent,
+    StudentCvComponent,
   ],
   imports: [
     AppRoutingModule,

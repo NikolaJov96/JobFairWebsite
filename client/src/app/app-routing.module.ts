@@ -24,7 +24,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/guest/overview'
+    redirectTo: '/guest/login'
   },
 ];
 

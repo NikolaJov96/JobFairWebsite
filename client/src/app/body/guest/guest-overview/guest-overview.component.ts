@@ -52,7 +52,7 @@ export class GuestOverviewComponent implements OnInit {
         taxNumber: '1234',
         staff: '123',
         email: 'hi@com1.com',
-        website: 'com1.com',
+        website: 'www.com1.com',
         industry: 0,
       },
       {
@@ -62,7 +62,7 @@ export class GuestOverviewComponent implements OnInit {
         taxNumber: '2345',
         staff: '234',
         email: 'hi@com2.com',
-        website: 'com2.com',
+        website: 'www.com2.com',
         industry: 1,
       },
       {
@@ -72,7 +72,7 @@ export class GuestOverviewComponent implements OnInit {
         taxNumber: '3456',
         staff: '345',
         email: 'hi@com3.com',
-        website: 'com3.com',
+        website: 'www.com3.com',
         industry: 3,
       },
     ];
