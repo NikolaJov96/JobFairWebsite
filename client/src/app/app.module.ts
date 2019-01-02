@@ -21,7 +21,8 @@ import {
   MatTabsModule,
   MatCheckboxModule,
   MatSelectModule,
-  MatTableModule
+  MatTableModule,
+  MatExpansionModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
@@ -56,6 +57,7 @@ import { StudentConcourseComponent } from './body/student/student-concourse/stud
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,

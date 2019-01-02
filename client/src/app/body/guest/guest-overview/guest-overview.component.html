@@ -1,42 +1,19 @@
 <mat-card>Member company overview, register to apply!</mat-card>
 <mat-card>
-  <form [formGroup]="filterFrom" (ngSubmit)="onFilter()" novalidate>
+  <form [formGroup]="filterForm" (ngSubmit)="onFilter()" novalidate>
     <mat-form-field>
-      <input
-        matInput
-        type="text"
-        formControlName="name"
-        placeholder="Company name">
+      <input matInput type="text" formControlName="name" placeholder="Company name">
     </mat-form-field>
     <mat-form-field>
-      <mat-select
-        multiple
-        placeholder="Industry"
-        formControlName="industry">
+      <mat-select multiple placeholder="Industry" formControlName="industry">
         <mat-option *ngFor="let ind of industries" value="{{ ind.value }}">{{ ind.name }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field>
-      <input
-        matInput
-        type="text"
-        formControlName="town"
-        placeholder="Town name">
+      <input matInput type="text" formControlName="town" placeholder="Town name">
     </mat-form-field>
-    <button
-      mat-raised-button
-      color="accent"
-      type="reset"
-      (click)="resetFrom()">
-      Reset
-    </button>
-    <button
-      mat-raised-button
-      color="accent"
-      [disabled]="!filterFrom.valid"
-      type="submit">
-      Filter
-    </button>
+    <button mat-raised-button color="accent" type="reset" (click)="resetFrom()">Reset</button>
+    <button mat-raised-button color="accent" [disabled]="!filterForm.valid" type="submit">Filter</button>
   </form>
 </mat-card>
 

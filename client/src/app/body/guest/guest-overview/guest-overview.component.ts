@@ -20,7 +20,7 @@ interface CompanyTableRow {
 })
 export class GuestOverviewComponent implements OnInit {
 
-  filterFrom = new FormGroup({
+  filterForm = new FormGroup({
     name: new FormControl(),
     industry: new FormControl(),
     town: new FormControl(),
@@ -80,9 +80,9 @@ export class GuestOverviewComponent implements OnInit {
   }
 
   onFilter() {
-    const name = this.filterFrom.value.name;
-    const industry = this.filterFrom.value.industry;
-    const town = this.filterFrom.value.town;
+    const name = this.filterForm.value.name;
+    const industry = this.filterForm.value.industry;
+    const town = this.filterForm.value.town;
 
     this.companiesFiltered = [];
     this.companies.forEach(com => {

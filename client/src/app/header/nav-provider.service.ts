@@ -19,6 +19,11 @@ export interface Industry {
   name: string;
 }
 
+export interface JobType {
+  value: number;
+  name: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -61,9 +66,9 @@ export class NavProviderService {
           this.navLists.rightList.push({ text: 'Register', url: '/guest/register', selected: url.endsWith('register') });
         } else if (url.startsWith('/student')) {
           this.navLists.leftList.push({ text: 'My CV', url: '/student/cv', selected: url.endsWith('cv') });
-          this.navLists.leftList.push({ text: 'Company overviews', url: '/student/overview-com', selected: url.endsWith('overview-com') });
+          this.navLists.leftList.push({ text: 'Companies', url: '/student/overview-coms', selected: url.endsWith('overview-coms') });
           this.navLists.leftList.push({ text: 'My applications', url: '/student/applications', selected: url.endsWith('applications') });
-          this.navLists.rightList.push({ text: 'Logout', url: '/student/cv?logout=true', selected: url.endsWith('logout') });
+          this.navLists.rightList.push({ text: 'Logout', url: '/logout', selected: url.endsWith('logout') });
         }
         this.navListsUpdated.next();
       });
@@ -88,6 +93,13 @@ export class NavProviderService {
       { value: 2, name: 'Energy' },
       { value: 3, name: 'Architecture' },
       { value: 4, name: 'Mechanical' },
+    ];
+  }
+
+  getJobTypes(): Array<JobType> {
+    return [
+      { value: 0, name: 'Internship' },
+      { value: 1, name: 'Full time' },
     ];
   }
 
