@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { NavProviderService, NavLists } from './nav-provider.service';
-import { Router, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 @Component({

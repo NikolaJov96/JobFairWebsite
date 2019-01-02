@@ -67,10 +67,10 @@ export class NavProviderService {
   getIndustries(): Array<Industry> {
     return [
       { value: 0, name: 'IT' },
-      { value: 1, name: 'Telecommunications' },
+      { value: 1, name: 'Teleco' },
       { value: 2, name: 'Energy' },
       { value: 3, name: 'Architecture' },
-      { value: 4, name: 'Mechanical engineering' },
+      { value: 4, name: 'Mechanical' },
     ];
   }
 

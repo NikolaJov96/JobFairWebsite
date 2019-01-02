@@ -1,3 +1,79 @@
-<p>
-  guest-overview works!
-</p>
+<mat-card>
+  <form [formGroup]="filterFrom" (ngSubmit)="onFilter()" novalidate>
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        formControlName="name"
+        placeholder="Company name">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select
+        multiple
+        placeholder="Industry"
+        formControlName="industry">
+        <mat-option *ngFor="let ind of industries" value="{{ ind.value }}">{{ ind.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        formControlName="town"
+        placeholder="Town name">
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="accent"
+      type="reset"
+      (click)="resetFrom()">
+      Reset
+    </button>
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="!filterFrom.valid"
+      type="submit">
+      Filter
+    </button>
+  </form>
+</mat-card>
+
+<table mat-table [dataSource]="companiesFiltered" class="mat-elevation-z8">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
+  </ng-container>
+  <ng-container matColumnDef="town">
+    <th mat-header-cell *matHeaderCellDef> Town </th>
+    <td mat-cell *matCellDef="let element"> {{ element.town }} </td>
+  </ng-container>
+  <ng-container matColumnDef="director">
+    <th mat-header-cell *matHeaderCellDef> Director </th>
+    <td mat-cell *matCellDef="let element"> {{ element.director }} </td>
+  </ng-container>
+  <ng-container matColumnDef="taxNumber">
+    <th mat-header-cell *matHeaderCellDef> Tex number </th>
+    <td mat-cell *matCellDef="let element"> {{ element.taxNumber }} </td>
+  </ng-container>
+  <ng-container matColumnDef="staff">
+    <th mat-header-cell *matHeaderCellDef> Staff </th>
+    <td mat-cell *matCellDef="let element"> {{ element.staff }} </td>
+  </ng-container>
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef> Email </th>
+    <td mat-cell *matCellDef="let element"> {{ element.email }} </td>
+  </ng-container>
+  <ng-container matColumnDef="website">
+    <th mat-header-cell *matHeaderCellDef> Website </th>
+    <td mat-cell *matCellDef="let element">
+      <a href="{{ element.website }}">{{ element.website }}</a>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="industry">
+    <th mat-header-cell *matHeaderCellDef> Industry </th>
+    <td mat-cell *matCellDef="let element"> {{ industries[element.industry].name }} </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
