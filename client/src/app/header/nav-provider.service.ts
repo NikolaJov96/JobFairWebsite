@@ -52,7 +52,7 @@ export class NavProviderService {
           this.pageTitle += 'Company overview';
         } else if (url.endsWith('overview-com')) {
           this.pageTitle += 'Company overview';
-        } else if (url.endsWith('overview-offer')) {
+        } else if (url.endsWith('concourse')) {
           this.pageTitle += 'Concourse overview';
         } else if (url.endsWith('applications')) {
           this.pageTitle += 'Application statistics';

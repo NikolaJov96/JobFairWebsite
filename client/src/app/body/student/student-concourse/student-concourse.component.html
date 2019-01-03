@@ -1,3 +1,25 @@
-<p>
-  student-concourse works!
-</p>
+<mat-card>Apply to this concourse!</mat-card>
+<mat-card>
+  <p>Company name: {{ com.name }}</p>
+  <p>Position name: {{ con.name }}</p>
+  <p>Position type: {{ jobTypes[con.jobType].name }}</p>
+  <p>Description: {{ con.description }}</p>
+</mat-card>
+<mat-card>
+  <form [formGroup]="applyForm" (ngSubmit)="onApply()" novalidate>
+    <div style="width: 100%;">
+      <mat-checkbox formControlName="coverLetterType" placeholder="Company name">
+        Upload PDF
+      </mat-checkbox>
+    </div>
+    <mat-form-field *ngIf="!applyForm.value.coverLetterType">
+      <textarea
+        matInput
+        placeholder="Cover letter"
+        formControlName="coverLetterText"
+        rows="5">
+      </textarea>
+    </mat-form-field>
+    <button mat-raised-button color="accent" [disabled]="!applyForm.valid" type="submit">Apply</button>
+  </form>
+</mat-card>

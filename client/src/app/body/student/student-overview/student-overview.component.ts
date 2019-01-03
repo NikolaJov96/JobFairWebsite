@@ -1,23 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { NavProviderService, Industry, JobType } from 'src/app/header/nav-provider.service';
-
-interface ConcourseEntity {
-  name: string;
-  jobType: number;
-}
-
-interface CompanyEntity {
-  name: string;
-  town: string;
-  director: string;
-  taxNumber: string;
-  staff: string;
-  email: string;
-  website: string;
-  industry: number;
-  concourses: Array<ConcourseEntity>;
-}
+import { StudentStatusService, CompanyEntity } from '../student-status.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-student-overview',
@@ -37,73 +22,15 @@ export class StudentOverviewComponent implements OnInit {
   industries: Array<Industry> = [];
   jobTypes: Array<JobType> = [];
 
-  constructor(private navProviderService: NavProviderService) { }
+  constructor(
+    private navProviderService: NavProviderService,
+    private studentStatusService: StudentStatusService,
+    private router: Router) { }
 
   ngOnInit() {
     this.industries = this.navProviderService.getIndustries();
     this.jobTypes = this.navProviderService.getJobTypes();
-    this.companies = [
-      {
-        name: 'Com1',
-        town: 'Tow1',
-        director: 'Dir1',
-        taxNumber: '1234',
-        staff: '123',
-        email: 'hi@com1.com',
-        website: 'www.com1.com',
-        industry: 0,
-        concourses: [
-          {
-            name: 'con1',
-            jobType: 0,
-          },
-          {
-            name: 'con2',
-            jobType: 1,
-          },
-        ],
-      },
-      {
-        name: 'Com2',
-        town: 'Tow2',
-        director: 'Dir2',
-        taxNumber: '2345',
-        staff: '234',
-        email: 'hi@com2.com',
-        website: 'www.com2.com',
-        industry: 1,
-        concourses: [
-          {
-            name: 'con1',
-            jobType: 0,
-          },
-          {
-            name: 'con2',
-            jobType: 1,
-          },
-        ],
-      },
-      {
-        name: 'Com3',
-        town: 'Tow3',
-        director: 'Dir3',
-        taxNumber: '3456',
-        staff: '345',
-        email: 'hi@com3.com',
-        website: 'www.com3.com',
-        industry: 3,
-        concourses: [
-          {
-            name: 'con1',
-            jobType: 0,
-          },
-          {
-            name: 'con2',
-            jobType: 1,
-          },
-        ],
-      },
-    ];
+    this.companies = this.studentStatusService.getCompanies();
     this.companiesFiltered = this.companies;
   }
 
@@ -136,6 +63,12 @@ export class StudentOverviewComponent implements OnInit {
     setTimeout(() => {
       this.onFilter();
     }, 50);
+  }
+
+  onApply(comId: number, conId: number) {
+    this.studentStatusService.setCom(this.companies[comId]);
+    this.studentStatusService.setCon(this.companies[comId].concourses[conId]);
+    this.router.navigate(['/student/concourse']);
   }
 
 }

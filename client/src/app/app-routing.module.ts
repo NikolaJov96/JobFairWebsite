@@ -6,7 +6,6 @@ import { GuestRegisterComponent } from './body/guest/guest-register/guest-regist
 import { GuestResetPassComponent } from './body/guest/guest-reset-pass/guest-reset-pass.component';
 import { StudentCvComponent } from './body/student/student-cv/student-cv.component';
 import { StudentOverviewComponent } from './body/student/student-overview/student-overview.component';
-import { StudentCompanyOverviewComponent } from './body/student/student-company-overview/student-company-overview.component';
 import { StudentConcourseComponent } from './body/student/student-concourse/student-concourse.component';
 import { StudentApplicationsComponent } from './body/student/student-applications/student-applications.component';
 
@@ -36,11 +35,7 @@ const routes: Routes = [
     component: StudentOverviewComponent
   },
   {
-    path: 'student/overview-com',
-    component: StudentCompanyOverviewComponent,
-  },
-  {
-    path: 'student/overview-offer',
+    path: 'student/concourse',
     component: StudentConcourseComponent,
   },
   {
