@@ -18,6 +18,11 @@ export interface CompanyEntity {
   concourses: Array<ConcourseEntity>;
 }
 
+export interface StudentEntity {
+  _id: string;
+  name: string;
+}
+
 export interface Industry {
   value: number;
   name: string;

@@ -23,7 +23,9 @@ import {
   MatSelectModule,
   MatTableModule,
   MatExpansionModule,
-  MatSliderModule
+  MatSliderModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
@@ -33,6 +35,9 @@ import { StudentOverviewComponent } from './body/student/student-overview/studen
 import { StudentApplicationsComponent } from './body/student/student-applications/student-applications.component';
 import { StudentConcourseComponent } from './body/student/student-concourse/student-concourse.component';
 import { LogoutComponent } from './logout/logout.component';
+import { CompanyNewConcourseComponent } from './body/company/company-new-concourse/company-new-concourse.component';
+import { InvalidPathComponent } from './invalid-path/invalid-path.component';
+import { CompanyConcludeComponent } from './body/company/company-conclude/company-conclude.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +53,9 @@ import { LogoutComponent } from './logout/logout.component';
     StudentApplicationsComponent,
     StudentConcourseComponent,
     LogoutComponent,
+    CompanyNewConcourseComponent,
+    InvalidPathComponent,
+    CompanyConcludeComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -58,11 +66,13 @@ import { LogoutComponent } from './logout/logout.component';
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatDatepickerModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
+    MatNativeDateModule,
     MatSelectModule,
     MatSidenavModule,
     MatSliderModule,

@@ -63,24 +63,15 @@
     </mat-form-field>
     <mat-card formGroupName="work">
       <mat-card>Work experience</mat-card>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput type="number" formControlName="fromDay" placeholder="From day">
+      <mat-form-field style="margin-right: 1rem;">
+        <input matInput [matDatepicker]="wfPicker" formControlName="fromDate" placeholder="From date">
+        <mat-datepicker-toggle matSuffix [for]="wfPicker"></mat-datepicker-toggle>
+        <mat-datepicker #wfPicker></mat-datepicker>
       </mat-form-field>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput type="number" formControlName="fromMonth" placeholder="From month">
-      </mat-form-field>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput type="number" formControlName="fromYear" placeholder="From year">
-      </mat-form-field>
-      <br>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput type="number" formControlName="toDay" placeholder="To day">
-      </mat-form-field>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput type="number" formControlName="toMonth" placeholder="To month">
-      </mat-form-field>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput type="number" formControlName="toYear" placeholder="To Year">
+      <mat-form-field style="margin-right: 1rem;">
+        <input matInput [matDatepicker]="wtPicker" formControlName="toDate" placeholder="To date">
+        <mat-datepicker-toggle matSuffix [for]="wtPicker"></mat-datepicker-toggle>
+        <mat-datepicker #wtPicker></mat-datepicker>
       </mat-form-field>
       <br>
       <mat-form-field>
@@ -101,24 +92,15 @@
     </mat-card>
     <mat-card formGroupName="education">
       <mat-card>Edication</mat-card>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput type="number" formControlName="fromDay" placeholder="From day">
+      <mat-form-field style="margin-right: 1rem;">
+        <input matInput [matDatepicker]="efPicker" formControlName="fromDate" placeholder="From date">
+        <mat-datepicker-toggle matSuffix [for]="efPicker"></mat-datepicker-toggle>
+        <mat-datepicker #efPicker></mat-datepicker>
       </mat-form-field>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput type="number" formControlName="fromMonth" placeholder="From month">
-      </mat-form-field>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput type="number" formControlName="fromYear" placeholder="From year">
-      </mat-form-field>
-      <br>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput type="number" formControlName="toDay" placeholder="To day">
-      </mat-form-field>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput type="number" formControlName="toMonth" placeholder="To month">
-      </mat-form-field>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput type="number" formControlName="toYear" placeholder="To Year">
+      <mat-form-field style="margin-right: 1rem;">
+        <input matInput [matDatepicker]="etPicker" formControlName="toDate" placeholder="To date">
+        <mat-datepicker-toggle matSuffix [for]="etPicker"></mat-datepicker-toggle>
+        <mat-datepicker #etPicker></mat-datepicker>
       </mat-form-field>
       <br>
       <mat-form-field>

@@ -60,6 +60,9 @@ export class NavProviderService {
           this.navLists.leftList.push({ text: 'Companies', url: '/student/overview-coms', selected: url.endsWith('overview-coms') });
           this.navLists.leftList.push({ text: 'My applications', url: '/student/applications', selected: url.endsWith('applications') });
           this.navLists.rightList.push({ text: 'Logout', url: '/logout', selected: url.endsWith('logout') });
+        } else if (url.startsWith('/company')) {
+          this.navLists.leftList.push({ text: 'New position', url: 'company/new-concourse', selected: url.endsWith('new-concourse') });
+          this.navLists.rightList.push({ text: 'Logout', url: '/logout', selected: url.endsWith('logout') });
         }
         this.navListsUpdated.next();
       });

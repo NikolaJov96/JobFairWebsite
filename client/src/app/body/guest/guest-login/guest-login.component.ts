@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { checkPassword } from '../guest-utils';
 import { Router } from '@angular/router';
+import { CompanyStatusService } from '../../company/company-status.service';
 
 @Component({
   selector: 'app-guest-login',
@@ -15,7 +16,8 @@ export class GuestLoginComponent implements OnInit {
     password: new FormControl('', [checkPassword()]),
   });
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+    private companySetatusService: CompanyStatusService) { }
 
   ngOnInit() { }
 
@@ -25,9 +27,13 @@ export class GuestLoginComponent implements OnInit {
     }
     const username = this.loginForm.value.username;
     const password = this.loginForm.value.password;
-    console.log('Logging in', username, ',', password);
 
-    this.router.navigate(['/student/cv']);
+    if (username === 'com') {
+      this.companySetatusService.setCom('asdqwe2e3');
+      this.router.navigate(['/company/new-concourse']);
+    } else {
+      this.router.navigate(['/student/cv']);
+    }
   }
 
 }

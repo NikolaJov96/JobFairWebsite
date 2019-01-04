@@ -9,31 +9,34 @@ import { StudentOverviewComponent } from './body/student/student-overview/studen
 import { StudentConcourseComponent } from './body/student/student-concourse/student-concourse.component';
 import { StudentApplicationsComponent } from './body/student/student-applications/student-applications.component';
 import { LogoutComponent } from './logout/logout.component';
+import { CompanyNewConcourseComponent } from './body/company/company-new-concourse/company-new-concourse.component';
+import { InvalidPathComponent } from './invalid-path/invalid-path.component';
+import { CompanyConcludeComponent } from './body/company/company-conclude/company-conclude.component';
 
 const routes: Routes = [
   {
     path: 'guest/overview',
-    component: GuestOverviewComponent
+    component: GuestOverviewComponent,
   },
   {
     path: 'guest/login',
-    component: GuestLoginComponent
+    component: GuestLoginComponent,
   },
   {
     path: 'guest/register',
-    component: GuestRegisterComponent
+    component: GuestRegisterComponent,
   },
   {
     path: 'guest/reset-pass',
-    component: GuestResetPassComponent
+    component: GuestResetPassComponent,
   },
   {
     path: 'student/cv',
-    component: StudentCvComponent
+    component: StudentCvComponent,
   },
   {
     path: 'student/overview-coms',
-    component: StudentOverviewComponent
+    component: StudentOverviewComponent,
   },
   {
     path: 'student/concourse',
@@ -41,15 +44,23 @@ const routes: Routes = [
   },
   {
     path: 'student/applications',
-    component: StudentApplicationsComponent
+    component: StudentApplicationsComponent,
+  },
+  {
+    path: 'company/new-concourse',
+    component: CompanyNewConcourseComponent,
+  },
+  {
+    path: 'company/conclude',
+    component: CompanyConcludeComponent,
   },
   {
     path: 'logout',
-    component: LogoutComponent
+    component: LogoutComponent,
   },
   {
     path: '**',
-    redirectTo: '/guest/login'
+    component: InvalidPathComponent,
   },
 ];
 

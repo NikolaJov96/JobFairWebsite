@@ -1,0 +1,21 @@
+<mat-card>Conclude this concourse, chose accepted students!</mat-card>
+<mat-card>
+  <form [formGroup]="concludeForm" (ngSubmit)="onConclude()" novalidate>
+    <div formArrayName="applicants">
+      <div *ngFor="let apl of concludeForm.controls['applicants'].controls; let i = index;">
+        <mat-checkbox
+          formControlName="{{ i }}">
+          {{ con != null ? con.applicants[i].stud.name : '' }}
+        </mat-checkbox>
+        <br>
+      </div>
+    </div>
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="!concludeForm.valid"
+      type="submit">
+      Conclude
+    </button>
+  </form>
+</mat-card>
