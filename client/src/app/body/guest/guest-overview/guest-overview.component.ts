@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Industry, NavProviderService } from 'src/app/header/nav-provider.service';
+import { NavProviderService } from 'src/app/header/nav-provider.service';
+import { Industry } from 'src/app/interfaces';
 
 interface CompanyTableRow {
   name: string;

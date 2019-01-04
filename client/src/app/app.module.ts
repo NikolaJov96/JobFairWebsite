@@ -22,7 +22,8 @@ import {
   MatCheckboxModule,
   MatSelectModule,
   MatTableModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatSliderModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
@@ -31,6 +32,7 @@ import { StudentCvComponent } from './body/student/student-cv/student-cv.compone
 import { StudentOverviewComponent } from './body/student/student-overview/student-overview.component';
 import { StudentApplicationsComponent } from './body/student/student-applications/student-applications.component';
 import { StudentConcourseComponent } from './body/student/student-concourse/student-concourse.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { StudentConcourseComponent } from './body/student/student-concourse/stud
     StudentOverviewComponent,
     StudentApplicationsComponent,
     StudentConcourseComponent,
+    LogoutComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -62,6 +65,7 @@ import { StudentConcourseComponent } from './body/student/student-concourse/stud
     MatListModule,
     MatSelectModule,
     MatSidenavModule,
+    MatSliderModule,
     MatTabsModule,
     MatTableModule,
     MatToolbarModule,

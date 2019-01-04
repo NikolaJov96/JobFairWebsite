@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { checkPassword, passNoMatch } from '../guest-utils';
-import { Industry, NavProviderService } from 'src/app/header/nav-provider.service';
+import { NavProviderService } from 'src/app/header/nav-provider.service';
+import { Industry } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-guest-register',

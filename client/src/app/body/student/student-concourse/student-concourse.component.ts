@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NavProviderService, JobType } from 'src/app/header/nav-provider.service';
-import { ConcourseEntity, StudentStatusService, CompanyEntity } from '../student-status.service';
+import { NavProviderService } from 'src/app/header/nav-provider.service';
+import { StudentStatusService } from '../student-status.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
+import { CompanyEntity, ConcourseEntity, JobType } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-student-concourse',
@@ -36,6 +37,13 @@ export class StudentConcourseComponent implements OnInit {
 
   onApply() {
 
+  }
+
+  onBack() {
+    this.studentStatusService.setComToExpand(
+      this.studentStatusService.getCom()
+    );
+    this.router.navigate(['student/overview-coms']);
   }
 
 }

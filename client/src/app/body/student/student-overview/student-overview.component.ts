@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { NavProviderService, Industry, JobType } from 'src/app/header/nav-provider.service';
-import { StudentStatusService, CompanyEntity } from '../student-status.service';
+import { NavProviderService } from 'src/app/header/nav-provider.service';
+import { StudentStatusService } from '../student-status.service';
 import { Router } from '@angular/router';
+import { CompanyEntity, Industry, JobType } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-student-overview',
@@ -19,6 +20,8 @@ export class StudentOverviewComponent implements OnInit {
 
   companies: Array<CompanyEntity>;
   companiesFiltered: Array<CompanyEntity>;
+  selectedCom: CompanyEntity = null;
+  workingIn: CompanyEntity = null;
   industries: Array<Industry> = [];
   jobTypes: Array<JobType> = [];
 
@@ -31,7 +34,13 @@ export class StudentOverviewComponent implements OnInit {
     this.industries = this.navProviderService.getIndustries();
     this.jobTypes = this.navProviderService.getJobTypes();
     this.companies = this.studentStatusService.getCompanies();
+    this.workingIn = this.studentStatusService.getWorikingIn();
     this.companiesFiltered = this.companies;
+
+    this.selectedCom = this.studentStatusService.getComToExpand();
+    this.studentStatusService.setComToExpand(null);
+    this.studentStatusService.setCom(null);
+    this.studentStatusService.setCon(null);
   }
 
   onFilter() {
@@ -65,9 +74,18 @@ export class StudentOverviewComponent implements OnInit {
     }, 50);
   }
 
-  onApply(comId: number, conId: number) {
-    this.studentStatusService.setCom(this.companies[comId]);
-    this.studentStatusService.setCon(this.companies[comId].concourses[conId]);
+  onApply(comId: string, conId: string) {
+    console.log(comId, conId);
+    let com_Id = 0;
+    while (comId !== this.companies[com_Id]._id) {
+      com_Id++;
+    }
+    this.studentStatusService.setCom(this.companies[com_Id]);
+    let con_Id = 0;
+    while (conId !== this.companies[com_Id].concourses[con_Id]._id) {
+      con_Id++;
+    }
+    this.studentStatusService.setCon(this.companies[com_Id].concourses[con_Id]);
     this.router.navigate(['/student/concourse']);
   }
 

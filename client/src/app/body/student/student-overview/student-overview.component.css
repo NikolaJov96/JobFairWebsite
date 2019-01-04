@@ -10,3 +10,7 @@ table {
   margin-top: 1rem;
   width: 100%;
 }
+
+mat-slider {
+  width: 100%;
+}

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { Industry, JobType } from '../interfaces';
 
 interface NavEntry {
   text: string;
@@ -12,16 +13,6 @@ interface NavEntry {
 export interface NavLists {
   leftList: Array<NavEntry>;
   rightList: Array<NavEntry>;
-}
-
-export interface Industry {
-  value: number;
-  name: string;
-}
-
-export interface JobType {
-  value: number;
-  name: string;
 }
 
 @Injectable({

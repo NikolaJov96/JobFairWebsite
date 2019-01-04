@@ -18,7 +18,8 @@
 </mat-card>
 
 <mat-accordion>
-  <mat-expansion-panel *ngFor="let com of companiesFiltered;">
+  <mat-expansion-panel *ngFor="let com of companiesFiltered; let i = index;"
+    [expanded]="selectedCom != null ? selectedCom._id === com._id : 'false'">
     <mat-expansion-panel-header>
       <mat-panel-title>{{ com.name }}</mat-panel-title>
       <mat-panel-description>
@@ -33,6 +34,10 @@
       Number of employees: {{ com.staff }}<br>
       Email: {{ com.email }}<br>
       Industry: {{ industries[com.industry].name }}</p>
+      <mat-card *ngIf="workingIn._id != null && com._id === workingIn._id">
+        <p>Rate your company:</p>
+        <mat-slider min="0" max="10" step="1" value="0"></mat-slider>
+      </mat-card>
     </mat-card>
 
     <table *ngIf="com.concourses.length > 0" mat-table [dataSource]="com.concourses" class="mat-elevation-z8">
@@ -47,7 +52,7 @@
       <ng-container matColumnDef="apply">
         <th mat-header-cell *matHeaderCellDef>  </th>
         <td mat-cell *matCellDef="let entity;" align="right">
-          <button mat-raised-button color="primary" (click)="onApply(com.id, entity.id)">Apply</button>
+          <button mat-raised-button color="primary" (click)="onApply(com._id, entity._id)">Apply</button>
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="['name', 'type', 'apply']"></tr>
