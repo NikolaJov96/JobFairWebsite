@@ -49,9 +49,9 @@
       <button mat-button color="primary" (click)="s3Dummy()">Dummy</button>
       <mat-card *ngIf="thirdStep == null">Uploaded info</mat-card>
       <mat-card *ngIf="thirdStep != null">
-        <mat-card *ngFor="let elem of thirdStep.Packages">
+        <mat-card>
           <p>Packages:</p>
-          <p>
+          <p *ngFor="let elem of thirdStep.Packages">
             Title: {{ elem.Title }}<br>
             Content:
             <span *ngFor="let name of elem.Content; let last = last;">

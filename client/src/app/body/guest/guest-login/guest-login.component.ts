@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { checkPassword } from '../guest-utils';
 import { Router } from '@angular/router';
 import { CompanyStatusService } from '../../company/company-status.service';
+import { GuestStatusService } from '../guest-status.service';
+import { StudentStatusService } from '../../student/student-status.service';
 
 @Component({
   selector: 'app-guest-login',
@@ -17,7 +19,9 @@ export class GuestLoginComponent implements OnInit {
   });
 
   constructor(private router: Router,
-    private companySetatusService: CompanyStatusService) { }
+    private guestStatusService: GuestStatusService,
+    private companySetatusService: CompanyStatusService,
+    private studentStatusService: StudentStatusService) { }
 
   ngOnInit() { }
 
@@ -25,17 +29,15 @@ export class GuestLoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
-    const username = this.loginForm.value.username;
-    const password = this.loginForm.value.password;
-
-    if (username === 'com') {
-      this.companySetatusService.setCom('asdqwe2e3');
-      this.router.navigate(['/company/new-concourse']);
-    } else if (username === 'admin') {
-      this.router.navigate(['/admin/manage-fair']);
-    } else {
-      this.router.navigate(['/student/cv']);
-    }
+    this.guestStatusService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
+      (status => {
+        switch (status) {
+          case 'student': this.router.navigate(['/student/cv']); break;
+          case 'company': this.router.navigate(['/company/new-concourse']); break;
+          case 'admin': this.router.navigate(['/admin/manage-fair']); break;
+        }
+      })
+    );
   }
 
 }

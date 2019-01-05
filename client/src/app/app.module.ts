@@ -45,6 +45,7 @@ import {
   DialogComponent
 } from './body/company/company-fiar-application/company-fiar-application.component';
 import { AdminManageFairComponent } from './body/admin/admin-manage-fair/admin-manage-fair.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { AdminManageFairComponent } from './body/admin/admin-manage-fair/admin-m
     BrowserAnimationsModule,
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     LayoutModule,
     MatButtonModule,
     MatCardModule,

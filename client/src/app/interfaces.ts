@@ -32,3 +32,11 @@ export interface JobType {
   value: number;
   name: string;
 }
+
+export const URL = 'http://localhost:4000';
+
+export interface ApiResponse {
+  status: string;
+  message: string;
+  data: any;
+}
