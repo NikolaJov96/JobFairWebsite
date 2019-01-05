@@ -25,7 +25,8 @@ import {
   MatExpansionModule,
   MatSliderModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatDialogModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
@@ -38,10 +39,15 @@ import { LogoutComponent } from './logout/logout.component';
 import { CompanyNewConcourseComponent } from './body/company/company-new-concourse/company-new-concourse.component';
 import { InvalidPathComponent } from './invalid-path/invalid-path.component';
 import { CompanyConcludeComponent } from './body/company/company-conclude/company-conclude.component';
+import {
+  CompanyFiarApplicationComponent,
+  DialogComponent
+} from './body/company/company-fiar-application/company-fiar-application.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    DialogComponent,
     FooterComponent,
     GuestLoginComponent,
     GuestOverviewComponent,
@@ -56,6 +62,7 @@ import { CompanyConcludeComponent } from './body/company/company-conclude/compan
     CompanyNewConcourseComponent,
     InvalidPathComponent,
     CompanyConcludeComponent,
+    CompanyFiarApplicationComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -67,6 +74,7 @@ import { CompanyConcludeComponent } from './body/company/company-conclude/compan
     MatCardModule,
     MatCheckboxModule,
     MatDatepickerModule,
+    MatDialogModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
@@ -80,6 +88,9 @@ import { CompanyConcludeComponent } from './body/company/company-conclude/compan
     MatTableModule,
     MatToolbarModule,
     ReactiveFormsModule,
+  ],
+  entryComponents: [
+    DialogComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

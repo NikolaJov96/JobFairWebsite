@@ -12,6 +12,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { CompanyNewConcourseComponent } from './body/company/company-new-concourse/company-new-concourse.component';
 import { InvalidPathComponent } from './invalid-path/invalid-path.component';
 import { CompanyConcludeComponent } from './body/company/company-conclude/company-conclude.component';
+import { CompanyFiarApplicationComponent } from './body/company/company-fiar-application/company-fiar-application.component';
 
 const routes: Routes = [
   {
@@ -53,6 +54,10 @@ const routes: Routes = [
   {
     path: 'company/conclude',
     component: CompanyConcludeComponent,
+  },
+  {
+    path: 'company/fair-application',
+    component: CompanyFiarApplicationComponent,
   },
   {
     path: 'logout',

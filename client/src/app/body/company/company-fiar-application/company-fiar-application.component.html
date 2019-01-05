@@ -1,0 +1,25 @@
+<button mat-raised-button (click)="ckangeFiarState()">Fair state</button>
+<mat-card *ngIf="fariAppState === appStates.NOT_APPLIED">Not applied, apply now!</mat-card>
+<mat-card *ngIf="fariAppState === appStates.NOT_APPLIED">
+  <form [formGroup]="applyForm" (ngSubmit)="onApply()" novalidate>
+    <mat-form-field>
+      <mat-select placeholder="Package" formControlName="package">
+        <mat-option *ngFor="let pac of packages" value="{{ pac.value }}">{{ pac.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-card style="margin-top: 0;"><p>Package description:</p><p>
+      {{ packages[applyForm.controls['package'].value] != null ? packages[applyForm.controls['package'].value].desc  : '' }}
+    </p></mat-card>
+    <div formArrayName="options">
+      <div *ngFor="let apl of applyForm.controls['options'].controls; let i = index;">
+        <mat-checkbox formControlName="{{ i }}"> {{ options[i].name }}
+        </mat-checkbox>
+        <br>
+      </div>
+    </div>
+    <button mat-raised-button color="accent" [disabled]="!applyForm.valid" type="submit">Apply</button>
+  </form>
+</mat-card>
+<mat-card *ngIf="fariAppState === appStates.WAITING_FOR_RESPONSE">Applied, waiting for admin response.</mat-card>
+<mat-card *ngIf="fariAppState === appStates.ACCEPTED">Your applicaton has been accepted!</mat-card>
+<mat-card *ngIf="fariAppState === appStates.DENIED">Your application has been denied!</mat-card>

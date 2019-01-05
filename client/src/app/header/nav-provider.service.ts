@@ -47,6 +47,8 @@ export class NavProviderService {
           this.pageTitle += 'Concourse overview';
         } else if (url.endsWith('applications')) {
           this.pageTitle += 'Application statistics';
+        } else if (url.endsWith('fair-application')) {
+          this.pageTitle += 'Fair application';
         }
 
         this.navLists = { leftList: [], rightList: [] };
@@ -61,7 +63,8 @@ export class NavProviderService {
           this.navLists.leftList.push({ text: 'My applications', url: '/student/applications', selected: url.endsWith('applications') });
           this.navLists.rightList.push({ text: 'Logout', url: '/logout', selected: url.endsWith('logout') });
         } else if (url.startsWith('/company')) {
-          this.navLists.leftList.push({ text: 'New position', url: 'company/new-concourse', selected: url.endsWith('new-concourse') });
+          this.navLists.leftList.push({ text: 'Conclurses', url: 'company/new-concourse', selected: url.endsWith('new-concourse') });
+          this.navLists.leftList.push({ text: 'Fair', url: 'company/fair-application', selected: url.endsWith('fair-application') });
           this.navLists.rightList.push({ text: 'Logout', url: '/logout', selected: url.endsWith('logout') });
         }
         this.navListsUpdated.next();
