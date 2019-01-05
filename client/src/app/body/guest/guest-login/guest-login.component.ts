@@ -18,6 +18,8 @@ export class GuestLoginComponent implements OnInit {
     password: new FormControl('', [checkPassword()]),
   });
 
+  message = 'Log into you account!';
+
   constructor(private router: Router,
     private guestStatusService: GuestStatusService,
     private companySetatusService: CompanyStatusService,
@@ -31,10 +33,11 @@ export class GuestLoginComponent implements OnInit {
     }
     this.guestStatusService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe(
       (status => {
-        switch (status) {
+        switch (status[0]) {
           case 'student': this.router.navigate(['/student/cv']); break;
           case 'company': this.router.navigate(['/company/new-concourse']); break;
           case 'admin': this.router.navigate(['/admin/manage-fair']); break;
+          default: this.message = 'Error: ' + status[1]; break;
         }
       })
     );

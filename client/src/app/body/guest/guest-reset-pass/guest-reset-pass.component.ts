@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { checkPassword, passNoMatch } from '../guest-utils';
+import { GuestStatusService } from '../guest-status.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-guest-reset-pass',
@@ -16,7 +18,10 @@ export class GuestResetPassComponent implements OnInit {
     newPass2: new FormControl('', [checkPassword()]),
   }, [passNoMatch()]);
 
-  constructor() { }
+  message = 'Reset your password!';
+
+  constructor(private guestStatusService: GuestStatusService,
+    private router: Router) { }
 
   ngOnInit() {
   }
@@ -25,11 +30,20 @@ export class GuestResetPassComponent implements OnInit {
     if (this.resetPassForm.invalid) {
       return;
     }
-    const username = this.resetPassForm.value.username;
-    const password = this.resetPassForm.value.password;
-    const newPass1 = this.resetPassForm.value.newPass1;
-    const newPass2 = this.resetPassForm.value.newPass2;
-    console.log('Password changed', username, ',', password, ',', newPass1, ',', newPass2);
+
+    this.guestStatusService.changePass(
+      this.resetPassForm.value.username,
+      this.resetPassForm.value.password,
+      this.resetPassForm.value.newPass1,
+      this.resetPassForm.value.newPass2).subscribe(
+      (status => {
+        if (status[0] === 'success') {
+          this.router.navigate(['/guest/login']);
+        } else {
+          this.message = status[1];
+        }
+      })
+    );
   }
 
 }

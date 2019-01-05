@@ -15,25 +15,42 @@ export class GuestStatusService {
     private studentStatusService: StudentStatusService,
     private companyStatusService: CompanyStatusService) { }
 
-  login(username, password) {
+  login(username: string, password: string) {
     const body = {
       username: username,
       password: password,
     };
 
-    const subject: Subject<string> = new Subject();
+    const subject: Subject<Array<string>> = new Subject();
     this.http.post(URL + '/login', body).subscribe((res: ApiResponse) => {
       switch (res.status) {
         case 'company':
-          subject.next('company');
+          subject.next(['company', res.message]);
           this.companyStatusService.setCom(res.data);
           break;
-        case 'studnet': subject.next('studnet'); break;
-        case 'admin': subject.next('admin'); break;
-        default: subject.next(res.status); break;
+        case 'studnet': subject.next(['studnet', res.message]); break;
+        case 'admin': subject.next(['admin', res.message]); break;
+        default: subject.next([res.status, res.message]); break;
       }
     });
 
     return subject;
   }
+
+  changePass(username: string, password: string, newPass1: string, newPass2: string) {
+    const body = {
+      username: username,
+      password: password,
+      newPass1: newPass1,
+      newPass2: newPass2,
+    };
+
+    const subject: Subject<Array<string>> = new Subject();
+    this.http.post(URL + '/change-pass', body).subscribe((res: ApiResponse) => {
+      subject.next([res.status, res.message]);
+    });
+
+    return subject;
+  }
+
 }
