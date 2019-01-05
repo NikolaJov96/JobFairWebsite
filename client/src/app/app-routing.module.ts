@@ -13,6 +13,7 @@ import { CompanyNewConcourseComponent } from './body/company/company-new-concour
 import { InvalidPathComponent } from './invalid-path/invalid-path.component';
 import { CompanyConcludeComponent } from './body/company/company-conclude/company-conclude.component';
 import { CompanyFiarApplicationComponent } from './body/company/company-fiar-application/company-fiar-application.component';
+import { AdminManageFairComponent } from './body/admin/admin-manage-fair/admin-manage-fair.component';
 
 const routes: Routes = [
   {
@@ -58,6 +59,10 @@ const routes: Routes = [
   {
     path: 'company/fair-application',
     component: CompanyFiarApplicationComponent,
+  },
+  {
+    path: 'admin/manage-fair',
+    component: AdminManageFairComponent,
   },
   {
     path: 'logout',

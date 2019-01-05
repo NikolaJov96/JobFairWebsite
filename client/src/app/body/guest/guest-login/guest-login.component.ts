@@ -31,6 +31,8 @@ export class GuestLoginComponent implements OnInit {
     if (username === 'com') {
       this.companySetatusService.setCom('asdqwe2e3');
       this.router.navigate(['/company/new-concourse']);
+    } else if (username === 'admin') {
+      this.router.navigate(['/admin/manage-fair']);
     } else {
       this.router.navigate(['/student/cv']);
     }

@@ -1,0 +1,145 @@
+<div>
+  <mat-card>Set up a new fair!</mat-card>
+  <mat-card><mat-horizontal-stepper linear #stepper>
+    <mat-step>
+      <ng-template matStepLabel>Basic information</ng-template>
+      <button mat-button color="primary" (click)="s1Dummy()">Dummy</button>
+      <mat-card *ngIf="firstStep == null">Uploaded info</mat-card>
+      <mat-card *ngIf="firstStep != null">
+        <mat-card *ngFor="let elem of firstStep.Fairs">
+          <p>Fairs:</p>
+          <p>
+            Fair: {{ elem.Fair }}<br>
+            StartDate: {{ elem.StartDate | date: 'dd/MM/yyyy' }}<br>
+            EndDate: {{ elem.EndDate | date: 'dd/MM/yyyy' }} <br>
+            StartTime: {{ elem.StartTime }}<br>
+            EndTime: {{ elem.EndTime }}<br>
+            Place: {{ elem.Place }} <br>
+            About: {{ elem.About }}
+          </p>
+        </mat-card>
+        <mat-card *ngFor="let elem of firstStep.Locations">
+          <p>Locations:</p>
+          <p>
+            Place: {{ elem.Place }}<br>
+            Location:
+            <span *ngFor="let name of elem.Location; let last = last;">
+              {{ name.Name }}{{ last ? '': ', ' }}
+            </span>
+          </p>
+        </mat-card>
+      </mat-card>
+      <div>
+        <button mat-raised-button color="primary" matStepperNext>Next</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>More details</ng-template>
+      <button mat-button color="primary" (click)="s2Dummy()">Dummy</button>
+      <mat-card>Logo</mat-card>
+      <mat-card>A few images???</mat-card>
+      <mat-card>A full timetable???????</mat-card>
+      <div>
+        <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+        <button mat-raised-button color="primary" matStepperNext>Next</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Offered packags</ng-template>
+      <button mat-button color="primary" (click)="s3Dummy()">Dummy</button>
+      <mat-card *ngIf="thirdStep == null">Uploaded info</mat-card>
+      <mat-card *ngIf="thirdStep != null">
+        <mat-card *ngFor="let elem of thirdStep.Packages">
+          <p>Packages:</p>
+          <p>
+            Title: {{ elem.Title }}<br>
+            Content:
+            <span *ngFor="let name of elem.Content; let last = last;">
+              {{ name }}{{ last ? '': ', ' }}
+            </span><br>
+            VideoPromotion: {{ elem.VideoPromotion }} <br>
+            NoLessons: {{ elem.NoLessons }}<br>
+            NoWorkshops: {{ elem.NoWorkchops }}<br>
+            Price: {{ elem.Price }} <br>
+            MaxCompanies: {{ elem.MaxCompanies }}
+          </p>
+        </mat-card>
+        <mat-card>
+          <p>Additional:</p>
+          <p *ngFor="let elem of thirdStep.Additional">
+            Title: {{ elem.Title }}<br>
+            Price: {{ elem.Price }}
+          </p>
+        </mat-card>
+      </mat-card>
+      <div>
+        <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+        <button mat-raised-button color="primary" matStepperNext>Next</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Confirmation</ng-template>
+      <mat-card>All of the info</mat-card>
+      <div>
+        <button mat-raised-button color="primary" matStepperPrevious>Back</button>
+        <button mat-raised-button color="accent" (click)="confirmInit()">Confirm</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper></mat-card>
+</div>
+
+<div>
+  <mat-card>
+    Manage the fair!
+    <button mat-button color="primary" (click)="toAcceptDummy()">Dummy</button>
+  </mat-card>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let com of appliedComs; let i = index;">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ com.name }}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>
+        Package: {{ com.package }}<br>
+        Options:
+        <span *ngFor="let opt of com.options; let last = last;">
+          {{ opt }}{{ last ? '': ', ' }}
+        </span>
+      </p>
+      <button mat-raised-button color="accent" (click)="onAcceptCom(i)">Accept</button>
+      <button mat-raised-button color="warn" (click)="onRejectCom(i)">Reject</button>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <mat-card *ngIf="appliedComs == null || appliedComs.length === 0">No companies waiting for application approval!</mat-card>
+
+  <mat-card>
+    <form [formGroup]="dateForm" (ngSubmit)="onDatesChange()" novalidate>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput [matDatepicker]="ssPicker" formControlName="studStartDate" placeholder="Student start date">
+        <mat-datepicker-toggle matSuffix [for]="ssPicker"></mat-datepicker-toggle>
+        <mat-datepicker #ssPicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput [matDatepicker]="sePicker" formControlName="studEndDate" placeholder="Student end date">
+        <mat-datepicker-toggle matSuffix [for]="sePicker"></mat-datepicker-toggle>
+        <mat-datepicker #sePicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput [matDatepicker]="csPicker" formControlName="comStartDate" placeholder="Company start date">
+        <mat-datepicker-toggle matSuffix [for]="csPicker"></mat-datepicker-toggle>
+        <mat-datepicker #csPicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field style="width: 8rem; margin-right: 1rem;">
+        <input matInput [matDatepicker]="cePicker" formControlName="comEndDate" placeholder="Company end date">
+        <mat-datepicker-toggle matSuffix [for]="cePicker"></mat-datepicker-toggle>
+        <mat-datepicker #cePicker></mat-datepicker>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="!dateForm.valid"
+        type="submit">
+        Change dates
+      </button>
+    </form>
+  </mat-card>
+</div>

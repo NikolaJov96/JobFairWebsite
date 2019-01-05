@@ -66,6 +66,9 @@ export class NavProviderService {
           this.navLists.leftList.push({ text: 'Conclurses', url: 'company/new-concourse', selected: url.endsWith('new-concourse') });
           this.navLists.leftList.push({ text: 'Fair', url: 'company/fair-application', selected: url.endsWith('fair-application') });
           this.navLists.rightList.push({ text: 'Logout', url: '/logout', selected: url.endsWith('logout') });
+        } else if (url.startsWith('/admin')) {
+          this.navLists.leftList.push({ text: 'Fair', url: 'admin/manage-fair', selected: url.endsWith('manage-fair') });
+          this.navLists.rightList.push({ text: 'Logout', url: '/logout', selected: url.endsWith('logout') });
         }
         this.navListsUpdated.next();
       });

@@ -26,7 +26,8 @@ import {
   MatSliderModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatDialogModule
+  MatDialogModule,
+  MatStepperModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
@@ -43,6 +44,7 @@ import {
   CompanyFiarApplicationComponent,
   DialogComponent
 } from './body/company/company-fiar-application/company-fiar-application.component';
+import { AdminManageFairComponent } from './body/admin/admin-manage-fair/admin-manage-fair.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import {
     InvalidPathComponent,
     CompanyConcludeComponent,
     CompanyFiarApplicationComponent,
+    AdminManageFairComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -84,6 +87,7 @@ import {
     MatSelectModule,
     MatSidenavModule,
     MatSliderModule,
+    MatStepperModule,
     MatTabsModule,
     MatTableModule,
     MatToolbarModule,
