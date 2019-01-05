@@ -57,6 +57,8 @@ export class AdminManageFairComponent implements OnInit {
     options: Array<string>;
   }> = null;
 
+  openedForm = -1;
+
   constructor() { }
 
   ngOnInit() {
@@ -66,7 +68,7 @@ export class AdminManageFairComponent implements OnInit {
 
   }
 
-  onAcceptCom(i: number) {
+  onAcceptCom(i: number, stand: number) {
     // jump to place assignment
   }
 

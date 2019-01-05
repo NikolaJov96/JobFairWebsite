@@ -105,8 +105,14 @@
           {{ opt }}{{ last ? '': ', ' }}
         </span>
       </p>
-      <button mat-raised-button color="accent" (click)="onAcceptCom(i)">Accept</button>
-      <button mat-raised-button color="warn" (click)="onRejectCom(i)">Reject</button>
+      <button mat-raised-button color="accent" (click)="openedForm = i;">Accept</button>
+      <button mat-raised-button color="warn" (click)="onRejectCom(i)">Reject</button><br>
+      <mat-card *ngIf="openedForm === i">
+        <mat-form-field>
+          <input matInput type="number" placeholder="Stand number" #stand>
+        </mat-form-field>
+        <button mat-raised-button color="accent" (click)="onAcceptCom(i, stand)">Accept</button>
+      </mat-card>
     </mat-expansion-panel>
   </mat-accordion>
   <mat-card *ngIf="appliedComs == null || appliedComs.length === 0">No companies waiting for application approval!</mat-card>
