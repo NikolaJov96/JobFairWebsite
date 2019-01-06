@@ -28,9 +28,9 @@ export class GuestOverviewComponent implements OnInit {
     town: new FormControl(),
   });
 
-  industries: Array<any> = [];
-  companies: Array<CompanyTableRow>;
-  companiesFiltered: Array<CompanyTableRow>;
+  industries: Array<Industry> = [];
+  companies: Array<any>;
+  companiesFiltered: Array<any>;
   displayedColumns = [
     'name',
     'town',
@@ -70,13 +70,13 @@ export class GuestOverviewComponent implements OnInit {
 
     this.companiesFiltered = [];
     this.companies.forEach(com => {
-      if (name !== null && !com.name.includes(name)) {
+      if (name !== null && !com.com.name.includes(name)) {
         return;
       }
-      if (industry !== null && !industry.includes('' + com.industry)) {
+      if (industry !== null && industry.length > 0 && !industry.includes('' + com.com.industry)) {
         return;
       }
-      if (town !== null && !com.town.includes(town)) {
+      if (town !== null && !com.com.city.includes(town)) {
         return;
       }
       this.companiesFiltered.push(com);

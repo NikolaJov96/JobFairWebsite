@@ -24,7 +24,7 @@ export interface StudentEntity {
 }
 
 export interface Industry {
-  value: number;
+  _id: string;
   name: string;
 }
 

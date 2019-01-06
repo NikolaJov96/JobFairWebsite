@@ -28,7 +28,11 @@ export class CompanyNewConcourseComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.jobTypes = this.navProviderService.getJobTypes();
+    this.navProviderService.getJobTypes().subscribe(
+      (status => {
+        this.jobTypes = status;
+      })
+    );
     this.finishedCons = this.companyStatusService.getFinishedCons();
   }
 

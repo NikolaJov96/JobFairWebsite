@@ -6,7 +6,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-select multiple placeholder="Industry" formControlName="industry">
-        <mat-option *ngFor="let ind of industries" value="{{ ind.value }}">{{ ind.name }}</mat-option>
+        <mat-option *ngFor="let ind of industries" value="{{ ind._id }}">{{ ind.name }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field>
