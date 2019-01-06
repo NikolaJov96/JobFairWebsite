@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConcourseEntity, CompanyConcoursesEntity, ApiResponse } from 'src/app/interfaces';
+import { ConcourseEntity, CompanyConcoursesEntity, ApiResponse, URL } from 'src/app/interfaces';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 

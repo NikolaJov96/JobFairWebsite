@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConcourseEntity, ApiResponse } from 'src/app/interfaces';
+import { ConcourseEntity, ApiResponse, URL } from 'src/app/interfaces';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -29,15 +29,24 @@ export class CompanyStatusService {
     return this.selectedConId;
   }
 
-  getFinishedCons(): Subject<Array<ConcourseEntity>> {
+  getCons(): Subject<Array<ConcourseEntity>> {
     const subject = new Subject<Array<ConcourseEntity>>();
-    const params = new HttpParams().set('getApplicants', 'true');
-    this.http.get(URL + '/finished-cons', { params: params }).subscribe((res: ApiResponse) => {
+    const params = new HttpParams().set('getApplicants', 'true').append('comId', this.comId);
+    this.http.get(URL + '/concourses', { params: params }).subscribe((res: ApiResponse) => {
       if (res.status === 'success') {
         subject.next(res.data);
       } else {
         subject.next([]);
       }
+    });
+    return subject;
+  }
+
+  createCon(con: ConcourseEntity) {
+    const subject = new Subject<Array<string>>();
+    con.host = this.comId;
+    this.http.post(URL + '/concourses', con).subscribe((res: ApiResponse) => {
+      subject.next([res.status, res.message]);
     });
     return subject;
   }

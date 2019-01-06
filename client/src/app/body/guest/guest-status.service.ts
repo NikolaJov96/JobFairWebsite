@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { ApiResponse } from 'src/app/interfaces';
+import { ApiResponse, URL } from 'src/app/interfaces';
 import { StudentStatusService } from '../student/student-status.service';
 import { CompanyStatusService } from '../company/company-status.service';
-import { URL } from '../../interfaces';
 
 @Injectable({
   providedIn: 'root'

@@ -3,11 +3,13 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import { addDummyData } from './dbDummyData';
-import { User } from './models/user';
+import { User, UserSchema } from './models/user';
 import { UserType } from './/models/userType';
 import { Industry } from './models/industry';
 import { CommandCursor } from 'mongodb';
 import { JobType } from './models/jobType';
+import { Concourse } from './models/concourse';
+import { POINT_CONVERSION_COMPRESSED } from 'constants';
 
 const PORT = 4000;
 
@@ -233,6 +235,42 @@ router.route('/companies').get((req, res) => {
       body.message = 'all existing companies';
       body.data = companies;
       res.json(body);
+    });
+  });
+});
+
+router.route('/concourses').get((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  let query = {};
+  console.log(req.params);
+  if (req.param('comId') != null) {
+    query = { host: req.param('comId') };
+  }
+  res.json(body);
+});
+
+router.route('/concourses').post((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  User.findById(req.body.host, (err, user) => {
+    if (handleError(err, res)) { return; }
+    new Concourse(req.body).save((err: Error, con) => {
+      if (handleError(err, res)) { return; }
+      user['com'].concourses.push(con._id);
+      user.save((err: Error) => {
+        if (handleError(err, res)) { return; }
+        body.status = 'success';
+        body.message = 'Concourse created';
+        body.data = con;
+        res.json(body);
+      })
     });
   });
 });

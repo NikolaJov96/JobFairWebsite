@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ApiResponse } from '../interfaces';
+import { ApiResponse, URL } from '../interfaces';
 import { HttpClient } from '@angular/common/http';
-import { URL } from '../interfaces';
 
 interface NavEntry {
   text: string;

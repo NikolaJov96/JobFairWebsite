@@ -44,10 +44,10 @@ export class StudentOverviewComponent implements OnInit {
     this.studentStatusService.getCompanies().subscribe(
       (status => {
         this.companies = status;
+        this.companiesFiltered = this.companies;
       })
     );
     this.workingIn = this.studentStatusService.getWorikingIn();
-    this.companiesFiltered = this.companies;
 
     this.selectedCom = this.studentStatusService.getComToExpand();
     this.studentStatusService.setComToExpand(null);
@@ -62,7 +62,7 @@ export class StudentOverviewComponent implements OnInit {
 
     this.companiesFiltered = [];
     this.companies.forEach(com => {
-      if (comName !== null && !com.com.name.includes(comName)) {
+      if (comName !== null && !com.com.name.toLowerCase().includes(comName.toLowerCase())) {
         return;
       }
       const comCopy = Object.assign({}, com);
@@ -72,7 +72,7 @@ export class StudentOverviewComponent implements OnInit {
         if (type !== null && !type.includes('' + con.jobType)) {
           return;
         }
-        if (conName !== null && !con.name.includes(conName)) {
+        if (conName !== null && !con.name.toLowerCase().includes(conName.toLowerCase())) {
           return;
         }
         comCopy.com.concourses.push(con);
@@ -106,6 +106,16 @@ export class StudentOverviewComponent implements OnInit {
     this.jobTypes.forEach(jt => {
       if (jt._id === id) {
         name = jt.name;
+      }
+    });
+    return name;
+  }
+
+  getIndustry(id) {
+    let name = '';
+    this.industries.forEach(ind => {
+      if (ind._id === id) {
+        name = ind.name;
       }
     });
     return name;

@@ -33,8 +33,8 @@
       Dirctor: {{ com.com.director }}<br>
       Number of employees: {{ com.com.employees }}<br>
       Email: {{ com.email }}<br>
-      Industry: {{ industries[com.com.industry].name }}</p>
-      <mat-card *ngIf="workingIn._id != null && com._id === workingIn._id">
+      Industry: {{ getIndustry(com.com.industry) }}</p>
+      <mat-card *ngIf="workingIn != null && workingIn._id != null && com._id === workingIn._id">
         <p>Rate your company:</p>
         <mat-slider min="0" max="10" step="1" value="0"></mat-slider>
       </mat-card>

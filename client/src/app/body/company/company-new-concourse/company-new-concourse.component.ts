@@ -18,10 +18,12 @@ export class CompanyNewConcourseComponent implements OnInit {
     toMin: new FormControl('', [Validators.required]),
     toHour: new FormControl('', [Validators.required]),
     toDate: new FormControl('', [Validators.required]),
+    jobType: new FormControl('', [Validators.required]),
   });
 
   jobTypes: Array<JobType> = [];
-  finishedCons: ConcourseEntity[] = null;
+  Cons: ConcourseEntity[] = null;
+  message = 'Add new open position!';
 
   constructor(private companyStatusService: CompanyStatusService,
     private navProviderService: NavProviderService,
@@ -33,25 +35,37 @@ export class CompanyNewConcourseComponent implements OnInit {
         this.jobTypes = status;
       })
     );
-    this.companyStatusService.getFinishedCons().subscribe(
+    this.companyStatusService.getCons().subscribe(
       (status => {
-        this.finishedCons = status;
+        this.Cons = status;
       })
     );
   }
 
   onCreate() {
-
+    const con: ConcourseEntity = {
+      _id: '',
+      name: this.concourseForm.value.name,
+      description: this.concourseForm.value.text,
+      concluded: false,
+      host: '',
+      jobType: this.concourseForm.value.jobType,
+      applicants: [],
+    };
+    this.companyStatusService.createCon(con).subscribe(
+      (status => {
+        if (status[0] === 'success') {
+          this.message = 'Position successfully created!';
+          this.router.navigate(['.']);
+        } else {
+          this.message = 'Error: ' + status[1];
+        }
+      })
+    );
   }
 
   conclude(conId: string) {
-    let sel: ConcourseEntity = null;
-    this.finishedCons.forEach(con => {
-      if (con._id === conId) {
-        sel = con;
-      }
-    });
-    this.companyStatusService.setSelectedCon(sel._id);
+    this.companyStatusService.setSelectedCon(conId);
     this.router.navigate(['company/conclude']);
   }
 
