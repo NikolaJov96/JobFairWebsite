@@ -6,7 +6,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-select multiple placeholder="Job type" formControlName="type">
-        <mat-option *ngFor="let type of jobTypes" value="{{ type.value }}">{{ type.name }}</mat-option>
+        <mat-option *ngFor="let type of jobTypes" value="{{ type._id }}">{{ type.name }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field>
@@ -21,33 +21,34 @@
   <mat-expansion-panel *ngFor="let com of companiesFiltered; let i = index;"
     [expanded]="selectedCom != null ? selectedCom._id === com._id : 'false'">
     <mat-expansion-panel-header>
-      <mat-panel-title>{{ com.name }}</mat-panel-title>
+      <mat-panel-title>{{ com.com.name }}</mat-panel-title>
       <mat-panel-description>
-        <a href="http://{{ com.website }}">{{ com.website }}</a>
+        <a href="http://{{ com.com.website }}">{{ com.com.website }}</a>
       </mat-panel-description>
     </mat-expansion-panel-header>
 
     <mat-card>
-      <p>Nem: {{ com.name }}<br>
-      City: {{ com.town }}<br>
-      Dirctor: {{ com.director }}<br>
-      Number of employees: {{ com.staff }}<br>
+      <p>Nem: {{ com.com.name }}<br>
+      City: {{ com.com.city }}<br>
+      Dirctor: {{ com.com.director }}<br>
+      Number of employees: {{ com.com.employees }}<br>
       Email: {{ com.email }}<br>
-      Industry: {{ industries[com.industry].name }}</p>
+      Industry: {{ industries[com.com.industry].name }}</p>
       <mat-card *ngIf="workingIn._id != null && com._id === workingIn._id">
         <p>Rate your company:</p>
         <mat-slider min="0" max="10" step="1" value="0"></mat-slider>
       </mat-card>
     </mat-card>
 
-    <table *ngIf="com.concourses.length > 0" mat-table [dataSource]="com.concourses" class="mat-elevation-z8">
+    <table mat-table [dataSource]="com.com.concourses" class="mat-elevation-z8"
+      *ngIf="com.com.concourses != null && com.com.concourses.length > 0">
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Position name </th>
         <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
       </ng-container>
       <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef> Type </th>
-        <td mat-cell *matCellDef="let element"> {{ jobTypes[element.jobType].name }} </td>
+        <td mat-cell *matCellDef="let element"> {{ getJobType(element.jobType) }} </td>
       </ng-container>
       <ng-container matColumnDef="apply">
         <th mat-header-cell *matHeaderCellDef>  </th>
@@ -58,8 +59,8 @@
       <tr mat-header-row *matHeaderRowDef="['name', 'type', 'apply']"></tr>
       <tr mat-row *matRowDef="let row; columns: ['name', 'type', 'apply'];"></tr>
     </table>
-    <mat-card *ngIf="com.concourses.length === 0">No concourses found!</mat-card>
+    <mat-card *ngIf="com.com.concourses == null || com.com.concourses.length === 0">No concourses found!</mat-card>
 
   </mat-expansion-panel>
 </mat-accordion>
-<mat-card *ngIf="companiesFiltered.length === 0">No companies found!</mat-card>
+<mat-card *ngIf="companiesFiltered == null || companiesFiltered.length === 0">No companies found!</mat-card>

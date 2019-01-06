@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { CompanyStatusService, ConcourseConc } from '../company-status.service';
-import { JobType } from 'src/app/interfaces';
+import { CompanyStatusService } from '../company-status.service';
+import { JobType, ConcourseEntity } from 'src/app/interfaces';
 import { NavProviderService } from 'src/app/header/nav-provider.service';
 import { Router } from '@angular/router';
 
@@ -21,7 +21,7 @@ export class CompanyNewConcourseComponent implements OnInit {
   });
 
   jobTypes: Array<JobType> = [];
-  finishedCons: ConcourseConc[] = null;
+  finishedCons: ConcourseEntity[] = null;
 
   constructor(private companyStatusService: CompanyStatusService,
     private navProviderService: NavProviderService,
@@ -33,7 +33,11 @@ export class CompanyNewConcourseComponent implements OnInit {
         this.jobTypes = status;
       })
     );
-    this.finishedCons = this.companyStatusService.getFinishedCons();
+    this.companyStatusService.getFinishedCons().subscribe(
+      (status => {
+        this.finishedCons = status;
+      })
+    );
   }
 
   onCreate() {
@@ -41,13 +45,13 @@ export class CompanyNewConcourseComponent implements OnInit {
   }
 
   conclude(conId: string) {
-    let sel: ConcourseConc = null;
+    let sel: ConcourseEntity = null;
     this.finishedCons.forEach(con => {
-      if (con.con._id === conId) {
+      if (con._id === conId) {
         sel = con;
       }
     });
-    this.companyStatusService.setSelectedCon(sel);
+    this.companyStatusService.setSelectedCon(sel._id);
     this.router.navigate(['company/conclude']);
   }
 

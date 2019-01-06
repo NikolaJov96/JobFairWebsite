@@ -1,99 +1,23 @@
 import { Injectable } from '@angular/core';
-import { CompanyEntity, ConcourseEntity } from 'src/app/interfaces';
+import { ConcourseEntity, CompanyConcoursesEntity, ApiResponse } from 'src/app/interfaces';
+import { Subject } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentStatusService {
 
-  selectedCom: CompanyEntity;
+  selectedCom: CompanyConcoursesEntity;
   sekectedCon: ConcourseEntity;
-  comToExpamd: CompanyEntity;
-  workingIn: CompanyEntity;
+  comToExpamd: CompanyConcoursesEntity;
+  workingIn: CompanyConcoursesEntity;
   validCV: boolean;
 
-  dummy = [
-    {
-      _id: 'asdf`134',
-      name: 'Com1',
-      town: 'Tow1',
-      director: 'Dir1',
-      taxNumber: '1234',
-      staff: '123',
-      email: 'hi@com1.com',
-      website: 'www.com1.com',
-      industry: 0,
-      concourses: [
-        {
-          _id: 'asdf234y',
-          name: 'con1',
-          jobType: 0,
-          description: 'qwerasdfzxcv',
-        },
-        {
-          _id: 'asdf2346',
-          name: 'con2',
-          jobType: 1,
-          description: 'zxcvasdfqwer',
-        },
-      ],
-    },
-    {
-      _id: 'sadfg3245yh',
-      name: 'Com2',
-      town: 'Tow2',
-      director: 'Dir2',
-      taxNumber: '2345',
-      staff: '234',
-      email: 'hi@com2.com',
-      website: 'www.com2.com',
-      industry: 1,
-      concourses: [
-        {
-          _id: 'asdf234',
-          name: 'con1',
-          jobType: 0,
-          description: 'qwerasdfzxcv',
-        },
-        {
-          _id: 'adgf4532',
-          name: 'con2',
-          jobType: 1,
-          description: 'zxcvasdfqwer',
-        },
-      ],
-    },
-    {
-      _id: 'swteh4523',
-      name: 'Com3',
-      town: 'Tow3',
-      director: 'Dir3',
-      taxNumber: '3456',
-      staff: '345',
-      email: 'hi@com3.com',
-      website: 'www.com3.com',
-      industry: 3,
-      concourses: [
-        {
-          _id: 'tyuk68432',
-          name: 'con1',
-          jobType: 0,
-          description: 'qwerasdfzxcv',
-        },
-        {
-          _id: 'aga243634',
-          name: 'con2',
-          jobType: 1,
-          description: 'zxcvasdfqwer',
-        },
-      ],
-    },
-  ];
-
-  constructor() {
+  constructor(private http: HttpClient) {
     this.sekectedCon = null;
     this.comToExpamd = null;
-    this.workingIn = this.dummy[0];
+    this.workingIn = null;
     this.validCV = false;
   }
 
@@ -101,15 +25,15 @@ export class StudentStatusService {
     return this.comToExpamd;
   }
 
-  setComToExpand(comToExpamd: CompanyEntity) {
+  setComToExpand(comToExpamd: CompanyConcoursesEntity) {
     this.comToExpamd = comToExpamd;
   }
 
-  getCom(): CompanyEntity {
+  getCom(): CompanyConcoursesEntity {
     return this.selectedCom;
   }
 
-  setCom(com: CompanyEntity) {
+  setCom(com: CompanyConcoursesEntity) {
     this.selectedCom = com;
   }
 
@@ -121,11 +45,11 @@ export class StudentStatusService {
     this.sekectedCon = con;
   }
 
-  getWorikingIn(): CompanyEntity {
+  getWorikingIn(): CompanyConcoursesEntity {
     return this.workingIn;
   }
 
-  setWorkingIn(workingIn: CompanyEntity) {
+  setWorkingIn(workingIn: CompanyConcoursesEntity) {
     this.workingIn = workingIn;
   }
 
@@ -137,8 +61,17 @@ export class StudentStatusService {
     this.validCV = valid;
   }
 
-  getCompanies(): Array<CompanyEntity> {
-    return this.dummy;
+  getCompanies(): Subject<Array<CompanyConcoursesEntity>> {
+    const subject = new Subject<Array<CompanyConcoursesEntity>>();
+    const params = new HttpParams().set('getCons', 'true');
+    this.http.get(URL + '/companies', { params: params }).subscribe((res: ApiResponse) => {
+      if (res.status === 'success') {
+        subject.next(res.data);
+      } else {
+        subject.next([]);
+      }
+    });
+    return subject;
   }
 
 }

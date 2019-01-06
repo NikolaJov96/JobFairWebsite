@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { ApiResponse } from 'src/app/interfaces';
 import { StudentStatusService } from '../student/student-status.service';
@@ -61,9 +61,10 @@ export class GuestStatusService {
     return subject;
   }
 
-  getCompanies() {
+  getCompanies(): Subject<Array<any>> {
     const subject: Subject<Array<any>> = new Subject();
-    this.http.get(URL + '/companies').subscribe((res: ApiResponse) => {
+    const params = new HttpParams().set('getCons', 'false');
+    this.http.get(URL + '/companies', { params: params }).subscribe((res: ApiResponse) => {
       subject.next([res.status, res.message, res.data]);
     });
     return subject;

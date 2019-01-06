@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { NavProviderService } from 'src/app/header/nav-provider.service';
-import { Industry } from 'src/app/interfaces';
+import { Industry, UserEntity } from 'src/app/interfaces';
 import { GuestStatusService } from '../guest-status.service';
 
 interface CompanyTableRow {
@@ -29,8 +29,8 @@ export class GuestOverviewComponent implements OnInit {
   });
 
   industries: Array<Industry> = [];
-  companies: Array<any>;
-  companiesFiltered: Array<any>;
+  companies: Array<UserEntity>;
+  companiesFiltered: Array<UserEntity>;
   displayedColumns = [
     'name',
     'town',
@@ -70,13 +70,13 @@ export class GuestOverviewComponent implements OnInit {
 
     this.companiesFiltered = [];
     this.companies.forEach(com => {
-      if (name !== null && !com.com.name.includes(name)) {
+      if (name !== null && !com.com.name.toLowerCase().includes(name.toLowerCase())) {
         return;
       }
       if (industry !== null && industry.length > 0 && !industry.includes('' + com.com.industry)) {
         return;
       }
-      if (town !== null && !com.com.city.includes(town)) {
+      if (town !== null && !com.com.city.toLowerCase().includes(town.toLowerCase())) {
         return;
       }
       this.companiesFiltered.push(com);

@@ -9,7 +9,7 @@ export const ConcourseSchema = new mongoose.Schema({
   applicants: [{
     student: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     accepted: { type: Boolean },
-  }]
+  }],
 });
 
 export const Concourse = mongoose.model('Concourse', ConcourseSchema);

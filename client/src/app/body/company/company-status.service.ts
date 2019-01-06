@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CompanyEntity, ConcourseEntity, StudentEntity } from 'src/app/interfaces';
-
-export interface ConcourseConc {
-  con: ConcourseEntity;
-  applicants: Array<{ stud: StudentEntity, acc: boolean }>;
-}
+import { ConcourseEntity, ApiResponse } from 'src/app/interfaces';
+import { Subject } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +9,9 @@ export interface ConcourseConc {
 export class CompanyStatusService {
 
   comId: string;
-  selectedConId: ConcourseConc;
+  selectedConId: string;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   setCom(com: string) {
     this.comId = com;
@@ -24,51 +21,25 @@ export class CompanyStatusService {
     return this.comId;
   }
 
-  setSelectedCon(conId: ConcourseConc) {
+  setSelectedCon(conId: string) {
     this.selectedConId = conId;
   }
 
-  getSelectedCon(): ConcourseConc {
+  getSelectedCon(): string {
     return this.selectedConId;
   }
 
-  getFinishedCons(): Array<ConcourseConc> {
-    return [
-      {
-        con: { _id: 'asdq23', description: 'asadfasdfasdf', name: 'adsf', jobType: 0 },
-        applicants: [
-          {
-            stud: { name: 'qwe', _id: 'af232rtw' },
-            acc: false,
-          },
-          {
-            stud: { name: 'drftjh', _id: 'azdrfgswf3' },
-            acc: false,
-          },
-          {
-            stud: { name: 'asd', _id: 'dsarfgse4s34e' },
-            acc: false,
-          },
-        ],
-      },
-      {
-        con: { _id: 'farge3', description: 'asdgfdgjgtfkuhiljio;o;gjfdtxhdrt', name: 'fgdhfd', jobType: 1 },
-        applicants: [
-          {
-            stud: { name: 'qwe', _id: 'af232rtw' },
-            acc: false,
-          },
-          {
-            stud: { name: 'drftjh', _id: 'azdrfgswf3' },
-            acc: false,
-          },
-          {
-            stud: { name: 'asd', _id: 'dsarfgse4s34e' },
-            acc: false,
-          },
-        ],
-      },
-    ];
+  getFinishedCons(): Subject<Array<ConcourseEntity>> {
+    const subject = new Subject<Array<ConcourseEntity>>();
+    const params = new HttpParams().set('getApplicants', 'true');
+    this.http.get(URL + '/finished-cons', { params: params }).subscribe((res: ApiResponse) => {
+      if (res.status === 'success') {
+        subject.next(res.data);
+      } else {
+        subject.next([]);
+      }
+    });
+    return subject;
   }
 
 }

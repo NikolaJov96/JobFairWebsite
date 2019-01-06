@@ -3,7 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { NavProviderService } from 'src/app/header/nav-provider.service';
 import { StudentStatusService } from '../student-status.service';
 import { Router } from '@angular/router';
-import { CompanyEntity, Industry, JobType } from 'src/app/interfaces';
+import { Industry, JobType, CompanyConcoursesEntity } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-student-overview',
@@ -18,10 +18,10 @@ export class StudentOverviewComponent implements OnInit {
     conName: new FormControl(),
   });
 
-  companies: Array<CompanyEntity>;
-  companiesFiltered: Array<CompanyEntity>;
-  selectedCom: CompanyEntity = null;
-  workingIn: CompanyEntity = null;
+  companies: Array<CompanyConcoursesEntity>;
+  companiesFiltered: Array<CompanyConcoursesEntity>;
+  selectedCom: CompanyConcoursesEntity = null;
+  workingIn: CompanyConcoursesEntity = null;
   industries: Array<Industry> = [];
   jobTypes: Array<JobType> = [];
 
@@ -41,7 +41,11 @@ export class StudentOverviewComponent implements OnInit {
         this.jobTypes = status;
       })
     );
-    this.companies = this.studentStatusService.getCompanies();
+    this.studentStatusService.getCompanies().subscribe(
+      (status => {
+        this.companies = status;
+      })
+    );
     this.workingIn = this.studentStatusService.getWorikingIn();
     this.companiesFiltered = this.companies;
 
@@ -58,20 +62,20 @@ export class StudentOverviewComponent implements OnInit {
 
     this.companiesFiltered = [];
     this.companies.forEach(com => {
-      if (comName !== null && !com.name.includes(comName)) {
+      if (comName !== null && !com.com.name.includes(comName)) {
         return;
       }
       const comCopy = Object.assign({}, com);
-      comCopy.concourses = [];
+      comCopy.com.concourses = [];
       this.companiesFiltered.push(comCopy);
-      com.concourses.forEach(con => {
+      com.com.concourses.forEach(con => {
         if (type !== null && !type.includes('' + con.jobType)) {
           return;
         }
         if (conName !== null && !con.name.includes(conName)) {
           return;
         }
-        comCopy.concourses.push(con);
+        comCopy.com.concourses.push(con);
       });
     });
   }
@@ -90,11 +94,21 @@ export class StudentOverviewComponent implements OnInit {
     }
     this.studentStatusService.setCom(this.companies[com_Id]);
     let con_Id = 0;
-    while (conId !== this.companies[com_Id].concourses[con_Id]._id) {
+    while (conId !== this.companies[com_Id].com.concourses[con_Id]._id) {
       con_Id++;
     }
-    this.studentStatusService.setCon(this.companies[com_Id].concourses[con_Id]);
+    this.studentStatusService.setCon(this.companies[com_Id].com.concourses[con_Id]);
     this.router.navigate(['/student/concourse']);
+  }
+
+  getJobType(id) {
+    let name = '';
+    this.jobTypes.forEach(jt => {
+      if (jt._id === id) {
+        name = jt.name;
+      }
+    });
+    return name;
   }
 
 }

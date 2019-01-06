@@ -1,26 +1,80 @@
 export interface ConcourseEntity {
   _id: string;
   name: string;
-  jobType: number;
   description: string;
+  concluded: boolean;
+  host: string;
+  jobType: string;
+  applicants: Array<{
+    student: string,
+    accepted: boolean,
+  }>;
 }
 
-export interface CompanyEntity {
+export interface UserEntity {
   _id: string;
-  name: string;
-  town: string;
-  director: string;
-  taxNumber: string;
-  staff: string;
+  username: string;
+  password: string;
   email: string;
-  website: string;
-  industry: number;
-  concourses: Array<ConcourseEntity>;
+  type: string;
+  stu: {
+    firstName: string;
+    lastName: string;
+    phone: number;
+    year: number;
+    graduated: boolean;
+    applications: string;
+  };
+  com: {
+    name: string,
+    city: string,
+    director: string,
+    taxNumber: string,
+    employees: number,
+    website: string,
+    industry: string,
+    field: string,
+    concourses: Array<string>,
+  };
+  adm: {
+    firstName: string;
+    lastName: string;
+    phone: number;
+  };
 }
 
-export interface StudentEntity {
+export interface ConcourseUsersEntity {
   _id: string;
   name: string;
+  description: string;
+  concluded: boolean;
+  host: UserEntity;
+  jobType: string;
+  applicants: Array<{
+    student: UserEntity,
+    accepted: boolean,
+  }>;
+}
+
+export interface CompanyConcoursesEntity {
+  _id: string;
+  username: string;
+  password: string;
+  email: string;
+  type: string;
+  stu: any;
+  com: {
+    name: string,
+    city: string,
+    director: string,
+    taxNumber: string,
+    employees: number,
+    website: string,
+    industry: string,
+    field: string,
+    concourses: Array<ConcourseEntity>,
+  };
+  adm: any;
 }
 
 export interface Industry {
@@ -29,7 +83,7 @@ export interface Industry {
 }
 
 export interface JobType {
-  value: number;
+  _id: string;
   name: string;
 }
 

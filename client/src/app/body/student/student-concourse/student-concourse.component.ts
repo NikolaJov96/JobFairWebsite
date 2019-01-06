@@ -3,7 +3,7 @@ import { NavProviderService } from 'src/app/header/nav-provider.service';
 import { StudentStatusService } from '../student-status.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
-import { CompanyEntity, ConcourseEntity, JobType } from 'src/app/interfaces';
+import { ConcourseEntity, JobType, CompanyConcoursesEntity } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-student-concourse',
@@ -17,7 +17,7 @@ export class StudentConcourseComponent implements OnInit {
     coverLetterText: new FormControl(),
   });
 
-  com: CompanyEntity;
+  com: CompanyConcoursesEntity;
   con: ConcourseEntity;
   jobTypes: Array<JobType> = [];
 

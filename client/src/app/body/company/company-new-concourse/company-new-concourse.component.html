@@ -45,7 +45,7 @@
 </mat-card>
 
 <mat-card *ngFor="let con of finishedCons">
-  <p>{{ jobTypes[con.con.jobType].name + ': ' + con.con.name }}</p>
-  <button mat-raised-button color="primary" (click)="conclude(con.con._id)">Conclude</button>
+  <p>{{ jobTypes[con.jobType].name + ': ' + con.name }}</p>
+  <button mat-raised-button color="primary" (click)="conclude(con._id)">Conclude</button>
 </mat-card>
 <mat-card *ngIf="finishedCons == null || finishedCons.length === 0">No concourses found!</mat-card>
