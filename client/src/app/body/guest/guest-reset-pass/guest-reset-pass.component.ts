@@ -40,7 +40,7 @@ export class GuestResetPassComponent implements OnInit {
         if (status[0] === 'success') {
           this.router.navigate(['/guest/login']);
         } else {
-          this.message = status[1];
+          this.message = 'Error: ' + status[1];
         }
       })
     );

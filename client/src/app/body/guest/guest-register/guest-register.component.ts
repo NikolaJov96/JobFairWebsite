@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { checkPassword, passNoMatch } from '../guest-utils';
 import { NavProviderService } from 'src/app/header/nav-provider.service';
 import { Industry } from 'src/app/interfaces';
+import { GuestStatusService } from '../guest-status.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-guest-register',
@@ -48,42 +50,62 @@ export class GuestRegisterComponent implements OnInit {
     email: new FormControl('', [Validators.required]),
   }, [passNoMatch()]);
 
+  message = 'Register as a student, company or admin!';
+
   industries: Array<Industry> = [];
 
-  constructor(private navProviderService: NavProviderService) { }
+  constructor(private navProviderService: NavProviderService,
+    private guestStatusService: GuestStatusService,
+    private router: Router) { }
 
   ngOnInit() {
     this.industries = this.navProviderService.getIndustries();
   }
 
   onRegisterStudent() {
-    if (this.studentForm.invalid) {
-      return;
-    }
+    if (this.studentForm.invalid) { return; }
+    const data = Object.assign({}, this.studentForm.value);
+    data.type = 'student';
+    this.guestStatusService.register(data).subscribe(
+      (status => {
+        if (status[0] === 'success') {
+          this.router.navigate(['guest/login']);
+        } else {
+          this.message = status[1];
+        }
+      })
+    );
   }
 
   onRegisterCompany() {
-    if (this.companyForm.invalid) {
-      return;
-    }
+    if (this.companyForm.invalid) { return; }
+    const data = Object.assign({}, this.companyForm.value);
+    data.type = 'company';
+    data.industry = this.industries[data.industry].name;
+    this.guestStatusService.register(data).subscribe(
+      (status => {
+        if (status[0] === 'success') {
+          this.router.navigate(['guest/login']);
+        } else {
+          this.message = status[1];
+        }
+      })
+    );
   }
 
   onRegisterAdmin() {
-    if (this.adminForm.invalid) {
-      return;
-    }
-  }
-
-  get f1() {
-    return this.studentForm.value;
-  }
-
-  get f2() {
-    return this.companyForm.value;
-  }
-
-  get f3() {
-    return this.adminForm.value;
+    if (this.adminForm.invalid) { return; }
+    const data = Object.assign({}, this.adminForm.value);
+    data.type = 'admin';
+    this.guestStatusService.register(data).subscribe(
+      (status => {
+        if (status[0] === 'success') {
+          this.router.navigate(['guest/login']);
+        } else {
+          this.message = status[1];
+        }
+      })
+    );
   }
 
 }

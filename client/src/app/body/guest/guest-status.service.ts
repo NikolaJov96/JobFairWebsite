@@ -53,4 +53,12 @@ export class GuestStatusService {
     return subject;
   }
 
+  register(data: any) {
+    const subject: Subject<Array<string>> = new Subject();
+    this.http.post(URL + '/register', data).subscribe((res: ApiResponse) => {
+      subject.next([res.status, res.message]);
+    });
+    return subject;
+  }
+
 }

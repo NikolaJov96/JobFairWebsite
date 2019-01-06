@@ -66,6 +66,7 @@ export function addDummyData() {
       UserType.find({ name: 'company' }, '_id', (err, userId) => {
         if (err) { console.log(err); return; }
         Industry.find({ name: 'IT' }, '_id', (err, industryId) => {
+          if (err) { console.log(err); return; }
           new User({
             username: 'company',
             password: 'asdASD123#',
@@ -76,7 +77,7 @@ export function addDummyData() {
               name: 'The best company',
               city: 'Atlatida',
               director: 'Poseidon',
-              texNumber: 'zamalo',
+              texNumber: '20.000mi',
               employees: 1,
               website: 'www.thebestcompany.com',
               industry: industryId[0]._id,
