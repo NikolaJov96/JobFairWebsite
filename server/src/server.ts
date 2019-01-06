@@ -6,6 +6,8 @@ import { addDummyData } from './dbDummyData';
 import { User } from './models/user';
 import { UserType } from './/models/userType';
 import { Industry } from './models/industry';
+import { CommandCursor } from 'mongodb';
+import { JobType } from './models/jobType';
 
 const PORT = 4000;
 
@@ -180,7 +182,7 @@ router.route('/register').post((req, res) => {
                     name: req.body.companyName,
                     city: req.body.address,
                     director: req.body.director,
-                    texNumber: req.body.taxNumber,
+                    taxNumber: req.body.taxNumber,
                     employees: req.body.employees,
                     website: req.body.website,
                     industry: industryId._id,
@@ -213,6 +215,54 @@ router.route('/register').post((req, res) => {
       }
     }
   
+    res.json(body);
+  });
+});
+
+router.route('/companies').get((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  UserType.findOne({ name: 'company' }, '_id', (err, id) => {
+    if (handleError(err, res)) { return; }
+    User.find({ type: id._id }, (err, companies) => {
+      if (handleError(err, res)) { return; }
+      body.status = 'success';
+      body.message = 'all existing companies';
+      body.data = companies;
+      res.json(body);
+    });
+  });
+});
+
+router.route('/industries').get((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  Industry.find((err, industries) => {
+    if (handleError(err, res)) { return; }
+    body.status = 'success';
+    body.message = 'all existing industries'
+    body.data = industries;
+    res.json(body);
+  });
+});
+
+router.route('/job-types').get((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  JobType.find((err, jobTypes) => {
+    if (handleError(err, res)) { return; }
+    body.status = 'success';
+    body.message = 'all existing job types'
+    body.data = jobTypes;
     res.json(body);
   });
 });

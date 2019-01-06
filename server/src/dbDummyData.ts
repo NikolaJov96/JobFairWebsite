@@ -77,7 +77,7 @@ export function addDummyData() {
               name: 'The best company',
               city: 'Atlatida',
               director: 'Poseidon',
-              texNumber: '20.000mi',
+              taxNumber: '20.000mi',
               employees: 1,
               website: 'www.thebestcompany.com',
               industry: industryId[0]._id,

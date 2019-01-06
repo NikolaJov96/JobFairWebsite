@@ -31,8 +31,16 @@ export class StudentOverviewComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.industries = this.navProviderService.getIndustries();
-    this.jobTypes = this.navProviderService.getJobTypes();
+    this.navProviderService.getIndustries().subscribe(
+      (status => {
+        this.industries = status;
+      })
+    );
+    this.navProviderService.getJobTypes().subscribe(
+      (status => {
+        this.jobTypes = status;
+      })
+    );
     this.companies = this.studentStatusService.getCompanies();
     this.workingIn = this.studentStatusService.getWorikingIn();
     this.companiesFiltered = this.companies;

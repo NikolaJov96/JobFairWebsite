@@ -17,7 +17,7 @@ export const UserSchema = new mongoose.Schema({
     name: { type: String },
     city: { type: String },
     director: { type: String },
-    texNumber: { type: String },
+    taxNumber: { type: String },
     employees: { type: Number },
     website: { type: String },
     industry: { type: mongoose.Schema.Types.ObjectId, ref: 'Industry' },

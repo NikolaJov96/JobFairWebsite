@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { NavProviderService } from 'src/app/header/nav-provider.service';
 import { Industry } from 'src/app/interfaces';
+import { GuestStatusService } from '../guest-status.service';
 
 interface CompanyTableRow {
   name: string;
@@ -27,7 +28,7 @@ export class GuestOverviewComponent implements OnInit {
     town: new FormControl(),
   });
 
-  industries: Array<Industry> = [];
+  industries: Array<any> = [];
   companies: Array<CompanyTableRow>;
   companiesFiltered: Array<CompanyTableRow>;
   displayedColumns = [
@@ -41,46 +42,28 @@ export class GuestOverviewComponent implements OnInit {
     'industry',
   ];
 
-  constructor(private navProviderService: NavProviderService) { }
+  constructor(private navProviderService: NavProviderService,
+    private guestStatusService: GuestStatusService) { }
 
   ngOnInit() {
-    this.industries = this.navProviderService.getIndustries();
-    this.companies = [
-      {
-        name: 'Com1',
-        town: 'Tow1',
-        director: 'Dir1',
-        taxNumber: '1234',
-        staff: '123',
-        email: 'hi@com1.com',
-        website: 'www.com1.com',
-        industry: 0,
-      },
-      {
-        name: 'Com2',
-        town: 'Tow2',
-        director: 'Dir2',
-        taxNumber: '2345',
-        staff: '234',
-        email: 'hi@com2.com',
-        website: 'www.com2.com',
-        industry: 1,
-      },
-      {
-        name: 'Com3',
-        town: 'Tow3',
-        director: 'Dir3',
-        taxNumber: '3456',
-        staff: '345',
-        email: 'hi@com3.com',
-        website: 'www.com3.com',
-        industry: 3,
-      },
-    ];
+    this.navProviderService.getIndustries().subscribe(
+      (status => {
+        this.industries = status;
+      })
+    );
+    this.guestStatusService.getCompanies().subscribe(
+      (status => {
+        if (status[0] === 'success') {
+          this.companies = status[2];
+          this.onFilter();
+        } else {}
+      })
+    );
     this.companiesFiltered = this.companies;
   }
 
   onFilter() {
+    if (this.companies == null) { return; }
     const name = this.filterForm.value.name;
     const industry = this.filterForm.value.industry;
     const town = this.filterForm.value.town;
@@ -104,6 +87,16 @@ export class GuestOverviewComponent implements OnInit {
     setTimeout(() => {
       this.onFilter();
     }, 50);
+  }
+
+  getIndustry(id) {
+    let name = '';
+    this.industries.forEach(ind => {
+      if (ind._id === id) {
+        name = ind.name;
+      }
+    });
+    return name;
   }
 
 }

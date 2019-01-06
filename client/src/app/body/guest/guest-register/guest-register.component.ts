@@ -59,7 +59,11 @@ export class GuestRegisterComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.industries = this.navProviderService.getIndustries();
+    this.navProviderService.getIndustries().subscribe(
+      (status => {
+        this.industries = status;
+      })
+    );
   }
 
   onRegisterStudent() {

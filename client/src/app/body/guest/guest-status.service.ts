@@ -61,4 +61,12 @@ export class GuestStatusService {
     return subject;
   }
 
+  getCompanies() {
+    const subject: Subject<Array<any>> = new Subject();
+    this.http.get(URL + '/companies').subscribe((res: ApiResponse) => {
+      subject.next([res.status, res.message, res.data]);
+    });
+    return subject;
+  }
+
 }

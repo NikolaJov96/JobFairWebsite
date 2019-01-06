@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Industry, JobType } from '../interfaces';
+import { ApiResponse } from '../interfaces';
+import { HttpClient } from '@angular/common/http';
+import { URL } from '../interfaces';
 
 interface NavEntry {
   text: string;
@@ -24,7 +26,8 @@ export class NavProviderService {
   navLists: NavLists;
   navListsUpdated: Subject<NavLists> = new Subject<NavLists>();
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+    private http: HttpClient) {
     router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(
       (navEnd: NavigationEnd) => {
         const url = navEnd.url.split('?')[0];
@@ -86,21 +89,28 @@ export class NavProviderService {
     return this.navListsUpdated.asObservable();
   }
 
-  getIndustries(): Array<Industry> {
-    return [
-      { value: 0, name: 'IT' },
-      { value: 1, name: 'Teleco' },
-      { value: 2, name: 'Energy' },
-      { value: 3, name: 'Architecture' },
-      { value: 4, name: 'Mechanical' },
-    ];
+  getIndustries(): Subject<any> {
+    const subject: Subject<Array<any>> = new Subject();
+    this.http.get(URL + '/industries').subscribe((res: ApiResponse) => {
+      if (res.status === 'success') {
+        subject.next(res.data);
+      } else {
+        subject.next([]);
+      }
+    });
+    return subject;
   }
 
-  getJobTypes(): Array<JobType> {
-    return [
-      { value: 0, name: 'Internship' },
-      { value: 1, name: 'Full time' },
-    ];
+  getJobTypes(): Subject<any> {
+    const subject: Subject<Array<any>> = new Subject();
+    this.http.get(URL + '/job-types').subscribe((res: ApiResponse) => {
+      if (res.status === 'success') {
+        subject.next(res.data);
+      } else {
+        subject.next([]);
+      }
+    });
+    return subject;
   }
 
 }
