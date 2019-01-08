@@ -61,63 +61,83 @@
         Please enter your application type.
       </mat-error>
     </mat-form-field>
-    <mat-card formGroupName="work">
+    <mat-card formArrayName="work">
       <mat-card>Work experience</mat-card>
-      <mat-form-field style="margin-right: 1rem;">
-        <input matInput [matDatepicker]="wfPicker" formControlName="fromDate" placeholder="From date">
-        <mat-datepicker-toggle matSuffix [for]="wfPicker"></mat-datepicker-toggle>
-        <mat-datepicker #wfPicker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field style="margin-right: 1rem;">
-        <input matInput [matDatepicker]="wtPicker" formControlName="toDate" placeholder="To date">
-        <mat-datepicker-toggle matSuffix [for]="wtPicker"></mat-datepicker-toggle>
-        <mat-datepicker #wtPicker></mat-datepicker>
-      </mat-form-field>
-      <br>
-      <mat-form-field>
-        <input matInput type="text" formControlName="position" placeholder="Position">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="text" formControlName="employer" placeholder="Employer">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="text" formControlName="city" placeholder="City">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="text" formControlName="country" placeholder="Country">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="text" formControlName="description" placeholder="Description">
-      </mat-form-field>
+      <div *ngFor="let wrk of cvForm.controls['work'].controls; let i = index;">
+        <mat-card>
+          <mat-form-field style="margin-right: 1rem;">
+            <input matInput [matDatepicker]="wfPicker" formControlName="fromDate" placeholder="From date">
+            <mat-datepicker-toggle matSuffix [for]="wfPicker"></mat-datepicker-toggle>
+            <mat-datepicker #wfPicker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field style="margin-right: 1rem;">
+            <input matInput [matDatepicker]="wtPicker" formControlName="toDate" placeholder="To date">
+            <mat-datepicker-toggle matSuffix [for]="wtPicker"></mat-datepicker-toggle>
+            <mat-datepicker #wtPicker></mat-datepicker>
+          </mat-form-field>
+          <br>
+          <mat-form-field>
+            <input matInput type="text" formControlName="position" placeholder="Position">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="text" formControlName="employer" placeholder="Employer">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="text" formControlName="city" placeholder="City">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="text" formControlName="country" placeholder="Country">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="text" formControlName="description" placeholder="Description">
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="removeWork(i)">
+            Remove
+          </button>
+        </mat-card>
+      </div>
+      <button mat-raised-button color="primary" (click)="addWork()">
+        Add work
+      </button>
     </mat-card>
-    <mat-card formGroupName="education">
+    <mat-card formArrayName="education">
       <mat-card>Edication</mat-card>
-      <mat-form-field style="margin-right: 1rem;">
-        <input matInput [matDatepicker]="efPicker" formControlName="fromDate" placeholder="From date">
-        <mat-datepicker-toggle matSuffix [for]="efPicker"></mat-datepicker-toggle>
-        <mat-datepicker #efPicker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field style="margin-right: 1rem;">
-        <input matInput [matDatepicker]="etPicker" formControlName="toDate" placeholder="To date">
-        <mat-datepicker-toggle matSuffix [for]="etPicker"></mat-datepicker-toggle>
-        <mat-datepicker #etPicker></mat-datepicker>
-      </mat-form-field>
-      <br>
-      <mat-form-field>
-        <input matInput type="text" formControlName="qualificaton" placeholder="Qualificaton">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="text" formControlName="school" placeholder="School">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="text" formControlName="city" placeholder="City">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="text" formControlName="country" placeholder="Country">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="text" formControlName="description" placeholder="Description">
-      </mat-form-field>
+      <div *ngFor="let edu of cvForm.controls['education'].controls; let i = index;">
+        <mat-card>
+          <mat-form-field style="margin-right: 1rem;">
+            <input matInput [matDatepicker]="efPicker" formControlName="fromDate" placeholder="From date">
+            <mat-datepicker-toggle matSuffix [for]="efPicker"></mat-datepicker-toggle>
+            <mat-datepicker #efPicker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field style="margin-right: 1rem;">
+            <input matInput [matDatepicker]="etPicker" formControlName="toDate" placeholder="To date">
+            <mat-datepicker-toggle matSuffix [for]="etPicker"></mat-datepicker-toggle>
+            <mat-datepicker #etPicker></mat-datepicker>
+          </mat-form-field>
+          <br>
+          <mat-form-field>
+            <input matInput type="text" formControlName="qualificaton" placeholder="Qualificaton">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="text" formControlName="school" placeholder="School">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="text" formControlName="city" placeholder="City">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="text" formControlName="country" placeholder="Country">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="text" formControlName="description" placeholder="Description">
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="removeEducation(i)">
+            Remove education
+          </button>
+        </mat-card>
+      </div>
+      <button mat-raised-button color="primary" (click)="addEducation()">
+        Add education
+      </button>
     </mat-card>
     <mat-form-field>
       <input matInput type="text" formControlName="motherTonque" placeholder="Mother tonque">
@@ -125,9 +145,21 @@
         Please enter your last name.
       </mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" formControlName="foreignTonque" placeholder="Foreign tonque">
-    </mat-form-field>
+    <mat-card>
+      <div *ngFor="let lang of cvForm.controls['foreignTonques'].controls; let i = index;">
+        <mat-card>
+          <mat-form-field>
+            <input matInput type="text" formControlName="{{ i }}" placeholder="Foreign tonque">
+          </mat-form-field>
+          <button mat-raised-button color="primary" (click)="removeLang(i)">
+            Remove foreign language
+          </button>
+        </mat-card>
+      </div>
+      <button mat-raised-button color="primary" (click)="addLang()">
+        Add foreign language
+      </button>
+    </mat-card>
     <mat-form-field>
       <input matInput type="text" formControlName="communicationSkills" placeholder="Communication skills">
     </mat-form-field>

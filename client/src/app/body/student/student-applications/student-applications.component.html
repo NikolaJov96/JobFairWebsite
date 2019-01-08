@@ -6,11 +6,11 @@
     <mat-expansion-panel-header>
       <mat-panel-title>{{ con.name }}</mat-panel-title>
       <mat-panel-description>
-        {{ con.name }}
+        {{ con.concluded ? 'Concluded' : 'Not concluded' }}
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <p *ngIf="concDetail != null">Accepted:
+    <p *ngIf="concDetail != null && concDetail.concluded">Accepted:
       <span *ngFor="let stu of concDetail.applicants; let last = last;">
         <span *ngIf="stu.accepted">
           {{ stu.student.stu.firstName + ' ' + stu.student.stu.lastName }}
@@ -18,7 +18,7 @@
         </span>
       </span>
     </p>
-    <p *ngIf="concDetail != null">Declined:
+    <p *ngIf="concDetail != null && concDetail.concluded">Declined:
       <span *ngFor="let stu of concDetail.applicants; let last = last;">
         <span *ngIf="!stu.accepted">
           {{ stu.student.stu.firstName + ' ' + stu.student.stu.lastName }}

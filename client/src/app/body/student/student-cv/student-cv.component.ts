@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { StudentStatusService } from '../student-status.service';
 import { Router } from '@angular/router';
 
@@ -21,26 +21,12 @@ export class StudentCvComponent implements OnInit {
     email: new FormControl('', [Validators.required]),
     website: new FormControl(''),
     applicationType: new FormControl('', [Validators.required]),
-    work: new FormGroup({
-      fromDate: new FormControl(''),
-      toDate: new FormControl(''),
-      position: new FormControl(''),
-      employer: new FormControl(''),
-      city: new FormControl(''),
-      country: new FormControl(''),
-      description: new FormControl(''),
-    }),
-    education: new FormGroup({
-      fromDate: new FormControl(''),
-      toDate: new FormControl(''),
-      qualificaton: new FormControl(''),
-      school: new FormControl(''),
-      city: new FormControl(''),
-      country: new FormControl(''),
-      description: new FormControl(''),
-    }),
+    work: new FormArray([]),
+    education: new FormArray([]),
     motherTonque: new FormControl('', [Validators.required]),
-    foreignTonque: new FormControl(''),
+    foreignTonques: new FormArray([]
+      // new FormControl(''),
+    ),
     communicationSkills: new FormControl(''),
     organisationalSkills: new FormControl(''),
     jobRelatedSkills: new FormControl(''),
@@ -61,6 +47,52 @@ export class StudentCvComponent implements OnInit {
 
   onSaveCV() {
 
+  }
+
+  addWork() {
+    (<FormArray>this.cvForm.controls.work).push(
+      new FormGroup({
+        fromDate: new FormControl(''),
+        toDate: new FormControl(''),
+        position: new FormControl(''),
+        employer: new FormControl(''),
+        city: new FormControl(''),
+        country: new FormControl(''),
+        description: new FormControl(''),
+      })
+    );
+  }
+
+  removeWork(id: number) {
+
+  }
+
+  addEducation() {
+    (<FormArray>this.cvForm.controls.education).push(
+      new FormGroup({
+        fromDate: new FormControl(''),
+        toDate: new FormControl(''),
+        qualificaton: new FormControl(''),
+        school: new FormControl(''),
+        city: new FormControl(''),
+        country: new FormControl(''),
+        description: new FormControl(''),
+      })
+    );
+  }
+
+  removeEducation(id: number) {
+
+  }
+
+  addLang() {
+
+  }
+
+  removeLang(id: number) {
+    (<FormArray>this.cvForm.controls.education).push(
+      new FormControl('')
+    );
   }
 
 }

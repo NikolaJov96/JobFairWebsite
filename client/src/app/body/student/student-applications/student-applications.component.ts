@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConcourseUsersEntity, ConcourseEntity } from 'src/app/interfaces';
 import { StudentStatusService } from '../student-status.service';
 import { Router } from '@angular/router';
+import { MatExpansionPanel } from '@angular/material';
 
 @Component({
   selector: 'app-student-applications',
@@ -42,11 +43,13 @@ export class StudentApplicationsComponent implements OnInit {
 
   getConDetails(con: ConcourseEntity) {
     this.concDetail = null;
-    this.studentStatusService.getConDetails(con._id).subscribe(
-      (status => {
-        this.concDetail = status;
-      })
-    );
+    if (con.concluded) {
+      this.studentStatusService.getConDetails(con._id).subscribe(
+        (status => {
+          this.concDetail = status;
+        })
+      );
+    }
   }
 
 }
