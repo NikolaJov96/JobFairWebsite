@@ -10,6 +10,8 @@ export class StudentApplicationsComponent implements OnInit {
 
   concources: Array<ConcourseUsersEntity> = null;
 
+  accMessage = '';
+
   constructor() { }
 
   ngOnInit() {

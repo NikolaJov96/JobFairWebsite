@@ -245,12 +245,34 @@ router.route('/concourses').get((req, res) => {
     message: '',
     data: null,
   };
+  const comId = req.query['comId'];
+  const conId = req.query['conId'];
   let query = {};
-  console.log(req.params);
-  if (req.param('comId') != null) {
-    query = { host: req.param('comId') };
-  }
-  res.json(body);
+  if (comId != null) { query['host'] = comId; }
+  if (conId != null) { query['_id'] = conId; }
+  Concourse.find(query, (err, cons) => {
+    if (handleError(err, res)) { return; }
+    if (cons.length === 1 && conId != null) {
+      const ids = [];
+      for (let i = 0; i < cons[0]['applicants'].length; i++) {
+        ids.push(cons[0]['applicants'][i].student);
+      }
+      User.find({ _id: { $in: ids } }, (err, students) => {
+        for (let i = 0; i < cons[0]['applicants'].length; i++) {
+          cons[0]['applicants'][i].student = students[i];
+        }
+        body.status = 'success';
+        body.message = 'concourse with student objects';
+        body.data = cons[0];
+        res.json(body);
+      });
+    } else {
+      body.status = 'success';
+      body.message = 'all found concourses';
+      body.data = cons;
+      res.json(body);
+    }
+  });
 });
 
 router.route('/concourses').post((req, res) => {
@@ -261,6 +283,7 @@ router.route('/concourses').post((req, res) => {
   };
   User.findById(req.body.host, (err, user) => {
     if (handleError(err, res)) { return; }
+    delete req.body._id;
     new Concourse(req.body).save((err: Error, con) => {
       if (handleError(err, res)) { return; }
       user['com'].concourses.push(con._id);
@@ -302,6 +325,57 @@ router.route('/job-types').get((req, res) => {
     body.message = 'all existing job types'
     body.data = jobTypes;
     res.json(body);
+  });
+});
+
+router.route('/apply').post((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  Concourse.findById(req.body.conId, (err, con) => {
+    if (handleError(err, res)) { return; }
+    if (con['applicants'].includes(req.body.studentId)) {
+      body.message = 'already applied';
+      res.json(body);
+    } else {
+      const applicant = {
+        student: req.body.studentId,
+        coverLetterExtension: req.body.coverLetterExtension,
+      }
+      if (req.body.coverLetterExtension === 'txt') {
+        // save to file
+      }
+      con['applicants'].push(applicant);
+      con.save((err) => {
+        if (handleError(err, res)) { return; }
+        body.status = 'success';
+        body.message = 'successfully applied';
+        res.json(body);
+      })
+    }
+  });
+});
+
+router.route('/conclude').post((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  Concourse.findById(req.body.conId, (err, con) => {
+    if (handleError(err, res)) { return; }
+    for (let i = 0; i < con['applicants'].length; i++) {
+      con['applicants'][i].accepted =  req.body.arr[i] == null ? false : true;
+    }
+    con['concluded'] = true;
+    con.save((err) => {
+      if (handleError(err, res)) { return; }
+      body.status = 'success';
+      body.message = 'concourse concluded';
+      res.json(body);
+    });
   });
 });
 

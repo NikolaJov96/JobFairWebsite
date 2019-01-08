@@ -2,11 +2,15 @@ export interface ConcourseEntity {
   _id: string;
   name: string;
   description: string;
+  toMin: string;
+  toHour: string;
+  toDate: Date;
   concluded: boolean;
   host: string;
   jobType: string;
   applicants: Array<{
     student: string,
+    coverLetterExtension: string,
     accepted: boolean,
   }>;
 }
@@ -47,11 +51,15 @@ export interface ConcourseUsersEntity {
   _id: string;
   name: string;
   description: string;
+  toMin: string;
+  toHour: string;
+  toDate: Date;
   concluded: boolean;
   host: UserEntity;
   jobType: string;
   applicants: Array<{
     student: UserEntity,
+    coverLetterExtension: string,
     accepted: boolean,
   }>;
 }

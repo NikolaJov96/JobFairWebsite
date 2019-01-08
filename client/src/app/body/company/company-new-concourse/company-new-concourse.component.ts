@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { CompanyStatusService } from '../company-status.service';
-import { JobType, ConcourseEntity } from 'src/app/interfaces';
+import { JobType, ConcourseEntity, ConcourseUsersEntity } from 'src/app/interfaces';
 import { NavProviderService } from 'src/app/header/nav-provider.service';
 import { Router } from '@angular/router';
 
@@ -22,14 +22,19 @@ export class CompanyNewConcourseComponent implements OnInit {
   });
 
   jobTypes: Array<JobType> = [];
-  Cons: ConcourseEntity[] = null;
-  message = 'Add new open position!';
+  cons: ConcourseUsersEntity[] = null;
+  originalMessage = 'Add new open position!';
+  message = this.originalMessage;
 
   constructor(private companyStatusService: CompanyStatusService,
     private navProviderService: NavProviderService,
     private router: Router) { }
 
   ngOnInit() {
+    if (this.companyStatusService.getCom() == null) {
+      this.router.navigate(['/guest/login']);
+      return;
+    }
     this.navProviderService.getJobTypes().subscribe(
       (status => {
         this.jobTypes = status;
@@ -37,16 +42,19 @@ export class CompanyNewConcourseComponent implements OnInit {
     );
     this.companyStatusService.getCons().subscribe(
       (status => {
-        this.Cons = status;
+        this.cons = status;
       })
     );
   }
 
-  onCreate() {
+  onCreate(formObj: NgForm) {
     const con: ConcourseEntity = {
       _id: '',
       name: this.concourseForm.value.name,
       description: this.concourseForm.value.text,
+      toMin: this.concourseForm.value.toMin,
+      toHour: this.concourseForm.value.toHour,
+      toDate: this.concourseForm.value.toDate,
       concluded: false,
       host: '',
       jobType: this.concourseForm.value.jobType,
@@ -56,7 +64,9 @@ export class CompanyNewConcourseComponent implements OnInit {
       (status => {
         if (status[0] === 'success') {
           this.message = 'Position successfully created!';
-          this.router.navigate(['.']);
+          setTimeout(() => this.message = this.originalMessage, 5000);
+          formObj.resetForm();
+          this.ngOnInit();
         } else {
           this.message = 'Error: ' + status[1];
         }
@@ -64,9 +74,19 @@ export class CompanyNewConcourseComponent implements OnInit {
     );
   }
 
-  conclude(conId: string) {
-    this.companyStatusService.setSelectedCon(conId);
+  conclude(con: ConcourseUsersEntity) {
+    this.companyStatusService.setSelectedCon(con);
     this.router.navigate(['company/conclude']);
+  }
+
+  getJobType(id) {
+    let name = '';
+    this.jobTypes.forEach(jt => {
+      if (jt._id === id) {
+        name = jt.name;
+      }
+    });
+    return name;
   }
 
 }

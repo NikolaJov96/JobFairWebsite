@@ -3,7 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { NavProviderService } from 'src/app/header/nav-provider.service';
 import { StudentStatusService } from '../student-status.service';
 import { Router } from '@angular/router';
-import { Industry, JobType, CompanyConcoursesEntity } from 'src/app/interfaces';
+import { Industry, JobType, CompanyConcoursesEntity, ConcourseEntity, ConcourseUsersEntity, UserEntity } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-student-overview',
@@ -18,12 +18,14 @@ export class StudentOverviewComponent implements OnInit {
     conName: new FormControl(),
   });
 
-  companies: Array<CompanyConcoursesEntity>;
-  companiesFiltered: Array<CompanyConcoursesEntity>;
+  companies: Array<CompanyConcoursesEntity> = null;
+  companiesFiltered: Array<CompanyConcoursesEntity> = null;
+  concourses: Array<ConcourseEntity> = null;
   selectedCom: CompanyConcoursesEntity = null;
   workingIn: CompanyConcoursesEntity = null;
   industries: Array<Industry> = [];
   jobTypes: Array<JobType> = [];
+  student: UserEntity;
 
   constructor(
     private navProviderService: NavProviderService,
@@ -31,6 +33,10 @@ export class StudentOverviewComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    if (this.studentStatusService.getStudent() == null) {
+      this.router.navigate(['/guest/login']);
+      return;
+    }
     this.navProviderService.getIndustries().subscribe(
       (status => {
         this.industries = status;
@@ -45,8 +51,16 @@ export class StudentOverviewComponent implements OnInit {
       (status => {
         this.companies = status;
         this.companiesFiltered = this.companies;
+        this.onFilter();
       })
     );
+    this.studentStatusService.getCons().subscribe(
+      (status => {
+        this.concourses = status;
+        this.onFilter();
+      })
+    );
+    this.student = this.studentStatusService.getStudent();
     this.workingIn = this.studentStatusService.getWorikingIn();
 
     this.selectedCom = this.studentStatusService.getComToExpand();
@@ -56,6 +70,8 @@ export class StudentOverviewComponent implements OnInit {
   }
 
   onFilter() {
+    if (this.companies == null || this.concourses == null) { return; }
+
     const comName = this.filterForm.value.comName;
     const type = this.filterForm.value.type;
     const conName = this.filterForm.value.conName;
@@ -68,13 +84,10 @@ export class StudentOverviewComponent implements OnInit {
       const comCopy = Object.assign({}, com);
       comCopy.com.concourses = [];
       this.companiesFiltered.push(comCopy);
-      com.com.concourses.forEach(con => {
-        if (type !== null && !type.includes('' + con.jobType)) {
-          return;
-        }
-        if (conName !== null && !con.name.toLowerCase().includes(conName.toLowerCase())) {
-          return;
-        }
+      this.concourses.forEach(con => {
+        if (con.host !== comCopy._id) { return; }
+        if (type !== null && !type.includes('' + con.jobType)) { return; }
+        if (conName !== null && !con.name.toLowerCase().includes(conName.toLowerCase())) { return; }
         comCopy.com.concourses.push(con);
       });
     });
@@ -87,7 +100,6 @@ export class StudentOverviewComponent implements OnInit {
   }
 
   onApply(comId: string, conId: string) {
-    console.log(comId, conId);
     let com_Id = 0;
     while (comId !== this.companies[com_Id]._id) {
       com_Id++;
@@ -99,6 +111,16 @@ export class StudentOverviewComponent implements OnInit {
     }
     this.studentStatusService.setCon(this.companies[com_Id].com.concourses[con_Id]);
     this.router.navigate(['/student/concourse']);
+  }
+
+  hasApplied(con: ConcourseEntity) {
+    if (con == null) { return false; }
+    for (let i = 0; i < con.applicants.length; i++) {
+      if (con.applicants[i].student.includes(this.student._id)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   getJobType(id) {

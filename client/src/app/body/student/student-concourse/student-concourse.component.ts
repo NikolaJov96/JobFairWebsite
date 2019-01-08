@@ -4,6 +4,7 @@ import { StudentStatusService } from '../student-status.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ConcourseEntity, JobType, CompanyConcoursesEntity } from 'src/app/interfaces';
+import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 @Component({
   selector: 'app-student-concourse',
@@ -13,13 +14,14 @@ import { ConcourseEntity, JobType, CompanyConcoursesEntity } from 'src/app/inter
 export class StudentConcourseComponent implements OnInit {
 
   applyForm = new FormGroup({
-    coverLetterType: new FormControl(),
+    coverLetterPdf: new FormControl(),
     coverLetterText: new FormControl(),
   });
 
   com: CompanyConcoursesEntity;
   con: ConcourseEntity;
   jobTypes: Array<JobType> = [];
+  message = 'Apply to this concourse!';
 
   constructor(
     private navProviderService: NavProviderService,
@@ -40,7 +42,24 @@ export class StudentConcourseComponent implements OnInit {
   }
 
   onApply() {
-
+    if (this.applyForm.invalid) { return; }
+    const body = {
+      coverLetterExtension: 'txt',
+      content: this.applyForm.value.coverLetterText,
+    };
+    if (this.applyForm.value.coverLetterPdf) {
+      body['coverLetterExtension'] = 'pdf';
+      // constent: pdf file
+    }
+    this.studentStatusService.apply(body).subscribe(
+      (status => {
+        if (status[0] === 'success') {
+          this.router.navigate(['student/overview-coms']);
+        } else {
+          this.message = status[1];
+        }
+      })
+    );
   }
 
   onBack() {
@@ -48,6 +67,16 @@ export class StudentConcourseComponent implements OnInit {
       this.studentStatusService.getCom()
     );
     this.router.navigate(['student/overview-coms']);
+  }
+
+  getJobType(id) {
+    let name = '';
+    this.jobTypes.forEach(jt => {
+      if (jt._id === id) {
+        name = jt.name;
+      }
+    });
+    return name;
   }
 
 }

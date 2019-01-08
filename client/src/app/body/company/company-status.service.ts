@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConcourseEntity, ApiResponse, URL } from 'src/app/interfaces';
+import { ConcourseEntity, ApiResponse, URL, ConcourseUsersEntity, CompanyConcoursesEntity } from 'src/app/interfaces';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -8,30 +8,30 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class CompanyStatusService {
 
-  comId: string;
-  selectedConId: string;
+  com: CompanyConcoursesEntity;
+  selectedCon: ConcourseUsersEntity;
 
   constructor(private http: HttpClient) { }
 
-  setCom(com: string) {
-    this.comId = com;
+  setCom(com: CompanyConcoursesEntity) {
+    this.com = com;
   }
 
-  getCom(): string {
-    return this.comId;
+  getCom(): CompanyConcoursesEntity {
+    return this.com;
   }
 
-  setSelectedCon(conId: string) {
-    this.selectedConId = conId;
+  setSelectedCon(conId: ConcourseUsersEntity) {
+    this.selectedCon = conId;
   }
 
-  getSelectedCon(): string {
-    return this.selectedConId;
+  getSelectedCon(): ConcourseUsersEntity {
+    return this.selectedCon;
   }
 
-  getCons(): Subject<Array<ConcourseEntity>> {
-    const subject = new Subject<Array<ConcourseEntity>>();
-    const params = new HttpParams().set('getApplicants', 'true').append('comId', this.comId);
+  getCons(): Subject<Array<ConcourseUsersEntity>> {
+    const subject = new Subject<Array<ConcourseUsersEntity>>();
+    const params = new HttpParams().append('comId', this.com._id);
     this.http.get(URL + '/concourses', { params: params }).subscribe((res: ApiResponse) => {
       if (res.status === 'success') {
         subject.next(res.data);
@@ -42,10 +42,35 @@ export class CompanyStatusService {
     return subject;
   }
 
-  createCon(con: ConcourseEntity) {
+  getCon(): Subject<ConcourseUsersEntity> {
+    const subject = new Subject<ConcourseUsersEntity>();
+    const params = new HttpParams().append('conId', this.selectedCon._id);
+    this.http.get(URL + '/concourses', { params: params }).subscribe((res: ApiResponse) => {
+      if (res.status === 'success') {
+        subject.next(res.data);
+      } else {
+        subject.next(null);
+      }
+    });
+    return subject;
+  }
+
+  createCon(con: ConcourseEntity): Subject<Array<string>> {
     const subject = new Subject<Array<string>>();
-    con.host = this.comId;
+    con.host = this.com._id;
     this.http.post(URL + '/concourses', con).subscribe((res: ApiResponse) => {
+      subject.next([res.status, res.message]);
+    });
+    return subject;
+  }
+
+  conclude(arr: Array<boolean>): Subject<Array<string>> {
+    const subject = new Subject<Array<string>>();
+    const body = {
+      conId: this.selectedCon,
+      arr: arr,
+    };
+    this.http.post(URL + '/conclude', body).subscribe((res: ApiResponse) => {
       subject.next([res.status, res.message]);
     });
     return subject;

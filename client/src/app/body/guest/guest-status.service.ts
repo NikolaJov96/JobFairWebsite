@@ -27,7 +27,10 @@ export class GuestStatusService {
           subject.next(['company', res.message]);
           this.companyStatusService.setCom(res.data);
           break;
-        case 'studnet': subject.next(['studnet', res.message]); break;
+        case 'student':
+          subject.next(['student', res.message]);
+          this.studentStatusService.setStudent(res.data);
+          break;
         case 'admin': subject.next(['admin', res.message]); break;
         default: subject.next([res.status, res.message]); break;
       }

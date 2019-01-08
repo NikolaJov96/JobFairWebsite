@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { CompanyStatusService } from '../company-status.service';
+import { Router } from '@angular/router';
 
 interface DialogData {
   price: string;
@@ -26,9 +28,15 @@ export class CompanyFiarApplicationComponent implements OnInit {
   options: Array<{ name: string, selected: boolean, }> = null;
   fariAppState: FairAppState = FairAppState.UNKNOWN;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog,
+    private companyStatusService: CompanyStatusService,
+    private router: Router) { }
 
   ngOnInit() {
+    if (this.companyStatusService.getCom() == null) {
+      this.router.navigate(['/guest/login']);
+      return;
+    }
     this.packages = [
       { value: 0, name: 'p1', desc: 'd1' },
       { value: 1, name: 'p2', desc: 'd2' },

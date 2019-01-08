@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConcourseEntity, CompanyConcoursesEntity, ApiResponse, URL } from 'src/app/interfaces';
+import { ConcourseEntity, CompanyConcoursesEntity, ApiResponse, URL, UserEntity } from 'src/app/interfaces';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -9,16 +9,25 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 export class StudentStatusService {
 
   selectedCom: CompanyConcoursesEntity;
-  sekectedCon: ConcourseEntity;
+  selectedCon: ConcourseEntity;
   comToExpamd: CompanyConcoursesEntity;
   workingIn: CompanyConcoursesEntity;
   validCV: boolean;
+  student: UserEntity = null;
 
   constructor(private http: HttpClient) {
-    this.sekectedCon = null;
+    this.selectedCon = null;
     this.comToExpamd = null;
     this.workingIn = null;
     this.validCV = false;
+  }
+
+  setStudent(student: UserEntity) {
+    this.student = student;
+  }
+
+  getStudent(): UserEntity {
+    return this.student;
   }
 
   getComToExpand() {
@@ -38,11 +47,11 @@ export class StudentStatusService {
   }
 
   getCon(): ConcourseEntity {
-    return this.sekectedCon;
+    return this.selectedCon;
   }
 
   setCon(con: ConcourseEntity) {
-    this.sekectedCon = con;
+    this.selectedCon = con;
   }
 
   getWorikingIn(): CompanyConcoursesEntity {
@@ -70,6 +79,28 @@ export class StudentStatusService {
       } else {
         subject.next([]);
       }
+    });
+    return subject;
+  }
+
+  getCons(): Subject<Array<ConcourseEntity>> {
+    const subject = new Subject<Array<ConcourseEntity>>();
+    this.http.get(URL + '/concourses').subscribe((res: ApiResponse) => {
+      if (res.status === 'success') {
+        subject.next(res.data);
+      } else {
+        subject.next([]);
+      }
+    });
+    return subject;
+  }
+
+  apply(body): Subject<Array<string>> {
+    const subject = new Subject<Array<string>>();
+    body.conId = this.selectedCon._id;
+    body.studentId = this.student._id;
+    this.http.post(URL + '/apply', body).subscribe((res: ApiResponse) => {
+      subject.next([res.status, res.message]);
     });
     return subject;
   }

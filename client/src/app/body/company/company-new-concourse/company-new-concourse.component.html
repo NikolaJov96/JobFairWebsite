@@ -1,6 +1,6 @@
 <mat-card>{{ message }}</mat-card>
 <mat-card>
-  <form [formGroup]="concourseForm" (ngSubmit)="onCreate()" novalidate>
+  <form #formObj="ngForm" [formGroup]="concourseForm" (ngSubmit)="onCreate(formObj)" novalidate>
     <mat-form-field>
       <input
         matInput
@@ -33,6 +33,11 @@
       <mat-datepicker-toggle matSuffix [for]="dPicker"></mat-datepicker-toggle>
       <mat-datepicker #dPicker></mat-datepicker>
     </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Job type" formControlName="jobType">
+        <mat-option *ngFor="let type of jobTypes" value="{{ type._id }}">{{ type.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
     <br>
     <button
       mat-raised-button
@@ -44,8 +49,9 @@
   </form>
 </mat-card>
 
-<mat-card *ngFor="let con of finishedCons">
-  <p>{{ jobTypes[con.jobType].name + ': ' + con.name }}</p>
-  <button mat-raised-button color="primary" (click)="conclude(con._id)">Conclude</button>
+<mat-card *ngIf="cons != null && cons.length > 0">Pick candidates for finished concourses:</mat-card>
+<mat-card *ngFor="let con of cons">
+  <p>{{ getJobType(con.jobType) + ': ' + con.name }}</p>
+  <button mat-raised-button color="primary" (click)="conclude(con)">Conclude</button>
 </mat-card>
-<mat-card *ngIf="finishedCons == null || finishedCons.length === 0">No concourses found!</mat-card>
+<mat-card *ngIf="cons == null || cons.length === 0">No concourses found!</mat-card>

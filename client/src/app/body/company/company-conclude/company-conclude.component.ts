@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
-import { ConcourseConc, CompanyStatusService } from '../company-status.service';
+import { CompanyStatusService } from '../company-status.service';
 import { Router } from '@angular/router';
+import { ConcourseUsersEntity } from 'src/app/interfaces';
 
 @Component({
   selector: 'app-company-conclude',
@@ -10,31 +11,46 @@ import { Router } from '@angular/router';
 })
 export class CompanyConcludeComponent implements OnInit {
 
-  concludeForm: FormGroup = null;
+  concludeForm: FormGroup = new FormGroup ({
+    applicants: new FormArray([]),
+  });
 
-  con: ConcourseConc = null;
+  con: ConcourseUsersEntity = null;
+  message = 'Conclude this concourse, chose accepted students!';
 
   constructor(private companyStatusService: CompanyStatusService,
     private router: Router) { }
 
   ngOnInit() {
-    this.con = this.companyStatusService.getSelectedCon();
-    if (this.con == null) {
-      this.router.navigate(['company/new-concourse']);
+    if (this.companyStatusService.getCom() == null) {
+      this.router.navigate(['/guest/login']);
       return;
     }
-    const temp = new FormGroup ({
-      applicants: new FormArray([]),
-    });
-    const cont = <FormArray>temp.controls['applicants'];
-    this.con.applicants.forEach(apl => {
-      cont.push(new FormControl());
-    });
-    this.concludeForm = temp;
+    this.companyStatusService.getCon().subscribe(
+      (status => {
+        this.con = status;
+        if (this.con == null) {
+          this.router.navigate(['/company/new-concourse']);
+          return;
+        }
+        const cont = <FormArray>this.concludeForm.controls['applicants'];
+        this.con.applicants.forEach(apl => {
+          cont.push(new FormControl());
+        });
+      })
+    );
   }
 
   onConclude() {
-
+    this.companyStatusService.conclude(this.concludeForm.value.applicants).subscribe(
+      (status => {
+        if (status[0] === 'success') {
+          this.router.navigate(['/company/new-concourse']);
+        } else {
+          this.message = status[1];
+        }
+      })
+    );
   }
 
 }
