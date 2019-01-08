@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConcourseEntity, CompanyConcoursesEntity, ApiResponse, URL, UserEntity } from 'src/app/interfaces';
+import { ConcourseEntity, CompanyConcoursesEntity, ApiResponse, URL, UserEntity, ConcourseUsersEntity } from 'src/app/interfaces';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -90,6 +90,19 @@ export class StudentStatusService {
         subject.next(res.data);
       } else {
         subject.next([]);
+      }
+    });
+    return subject;
+  }
+
+  getConDetails(id: string): Subject<ConcourseUsersEntity> {
+    const subject = new Subject<ConcourseUsersEntity>();
+    const params = new HttpParams().append('conId', id);
+    this.http.get(URL + '/concourses', { params: params }).subscribe((res: ApiResponse) => {
+      if (res.status === 'success') {
+        subject.next(res.data);
+      } else {
+        subject.next(null);
       }
     });
     return subject;

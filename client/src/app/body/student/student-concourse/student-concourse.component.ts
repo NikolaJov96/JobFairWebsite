@@ -29,6 +29,10 @@ export class StudentConcourseComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    if (this.studentStatusService.getStudent() == null) {
+      this.router.navigate(['/guest/login']);
+      return;
+    }
     this.navProviderService.getJobTypes().subscribe(
       (status => {
         this.jobTypes = status;

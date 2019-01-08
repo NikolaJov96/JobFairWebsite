@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { StudentStatusService } from '../student-status.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-student-cv',
@@ -45,9 +47,14 @@ export class StudentCvComponent implements OnInit {
     digitalSkills: new FormControl(''),
   });
 
-  constructor() { }
+  constructor(private studentStatusService: StudentStatusService,
+    private router: Router) { }
 
   ngOnInit() {
+    if (this.studentStatusService.getStudent() == null) {
+      this.router.navigate(['/guest/login']);
+      return;
+    }
     // preload phone number and email
     // preload saved data
   }

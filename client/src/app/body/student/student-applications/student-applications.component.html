@@ -1,8 +1,8 @@
 <mat-card>Review your applicatin statuses!</mat-card>
 <mat-card>
 
-<mat-accordion *ngIf="concources != null && concources.length > 0">
-  <mat-expansion-panel *ngFor="let con of concources; let i = index;">
+<mat-accordion *ngIf="concourses != null && concourses.length > 0">
+  <mat-expansion-panel *ngFor="let con of concourses; let i = index;" (opened)="getConDetails(con)">
     <mat-expansion-panel-header>
       <mat-panel-title>{{ con.name }}</mat-panel-title>
       <mat-panel-description>
@@ -10,26 +10,23 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <mat-card>
-      <p>{{ accMessage }}</p>
-      <p>Accepted:
-        <span *ngFor="let stu of con.applicants; let last = last;">
-          <span *ngIf="stu.accepted">
-            {{ stu.student.stu.firstName + ' ' + stu.student.stu.firstName }}
-            {{ last ? '' : ', ' }}
-          </span>
+    <p *ngIf="concDetail != null">Accepted:
+      <span *ngFor="let stu of concDetail.applicants; let last = last;">
+        <span *ngIf="stu.accepted">
+          {{ stu.student.stu.firstName + ' ' + stu.student.stu.lastName }}
+          {{ last ? '' : ', ' }}
         </span>
-      </p>
-      <p>Declined:
-        <span *ngFor="let stu of con.applicants; let last = last;">
-          <span *ngIf="!stu.accepted">
-            {{ stu.student.stu.firstName + ' ' + stu.student.stu.firstName }}
-            {{ last ? '' : ', ' }}
-          </span>
+      </span>
+    </p>
+    <p *ngIf="concDetail != null">Declined:
+      <span *ngFor="let stu of concDetail.applicants; let last = last;">
+        <span *ngIf="!stu.accepted">
+          {{ stu.student.stu.firstName + ' ' + stu.student.stu.lastName }}
+          {{ last ? '' : ', ' }}
         </span>
-      </p>
-    </mat-card>
+      </span>
+    </p>
 
   </mat-expansion-panel>
 </mat-accordion>
-<mat-card *ngIf="concources === null || concources.length === 0">No applications found!</mat-card>
+<mat-card *ngIf="concourses === null || concourses.length === 0">No applications found!</mat-card>
