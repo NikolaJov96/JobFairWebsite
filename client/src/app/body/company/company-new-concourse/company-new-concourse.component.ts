@@ -23,7 +23,10 @@ export class CompanyNewConcourseComponent implements OnInit {
 
   jobTypes: Array<JobType> = [];
   cons: ConcourseUsersEntity[] = null;
-  originalMessage = 'Add new open position!';
+  originalMessage = {
+    color: 'black',
+    text: 'Add new open position!',
+  };
   message = this.originalMessage;
 
   constructor(private companyStatusService: CompanyStatusService,
@@ -63,12 +66,12 @@ export class CompanyNewConcourseComponent implements OnInit {
     this.companyStatusService.createCon(con).subscribe(
       (status => {
         if (status[0] === 'success') {
-          this.message = 'Position successfully created!';
+          this.message = { color: 'green', text: 'Position successfully created!' };
           setTimeout(() => this.message = this.originalMessage, 5000);
           formObj.resetForm();
           this.ngOnInit();
         } else {
-          this.message = 'Error: ' + status[1];
+          this.message = { color: 'red', text: 'Error: ' + status[1] };
         }
       })
     );

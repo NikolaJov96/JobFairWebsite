@@ -1,4 +1,4 @@
-<mat-card>{{ message }}</mat-card>
+<mat-card><span [style.color]="message.color">{{ message.text }}</span></mat-card>
 <mat-card>
   <form [formGroup]="resetPassForm" (ngSubmit)="onResetPass()" novalidate>
     <mat-form-field>

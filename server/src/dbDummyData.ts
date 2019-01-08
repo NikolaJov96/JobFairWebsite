@@ -58,6 +58,8 @@ export function addDummyData() {
             year: 4,
             graduated: false,
             applications: [],
+            cvUploaded: false,
+            cv: null,
           },
           com: null, 
           adm: null, 

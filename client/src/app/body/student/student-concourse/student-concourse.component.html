@@ -1,5 +1,5 @@
 <mat-card>
-  {{ message }}<br>
+  <span [style.color]="message.color">{{ message.text }}</span><br>
   <button mat-raised-button color="primary" (click)="onBack()">Back</button>
 </mat-card>
 <mat-card>

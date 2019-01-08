@@ -16,7 +16,10 @@ export class CompanyConcludeComponent implements OnInit {
   });
 
   con: ConcourseUsersEntity = null;
-  message = 'Conclude this concourse, chose accepted students!';
+  message = {
+    color: 'back',
+    text: 'Conclude this concourse, chose accepted students!',
+  };
 
   constructor(private companyStatusService: CompanyStatusService,
     private router: Router) { }
@@ -47,7 +50,7 @@ export class CompanyConcludeComponent implements OnInit {
         if (status[0] === 'success') {
           this.router.navigate(['/company/new-concourse']);
         } else {
-          this.message = status[1];
+          this.message = { color: 'red', text: status[1] };
         }
       })
     );

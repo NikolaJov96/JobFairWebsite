@@ -21,7 +21,10 @@ export class StudentConcourseComponent implements OnInit {
   com: CompanyConcoursesEntity;
   con: ConcourseEntity;
   jobTypes: Array<JobType> = [];
-  message = 'Apply to this concourse!';
+  message = {
+    color: 'black',
+    text: 'Apply to this concourse!',
+  };
 
   constructor(
     private navProviderService: NavProviderService,
@@ -60,7 +63,7 @@ export class StudentConcourseComponent implements OnInit {
         if (status[0] === 'success') {
           this.router.navigate(['student/overview-coms']);
         } else {
-          this.message = status[1];
+          this.message = { color: 'balck', text: status[1] };
         }
       })
     );

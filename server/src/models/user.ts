@@ -12,10 +12,11 @@ export const UserSchema = new mongoose.Schema({
     year: { type: Number },
     graduated: { type: Boolean },
     applications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Concourse' }],
+    cvUploaded: { type: Boolean },
     cv: { type: {
       firstName: { type: String },
       lastName: { type: String },
-      addressName: { type: String },
+      address: { type: String },
       postalCode: { type: String },
       city: { type: String },
       county: { type: String },

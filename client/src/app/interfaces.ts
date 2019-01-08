@@ -28,6 +28,8 @@ export interface UserEntity {
     year: number;
     graduated: boolean;
     applications: string;
+    cvUploaded: boolean,
+    cv: any,
   };
   com: {
     name: string,

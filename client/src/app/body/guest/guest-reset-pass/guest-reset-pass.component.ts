@@ -18,7 +18,10 @@ export class GuestResetPassComponent implements OnInit {
     newPass2: new FormControl('', [checkPassword()]),
   }, [passNoMatch()]);
 
-  message = 'Reset your password!';
+  message = {
+    color: 'black',
+    text: 'Reset your password!',
+  };
 
   constructor(private guestStatusService: GuestStatusService,
     private router: Router) { }
@@ -40,7 +43,7 @@ export class GuestResetPassComponent implements OnInit {
         if (status[0] === 'success') {
           this.router.navigate(['/guest/login']);
         } else {
-          this.message = 'Error: ' + status[1];
+          this.message = { color: 'red', text: 'Error: ' + status[1] };
         }
       })
     );

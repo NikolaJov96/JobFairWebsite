@@ -18,12 +18,13 @@ export class GuestLoginComponent implements OnInit {
     password: new FormControl('', [checkPassword()]),
   });
 
-  message = 'Log into you account!';
+  message = {
+    color: 'black',
+    text: 'Log into you account!',
+  };
 
   constructor(private router: Router,
-    private guestStatusService: GuestStatusService,
-    private companySetatusService: CompanyStatusService,
-    private studentStatusService: StudentStatusService) { }
+    private guestStatusService: GuestStatusService) { }
 
   ngOnInit() { }
 
@@ -37,7 +38,7 @@ export class GuestLoginComponent implements OnInit {
           case 'student': this.router.navigate(['/student/cv']); break;
           case 'company': this.router.navigate(['/company/new-concourse']); break;
           case 'admin': this.router.navigate(['/admin/manage-fair']); break;
-          default: this.message = 'Error: ' + status[1]; break;
+          default: this.message = { color: 'red', text: 'Error: ' + status[1] }; break;
         }
       })
     );

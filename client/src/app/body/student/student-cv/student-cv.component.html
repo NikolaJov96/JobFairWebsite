@@ -1,4 +1,4 @@
-<mat-card>Fill out your CV!</mat-card>
+<mat-card><span [style.color]="message.color">{{ message.text }}</span></mat-card>
 <mat-card>
   <form [formGroup]="cvForm" (ngSubmit)="onSaveCV()" novalidate>
     <mat-form-field>
@@ -64,7 +64,7 @@
     <mat-card formArrayName="work">
       <mat-card>Work experience</mat-card>
       <div *ngFor="let wrk of cvForm.controls['work'].controls; let i = index;">
-        <mat-card>
+        <mat-card formGroupName="{{ i }}">
           <mat-form-field style="margin-right: 1rem;">
             <input matInput [matDatepicker]="wfPicker" formControlName="fromDate" placeholder="From date">
             <mat-datepicker-toggle matSuffix [for]="wfPicker"></mat-datepicker-toggle>
@@ -91,19 +91,19 @@
           <mat-form-field>
             <input matInput type="text" formControlName="description" placeholder="Description">
           </mat-form-field>
-          <button mat-raised-button color="primary" (click)="removeWork(i)">
+          <button mat-raised-button type="button" color="primary" (click)="removeWork(i)">
             Remove
           </button>
         </mat-card>
       </div>
-      <button mat-raised-button color="primary" (click)="addWork()">
+      <button mat-raised-button type="button" color="primary" (click)="addWork()">
         Add work
       </button>
     </mat-card>
     <mat-card formArrayName="education">
       <mat-card>Edication</mat-card>
       <div *ngFor="let edu of cvForm.controls['education'].controls; let i = index;">
-        <mat-card>
+        <mat-card formGroupName="{{ i }}">
           <mat-form-field style="margin-right: 1rem;">
             <input matInput [matDatepicker]="efPicker" formControlName="fromDate" placeholder="From date">
             <mat-datepicker-toggle matSuffix [for]="efPicker"></mat-datepicker-toggle>
@@ -130,12 +130,12 @@
           <mat-form-field>
             <input matInput type="text" formControlName="description" placeholder="Description">
           </mat-form-field>
-          <button mat-raised-button color="primary" (click)="removeEducation(i)">
+          <button mat-raised-button type="button" color="primary" (click)="removeEducation(i)">
             Remove education
           </button>
         </mat-card>
       </div>
-      <button mat-raised-button color="primary" (click)="addEducation()">
+      <button mat-raised-button type="button" color="primary" (click)="addEducation()">
         Add education
       </button>
     </mat-card>
@@ -145,18 +145,18 @@
         Please enter your last name.
       </mat-error>
     </mat-form-field>
-    <mat-card>
+    <mat-card formArrayName="foreignTonques">
       <div *ngFor="let lang of cvForm.controls['foreignTonques'].controls; let i = index;">
         <mat-card>
           <mat-form-field>
             <input matInput type="text" formControlName="{{ i }}" placeholder="Foreign tonque">
           </mat-form-field>
-          <button mat-raised-button color="primary" (click)="removeLang(i)">
+          <button mat-raised-button type="button" color="primary" (click)="removeLang(i)">
             Remove foreign language
           </button>
         </mat-card>
       </div>
-      <button mat-raised-button color="primary" (click)="addLang()">
+      <button mat-raised-button type="button" color="primary" (click)="addLang()">
         Add foreign language
       </button>
     </mat-card>

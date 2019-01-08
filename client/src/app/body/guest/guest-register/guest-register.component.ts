@@ -50,7 +50,10 @@ export class GuestRegisterComponent implements OnInit {
     email: new FormControl('', [Validators.required]),
   }, [passNoMatch()]);
 
-  message = 'Register as a student, company or admin!';
+  message = {
+    color: 'black',
+    text: 'Register as a student, company or admin!',
+  };
 
   industries: Array<Industry> = [];
 
@@ -75,7 +78,7 @@ export class GuestRegisterComponent implements OnInit {
         if (status[0] === 'success') {
           this.router.navigate(['guest/login']);
         } else {
-          this.message = status[1];
+          this.message = { color: 'red', text: status[1] };
         }
       })
     );
@@ -91,7 +94,7 @@ export class GuestRegisterComponent implements OnInit {
         if (status[0] === 'success') {
           this.router.navigate(['guest/login']);
         } else {
-          this.message = status[1];
+          this.message = { color: 'red', text: status[1] };
         }
       })
     );
@@ -106,7 +109,7 @@ export class GuestRegisterComponent implements OnInit {
         if (status[0] === 'success') {
           this.router.navigate(['guest/login']);
         } else {
-          this.message = status[1];
+          this.message = { color: 'red', text: status[1] };
         }
       })
     );

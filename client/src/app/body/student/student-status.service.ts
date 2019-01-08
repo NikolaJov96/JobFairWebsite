@@ -118,4 +118,16 @@ export class StudentStatusService {
     return subject;
   }
 
+  saveCV(cv): Subject<Array<string>> {
+    const subject = new Subject<Array<string>>();
+    const body = {
+      cv: cv,
+      studentId: this.student._id,
+    };
+    this.http.post(URL + '/cv', body).subscribe((res: ApiResponse) => {
+      subject.next([res.status, res.message]);
+    });
+    return subject;
+  }
+
 }

@@ -166,6 +166,8 @@ router.route('/register').post((req, res) => {
                 year: req.body.year,
                 graduated: req.body.graduated,
                 applications: [],
+                cvUploaded: false,
+                cv: null,
               };
               finalizeFunction();
             });
@@ -376,6 +378,25 @@ router.route('/conclude').post((req, res) => {
       body.message = 'concourse concluded';
       res.json(body);
     });
+  });
+});
+
+router.route('/cv').post((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  User.findById(req.body.studentId, (err, student) => {
+    if (handleError(err, res)) { return; }
+    student['stu'].cvUploaded = true;
+    student['stu'].cv = req.body.cv;
+    User.updateOne({ _id: req.body.studentId }, student, ((err, newStudent) => {
+      if (handleError(err, res)) { return; }
+      body.status = 'success';
+      body.message = 'cv changed';
+      res.json(body);
+    }));
   });
 });
 
