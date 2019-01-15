@@ -71,31 +71,19 @@
     <mat-card>
       <form [formGroup]="companyForm" (ngSubmit)="onRegisterCompany()" novalidate>
         <mat-form-field>
-          <input
-            matInput
-            type="text"
-            formControlName="username"
-            placeholder="Username">
+          <input matInput type="text" formControlName="username" placeholder="Username">
           <mat-error *ngIf="companyForm.controls['username'].hasError('required')">
             Please enter your username.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="password"
-            formControlName="newPass1"
-            placeholder="Password">
+          <input matInput type="password" formControlName="newPass1" placeholder="Password">
             <mat-error *ngIf="companyForm.controls['newPass1'].hasError('checkPassword')">
               {{ companyForm.controls['newPass1'].getError('checkPassword') }}
             </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="password"
-            formControlName="newPass2"
-            placeholder="Repeat password">
+          <input matInput type="password" formControlName="newPass2" placeholder="Repeat password">
             <mat-error *ngIf="companyForm.controls['newPass2'].hasError('checkPassword')">
               {{ companyForm.controls['newPass2'].getError('checkPassword') }}
             </mat-error>
@@ -104,88 +92,54 @@
           {{ companyForm.getError('passNoMatch') }}
         </mat-error>
         <mat-form-field>
-          <input
-            matInput
-            type="text"
-            formControlName="companyName"
-            placeholder="Company name">
+          <input matInput type="text" formControlName="companyName" placeholder="Company name">
           <mat-error *ngIf="companyForm.controls['companyName'].hasError('required')">
             Please enter your company name.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="text"
-            formControlName="address"
-            placeholder="Company address">
+          <input matInput type="text" formControlName="address" placeholder="Company address">
           <mat-error *ngIf="companyForm.controls['address'].hasError('required')">
             Please enter your company address.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="text"
-            formControlName="director"
-            placeholder="Company director's name">
+          <input matInput type="text" formControlName="director" placeholder="Company director's name">
           <mat-error *ngIf="companyForm.controls['director'].hasError('required')">
             Please enter your company director's name.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="number"
-            formControlName="taxNumber"
-            placeholder="Tex number">
+          <input matInput type="number" formControlName="taxNumber" placeholder="Tex number">
           <mat-error *ngIf="companyForm.controls['taxNumber'].hasError('required')">
             Please enter company's tax number.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="number"
-            formControlName="employees"
-            placeholder="Number of employees">
+          <input matInput type="number" formControlName="employees" placeholder="Number of employees">
           <mat-error *ngIf="companyForm.controls['employees'].hasError('required')">
             Please enter number of employees.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="email"
-            formControlName="email"
-            placeholder="Email">
+          <input matInput type="email" formControlName="email" placeholder="Email">
           <mat-error *ngIf="companyForm.controls['email'].hasError('required')">
             Please enter your email.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="text"
-            formControlName="website"
-            placeholder="Website address">
+          <input matInput type="text" formControlName="website" placeholder="Website address">
           <mat-error *ngIf="companyForm.controls['website'].hasError('required')">
             Please enter website address.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <mat-select
-            placeholder="Industry"
-            formControlName="industry">
+          <mat-select placeholder="Industry" formControlName="industry">
             <mat-option *ngFor="let ind of industries" value="{{ ind._id }}">{{ ind.name }}</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="text"
-            formControlName="field"
-            placeholder="Specific field">
+          <input matInput type="text" formControlName="field" placeholder="Specific field">
           <mat-error *ngIf="companyForm.controls['field'].hasError('required')">
             Please enter field of work.
           </mat-error>
@@ -204,31 +158,19 @@
     <mat-card>
       <form [formGroup]="adminForm" (ngSubmit)="onRegisterAdmin()" novalidate>
         <mat-form-field>
-          <input
-            matInput
-            type="text"
-            formControlName="username"
-            placeholder="Username">
+          <input matInput type="text" e="username" placeholder="Username">
           <mat-error *ngIf="adminForm.controls['username'].hasError('required')">
             Please enter your username.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="password"
-            formControlName="newPass1"
-            placeholder="Password">
+          <input matInput type="password" formControlName="newPass1" placeholder="Password">
             <mat-error *ngIf="adminForm.controls['newPass1'].hasError('checkPassword')">
               {{ adminForm.controls['newPass1'].getError('checkPassword') }}
             </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="password"
-            formControlName="newPass2"
-            placeholder="Repeat password">
+          <input matInput type="password" formControlName="newPass2" placeholder="Repeat password">
             <mat-error *ngIf="adminForm.controls['newPass2'].hasError('checkPassword')">
               {{ adminForm.controls['newPass2'].getError('checkPassword') }}
             </mat-error>
@@ -237,41 +179,25 @@
           {{ adminForm.getError('passNoMatch') }}
         </mat-error>
         <mat-form-field>
-          <input
-            matInput
-            type="text"
-            formControlName="firstName"
-            placeholder="First name">
+          <input matInput type="text" formControlName="firstName" placeholder="First name">
           <mat-error *ngIf="adminForm.controls['firstName'].hasError('required')">
             Please enter your first name.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="text"
-            formControlName="lastName"
-            placeholder="Last name">
+          <input matInput type="text" formControlName="lastName" placeholder="Last name">
           <mat-error *ngIf="adminForm.controls['lastName'].hasError('required')">
             Please enter your last name.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="number"
-            formControlName="phone"
-            placeholder="Phone number">
+          <input matInput type="number" formControlName="phone" placeholder="Phone number">
           <mat-error *ngIf="adminForm.controls['phone'].hasError('required')">
             Please enter your phone number.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input
-            matInput
-            type="email"
-            formControlName="email"
-            placeholder="Email">
+          <input matInput type="email" formControlName="email" placeholder="Email">
           <mat-error *ngIf="adminForm.controls['email'].hasError('required')">
             Please enter your email.
           </mat-error>

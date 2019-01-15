@@ -3,13 +3,11 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import { addDummyData } from './dbDummyData';
-import { User, UserSchema } from './models/user';
+import { User } from './models/user';
 import { UserType } from './/models/userType';
 import { Industry } from './models/industry';
-import { CommandCursor } from 'mongodb';
 import { JobType } from './models/jobType';
 import { Concourse } from './models/concourse';
-import { POINT_CONVERSION_COMPRESSED } from 'constants';
 
 const PORT = 4000;
 
@@ -102,7 +100,7 @@ router.route('/change-pass').post((req, res) => {
           body.status = 'error';
           body.message = 'New passwords not matching';
         } else {
-          user['password'] = req.body.newPass2;
+          user.set('password', req.body.newPass1)
           user.save((err) => {
             if (handleError(err, res)) { return; }
               body.status = 'success';
@@ -371,7 +369,7 @@ router.route('/conclude').post((req, res) => {
     for (let i = 0; i < con['applicants'].length; i++) {
       con['applicants'][i].accepted =  req.body.arr[i] == null ? false : true;
     }
-    con['concluded'] = true;
+    con.set('concluded', true);
     con.save((err) => {
       if (handleError(err, res)) { return; }
       body.status = 'success';
