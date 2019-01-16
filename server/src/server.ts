@@ -411,9 +411,11 @@ router.route('/cv').post((req, res) => {
   };
   User.findById(req.body.studentId, (err, student) => {
     if (handleError(err, res)) { return; }
-    student['stu'].cvUploaded = true;
-    student['stu'].cv = req.body.cv;
-    User.updateOne({ _id: req.body.studentId }, student, ((err, newStudent) => {
+    const stu = student.get('stu');
+    stu.cvUploaded = true;
+    stu.cv = req.body.cv;
+    student.set('stu', stu);
+    student.save(((err) => {
       if (handleError(err, res)) { return; }
       body.status = 'success';
       body.message = 'cv changed';
