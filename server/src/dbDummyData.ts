@@ -51,6 +51,7 @@ export function addDummyData() {
           password: 'qweQWE123#',
           email: 'student@mail.com',
           type: id[0]._id,
+          imagePath: '',
           stu: {
             firstName: 'Johin',
             lastName: 'Smith',
@@ -74,6 +75,7 @@ export function addDummyData() {
             password: 'asdASD123#',
             email: 'company@mail.com',
             type: userId[0]._id,
+            imagePath: '',
             stu: null,
             com: {
               name: 'The best company',
@@ -97,6 +99,7 @@ export function addDummyData() {
           password: 'zxcZXC123#',
           email: 'admin@mail.com',
           type: id[0]._id,
+          imagePath: '',
           stu: null,
           com: null, 
           adm: {

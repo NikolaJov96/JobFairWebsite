@@ -59,6 +59,13 @@
         <mat-checkbox formControlName="graduated">
           Graduated
         </mat-checkbox><br>
+        <div>
+          <button mat-stroked-button type="button" (click)="studentPicker.click()">Pick image</button>
+          <input type="file" #studentPicker (change)="onStudentImage($event)">
+        </div>
+        <div class="image-preview" *ngIf="studentImage && studentImage != null && studentForm.get('image').valid">
+          <img [src]="studentImage" [alt]="'Title123'">
+        </div>
         <button mat-raised-button color="accent" [disabled]="!studentForm.valid" type="submit">
           Register
         </button>
@@ -144,6 +151,13 @@
             Please enter field of work.
           </mat-error>
         </mat-form-field>
+        <div>
+          <button mat-stroked-button type="button" (click)="companyPicker.click()">Pick image</button>
+          <input type="file" #companyPicker (change)="onCompanyImage($event)">
+        </div>
+        <div class="image-preview" *ngIf="companyImage && companyImage != null && companyForm.get('image').valid">
+          <img [src]="companyImage" [alt]="'Title123'">
+        </div>
         <button
           mat-raised-button
           color="accent"
@@ -158,7 +172,7 @@
     <mat-card>
       <form [formGroup]="adminForm" (ngSubmit)="onRegisterAdmin()" novalidate>
         <mat-form-field>
-          <input matInput type="text" e="username" placeholder="Username">
+          <input matInput type="text" formControlName="username" placeholder="Username">
           <mat-error *ngIf="adminForm.controls['username'].hasError('required')">
             Please enter your username.
           </mat-error>
@@ -202,10 +216,17 @@
             Please enter your email.
           </mat-error>
         </mat-form-field>
+        <div>
+          <button mat-stroked-button type="button" (click)="adminPicker.click()">Pick image</button>
+          <input type="file" #adminPicker (change)="onAdminImage($event)">
+        </div>
+        <div class="image-preview" *ngIf="adminImage && adminImage != null && adminForm.get('image').valid">
+          <img [src]="adminImage" [alt]="'Title123'">
+        </div>
         <button
           mat-raised-button
           color="accent"
-          [disabled]="!adminForm.valid"
+          [disabled]="adminForm.invalid"
           type="submit">Register</button>
       </form>
     </mat-card>

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { checkPassword, passNoMatch } from '../guest-utils';
 import { NavProviderService } from 'src/app/header/nav-provider.service';
 import { Industry } from 'src/app/interfaces';
 import { GuestStatusService } from '../guest-status.service';
 import { Router } from '@angular/router';
+import { checkImage } from '../../image.validator';
 
 @Component({
   selector: 'app-guest-register',
@@ -23,6 +24,7 @@ export class GuestRegisterComponent implements OnInit {
     email: new FormControl('', [Validators.required]),
     year: new FormControl('', [Validators.required]),
     graduated: new FormControl('', [Validators.required]),
+    image: new FormControl(null, { validators: [Validators.required], asyncValidators: [checkImage] }),
   }, [passNoMatch()]);
 
   companyForm = new FormGroup({
@@ -38,6 +40,7 @@ export class GuestRegisterComponent implements OnInit {
     website: new FormControl('', [Validators.required]),
     industry: new FormControl('', [Validators.required]),
     field: new FormControl('', [Validators.required]),
+    image: new FormControl(null, { validators: [Validators.required], asyncValidators: [checkImage] }),
   }, [passNoMatch()]);
 
   adminForm = new FormGroup({
@@ -48,7 +51,12 @@ export class GuestRegisterComponent implements OnInit {
     lastName: new FormControl('', [Validators.required]),
     phone: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
+    image: new FormControl(null, { validators: [Validators.required], asyncValidators: [checkImage] }),
   }, [passNoMatch()]);
+
+  studentImage = null;
+  companyImage = null;
+  adminImage = null;
 
   message = {
     color: 'black',
@@ -88,7 +96,6 @@ export class GuestRegisterComponent implements OnInit {
     if (this.companyForm.invalid) { return; }
     const data = Object.assign({}, this.companyForm.value);
     data.type = 'company';
-    data.industry = this.industries[data.industry].name;
     this.guestStatusService.register(data).subscribe(
       (status => {
         if (status[0] === 'success') {
@@ -113,6 +120,39 @@ export class GuestRegisterComponent implements OnInit {
         }
       })
     );
+  }
+
+  onStudentImage(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.studentForm.patchValue({image: file});
+    this.studentForm.get('image').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.studentImage = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  onCompanyImage(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.companyForm.patchValue({image: file});
+    this.companyForm.get('image').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.companyImage = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  onAdminImage(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.adminForm.patchValue({image: file});
+    this.adminForm.get('image').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.adminImage = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
 
 }

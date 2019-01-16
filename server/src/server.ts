@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -12,9 +13,33 @@ import { Concourse } from './models/concourse';
 const PORT = 4000;
 
 const app = express();
+const multer = require('multer');
+
+const IMGAGE_TYPE_MAP = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg',
+}
+
+const imageStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = IMGAGE_TYPE_MAP[file.mimetype];
+    let error = new Error('ivalid file type');
+    if (isValid) {
+      error = null;
+    }
+    cb(error, 'images');
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(' ').join('-');
+    const ext = IMGAGE_TYPE_MAP[file.mimetype];
+    cb(null, name + '-' + Date.now() + '.' + ext);
+  }
+});
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use("/images", express.static(path.join('images')));
 
 mongoose.connect('mongodb://localhost:27017/job_fair');
 
@@ -116,12 +141,13 @@ router.route('/change-pass').post((req, res) => {
   });
 });
 
-router.route('/register').post((req, res) => {
+router.route('/register').post(multer({ storage: imageStorage }).single('image'), (req: express.Request & { file: any }, res) => {
   const body: ApiResponse = {
     status: 'error',
     message: '',
     data: null,
   };
+
   User.findOne({ username: req.body.username }, (err, user) => {
     if (handleError(err, res)) { return; }
     if (user != null) {
@@ -132,11 +158,13 @@ router.route('/register').post((req, res) => {
         body.status = 'error';
         body.message = 'New passwords not matching';
       } else {
+        const url = req.protocol + '://' + req.get('host');
         const newUser = {
           username: req.body.username,
           password: req.body.newPass1,
           email: req.body.email,
           type: null,
+          imagePath: url + '/images/' + req.file.filename,
           stu: null,
           com: null, 
           adm: null, 
@@ -173,27 +201,24 @@ router.route('/register').post((req, res) => {
           case 'company':
             UserType.findOne({ name: 'company' }, '_id', (err, userId) => {
               if (err) { console.log(err); return; }
-              Industry.findOne({ name: req.body.industry }, '_id', (err, industryId) => {
-                if (err) { console.log(err); return; }
-                if (Industry === null) {
-                  body.status = 'error';
-                  body.message = 'unhandled error';
-                } else {
-                  newUser.type = userId._id,
-                  newUser.com = {
-                    name: req.body.companyName,
-                    city: req.body.address,
-                    director: req.body.director,
-                    taxNumber: req.body.taxNumber,
-                    employees: req.body.employees,
-                    website: req.body.website,
-                    industry: industryId._id,
-                    field: req.body.field,
-                    concourses: [],
-                  };
-                  finalizeFunction();
-                }
-              });
+              if (Industry === null) {
+                body.status = 'error';
+                body.message = 'unhandled error';
+              } else {
+                newUser.type = userId._id,
+                newUser.com = {
+                  name: req.body.companyName,
+                  city: req.body.address,
+                  director: req.body.director,
+                  taxNumber: req.body.taxNumber,
+                  employees: req.body.employees,
+                  website: req.body.website,
+                  industry: req.body.industry,
+                  field: req.body.field,
+                  concourses: [],
+                };
+                finalizeFunction();
+              }
             });
             return;
           case 'admin':
@@ -216,7 +241,6 @@ router.route('/register').post((req, res) => {
         }
       }
     }
-  
     res.json(body);
   });
 });

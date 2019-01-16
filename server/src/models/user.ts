@@ -5,6 +5,7 @@ export const UserSchema = new mongoose.Schema({
   password: { type: String },
   email: { type: String },
   type: { type: mongoose.Schema.Types.ObjectId, ref: 'UserType' },
+  imagePath: { type: String },
   stu: { type: {
     firstName: { type: String },
     lastName: { type: String },

@@ -56,8 +56,15 @@ export class GuestStatusService {
   }
 
   register(data: any) {
+    const image = data.image;
+    const postData = new FormData();
+    for (const key in data) {
+      if (key === 'image') { continue; }
+      postData.append(key, data[key]);
+    }
+    postData.append('image', image, data.username);
     const subject: Subject<Array<string>> = new Subject();
-    this.http.post(URL + '/register', data).subscribe((res: ApiResponse) => {
+    this.http.post(URL + '/register', postData).subscribe((res: ApiResponse) => {
       subject.next([res.status, res.message]);
     });
     return subject;
