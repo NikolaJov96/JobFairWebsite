@@ -29,6 +29,17 @@ export const checkImage = (control: AbstractControl): Promise<{[key: string]: an
       }
       if (isValid) {
         observer.next(null);
+
+        const urlReader = new FileReader();
+        urlReader.addEventListener('loadend', () => {
+          const image = new Image;
+          image.onload = () => {
+            console.log(image.width);
+            console.log(image.height);
+          };
+          image.src = (urlReader.result as string);
+        });
+        urlReader.readAsDataURL(file);
       } else {
         observer.next({ invalidImage: true });
       }
