@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { ApiResponse, URL } from 'src/app/interfaces';
 import { StudentStatusService } from '../student/student-status.service';
 import { CompanyStatusService } from '../company/company-status.service';
+import { AdminStatusService } from '../admin/admin-status.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class GuestStatusService {
 
   constructor(private http: HttpClient,
     private studentStatusService: StudentStatusService,
-    private companyStatusService: CompanyStatusService) { }
+    private companyStatusService: CompanyStatusService,
+    private adminStatusService: AdminStatusService) { }
 
   login(username: string, password: string) {
     const body = {
@@ -31,11 +33,22 @@ export class GuestStatusService {
           subject.next(['student', res.message]);
           this.studentStatusService.setStudent(res.data);
           break;
-        case 'admin': subject.next(['admin', res.message]); break;
+        case 'admin':
+          subject.next(['admin', res.message]);
+          this.adminStatusService.setAdmin(res.data);
+          break;
         default: subject.next([res.status, res.message]); break;
       }
     });
 
+    return subject;
+  }
+
+  logout(): Subject<any> {
+    const subject = new Subject<any>();
+    this.http.post(URL + '/logout', {}).subscribe((res: ApiResponse) => {
+      subject.next();
+    });
     return subject;
   }
 

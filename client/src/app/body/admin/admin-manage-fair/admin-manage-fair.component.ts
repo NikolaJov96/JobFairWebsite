@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Time } from '@angular/common';
+import { AdminStatusService } from '../admin-status.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-manage-fair',
@@ -10,10 +11,10 @@ import { Time } from '@angular/common';
 export class AdminManageFairComponent implements OnInit {
 
   dateForm = new FormGroup({
-    studStartDate: new FormControl('', [Validators.required]),
-    studEndDate: new FormControl('', [Validators.required]),
-    comStartDate: new FormControl('', [Validators.required]),
-    comEndDate: new FormControl('', [Validators.required]),
+    studentStart: new FormControl('', [Validators.required]),
+    studentEnd: new FormControl('', [Validators.required]),
+    companyStart: new FormControl('', [Validators.required]),
+    companyEnd: new FormControl('', [Validators.required]),
   });
 
   firstStep: {
@@ -57,11 +58,28 @@ export class AdminManageFairComponent implements OnInit {
     options: Array<string>;
   }> = null;
 
+  deadlineUpdateMessage = '';
   openedForm = -1;
+  fair = null;
 
-  constructor() { }
+  constructor(private router: Router,
+    private adminStatusService: AdminStatusService) { }
 
   ngOnInit() {
+    if (this.adminStatusService.getAdmin() == null) {
+      this.router.navigate(['/guest/login']);
+      return;
+    }
+    this.adminStatusService.getFair().subscribe(
+      (status => {
+        this.fair = status;
+      })
+    );
+    this.adminStatusService.getDeadlineDates().subscribe(
+      (status => {
+        this.dateForm.patchValue(status);
+      })
+    );
   }
 
   confirmInit() {
@@ -77,7 +95,14 @@ export class AdminManageFairComponent implements OnInit {
   }
 
   onDatesChange() {
-
+    this.adminStatusService.updateDeadlines(this.dateForm.value).subscribe(
+      status => {
+        if (status === 'success') {
+          this.deadlineUpdateMessage = 'deadlines updated';
+          setTimeout(() => this.deadlineUpdateMessage = '', 4000);
+        }
+      }
+    );
   }
 
   s1Dummy() {

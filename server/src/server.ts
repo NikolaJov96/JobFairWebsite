@@ -1,5 +1,6 @@
 import path from 'path';
 import express from 'express';
+import session from 'express-session'
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
@@ -11,6 +12,7 @@ import { Industry } from './models/industry';
 import { JobType } from './models/jobType';
 import { Concourse } from './models/concourse';
 import { DeadlineDate } from './models/deadlineDate';
+import { Fair } from './models/fair';
 
 const PORT = 4000;
 
@@ -53,6 +55,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use("/images", express.static(path.join('images')));
 app.use("/pdfs", express.static(path.join('pdfs')));
+
+app.use(session({ secret: 'session-secret' }));
 
 mongoose.connect('mongodb://localhost:27017/job_fair');
 
@@ -105,6 +109,8 @@ router.route('/login').post((req, res) => {
       } else {
         UserType.findById( user['type'], (err, userType) => {
           if (handleError(err, res)) { return; }
+          req.session.user = user;
+          req.session.type = userType['name'];
           body.status = userType['name'];
           body.message = '';
           body.data = user;
@@ -467,7 +473,67 @@ router.route('/cv').post((req, res) => {
       res.json(body);
     }
   });
-  
+});
+
+router.route('/fair').get((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  Fair.findOne({}, {}, { sort: { 'EndDate': -1 } }, (err, fair) => {
+    if (handleError(err, res)) { return; }
+    const now = new Date();
+    if (fair == null || fair.get('EndDate') < now) {
+      body.status = 'success';
+      body.message = 'no current fair';
+    } else {
+      body.status = 'success';
+      body.message = 'current fair';
+      body.data = fair;
+    }
+    res.json(body);
+  });
+});
+
+router.route('/deadlines').get((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  DeadlineDate.findOne((err, deadlineDates) => {
+    if (handleError(err, res)) { return; }
+    body.status = 'success';
+    body.message = 'deadlines';
+    body.data = deadlineDates;
+    res.json(body);
+  });
+});
+
+router.route('/deadlines').post((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  DeadlineDate.updateOne({}, req.body, (err) => {
+    if (handleError(err, res)) { return; }
+    body.status = 'success';
+    body.message = 'deadlines updated';
+    res.json(body);
+  });
+});
+
+router.route('/logout').post((req, res) => {
+  const body: ApiResponse = {
+    status: 'success',
+    message: 'logged out',
+    data: null,
+  };
+  req.session.destroy(err => {
+    res.json(body);
+  });
 });
 
 app.use('/', router);

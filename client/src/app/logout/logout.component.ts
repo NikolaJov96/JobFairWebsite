@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GuestStatusService } from '../body/guest/guest-status.service';
 
 @Component({
   selector: 'app-logout',
@@ -8,10 +9,15 @@ import { Router } from '@angular/router';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+    private guetStatusService: GuestStatusService) { }
 
   ngOnInit() {
-    this.router.navigate(['/guest/login']);
+    this.guetStatusService.logout().subscribe(
+      status => {
+        this.router.navigate(['/guest/login']);
+      }
+    );
   }
 
 }

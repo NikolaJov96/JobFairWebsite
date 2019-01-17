@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="fair==null">
   <mat-card>Set up a new fair!</mat-card>
   <mat-card><mat-horizontal-stepper linear #stepper>
     <mat-step>
@@ -88,7 +88,7 @@
   </mat-horizontal-stepper></mat-card>
 </div>
 
-<div>
+<div *ngIf="fair!=null">
   <mat-card>
     Manage the fair!
     <button mat-button color="primary" (click)="toAcceptDummy()">Dummy</button>
@@ -116,36 +116,37 @@
     </mat-expansion-panel>
   </mat-accordion>
   <mat-card *ngIf="appliedComs == null || appliedComs.length === 0">No companies waiting for application approval!</mat-card>
-
-  <mat-card>
-    <form [formGroup]="dateForm" (ngSubmit)="onDatesChange()" novalidate>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput [matDatepicker]="ssPicker" formControlName="studStartDate" placeholder="Student start date">
-        <mat-datepicker-toggle matSuffix [for]="ssPicker"></mat-datepicker-toggle>
-        <mat-datepicker #ssPicker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput [matDatepicker]="sePicker" formControlName="studEndDate" placeholder="Student end date">
-        <mat-datepicker-toggle matSuffix [for]="sePicker"></mat-datepicker-toggle>
-        <mat-datepicker #sePicker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput [matDatepicker]="csPicker" formControlName="comStartDate" placeholder="Company start date">
-        <mat-datepicker-toggle matSuffix [for]="csPicker"></mat-datepicker-toggle>
-        <mat-datepicker #csPicker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field style="width: 8rem; margin-right: 1rem;">
-        <input matInput [matDatepicker]="cePicker" formControlName="comEndDate" placeholder="Company end date">
-        <mat-datepicker-toggle matSuffix [for]="cePicker"></mat-datepicker-toggle>
-        <mat-datepicker #cePicker></mat-datepicker>
-      </mat-form-field>
-      <button
-        mat-raised-button
-        color="accent"
-        [disabled]="!dateForm.valid"
-        type="submit">
-        Change dates
-      </button>
-    </form>
-  </mat-card>
 </div>
+
+<mat-card>
+  <form [formGroup]="dateForm" (ngSubmit)="onDatesChange()" novalidate>
+    <mat-form-field style="width: 8rem; margin-right: 1rem;">
+      <input matInput [matDatepicker]="ssPicker" formControlName="studentStart" placeholder="Student start date">
+      <mat-datepicker-toggle matSuffix [for]="ssPicker"></mat-datepicker-toggle>
+      <mat-datepicker #ssPicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field style="width: 8rem; margin-right: 1rem;">
+      <input matInput [matDatepicker]="sePicker" formControlName="studentEnd" placeholder="Student end date">
+      <mat-datepicker-toggle matSuffix [for]="sePicker"></mat-datepicker-toggle>
+      <mat-datepicker #sePicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field style="width: 8rem; margin-right: 1rem;">
+      <input matInput [matDatepicker]="csPicker" formControlName="companyStart" placeholder="Company start date">
+      <mat-datepicker-toggle matSuffix [for]="csPicker"></mat-datepicker-toggle>
+      <mat-datepicker #csPicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field style="width: 8rem; margin-right: 1rem;">
+      <input matInput [matDatepicker]="cePicker" formControlName="companyEnd" placeholder="Company end date">
+      <mat-datepicker-toggle matSuffix [for]="cePicker"></mat-datepicker-toggle>
+      <mat-datepicker #cePicker></mat-datepicker>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="!dateForm.valid"
+      type="submit">
+      Change dates
+    </button>
+    <span>{{ deadlineUpdateMessage }}</span>
+  </form>
+</mat-card>
