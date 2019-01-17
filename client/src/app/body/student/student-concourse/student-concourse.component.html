@@ -2,7 +2,7 @@
   <span [style.color]="message.color">{{ message.text }}</span><br>
   <button mat-raised-button color="primary" (click)="onBack()">Back</button>
 </mat-card>
-<mat-card>
+<mat-card *ngIf="com != null">
   <p>Company name: {{ com.com.name }}</p>
   <p>Position name: {{ con.name }}</p>
   <p>Position type: {{ getJobType(con.jobType) }}</p>
