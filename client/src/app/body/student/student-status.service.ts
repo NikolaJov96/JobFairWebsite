@@ -125,6 +125,9 @@ export class StudentStatusService {
       studentId: this.student._id,
     };
     this.http.post(URL + '/cv', body).subscribe((res: ApiResponse) => {
+      if (res.status === 'success') {
+        this.student.stu.cv = body.cv;
+      }
       subject.next([res.status, res.message]);
     });
     return subject;

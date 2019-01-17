@@ -9,6 +9,7 @@ import { UserType } from './/models/userType';
 import { Industry } from './models/industry';
 import { JobType } from './models/jobType';
 import { Concourse } from './models/concourse';
+import { DeadlineDate } from './models/deadlineDate';
 
 const PORT = 4000;
 
@@ -409,19 +410,33 @@ router.route('/cv').post((req, res) => {
     message: '',
     data: null,
   };
-  User.findById(req.body.studentId, (err, student) => {
+  DeadlineDate.findOne({}, (err, deadlineDate) => {
     if (handleError(err, res)) { return; }
-    const stu = student.get('stu');
-    stu.cvUploaded = true;
-    stu.cv = req.body.cv;
-    student.set('stu', stu);
-    student.save(((err) => {
-      if (handleError(err, res)) { return; }
-      body.status = 'success';
-      body.message = 'cv changed';
+    const studentStart = deadlineDate.get('studentStart') as Date;
+    const studentEnd = deadlineDate.get('studentEnd') as Date;
+    const now = new Date();
+    if (studentStart < now && now < studentEnd) {
+      User.findById(req.body.studentId, (err, student) => {
+        if (handleError(err, res)) { return; }
+        const stu = student.get('stu');
+        stu.cvUploaded = true;
+        stu.cv = req.body.cv;
+        student.set('stu', stu);
+        console.log(student.get('stu.cv'));
+        User.updateOne({ _id: student._id }, { stu: stu }, (err) => {
+          if (handleError(err, res)) { return; }
+          body.status = 'success';
+          body.message = 'cv changed';
+          res.json(body);
+        });
+      });
+    } else {
+      body.status = 'error';
+      body.message = 'cv uploading ended on: ' + studentEnd.toString();
       res.json(body);
-    }));
+    }
   });
+  
 });
 
 app.use('/', router);
