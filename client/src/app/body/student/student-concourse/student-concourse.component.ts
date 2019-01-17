@@ -51,8 +51,14 @@ export class StudentConcourseComponent implements OnInit {
   }
 
   onApply() {
+    console.log(this.applyForm.value.coverLetterPdf);
+    console.log(this.applyForm.controls.pdf);
     if (this.applyForm.invalid) {
       this.message = { color: 'red', text: 'invalid apply form' };
+      return;
+    }
+    if (this.applyForm.value.coverLetterPdf && (!this.applyForm.controls.pdf.valid || this.applyForm.value.pdf === null)) {
+      this.message = { color: 'red', text: 'invalid pdf' };
       return;
     }
     this.studentStatusService.apply(this.applyForm.value).subscribe(

@@ -379,6 +379,12 @@ router.route('/apply').post(multer({ storage: pdfStorage }).single('pdf'), (req:
       res.json(body);
       return;
     }
+    if (con.get('concluded')) {
+      body.status = 'error';
+      body.message = 'concourse concluded';
+      res.json(body);
+      return;
+    }
     if (con['applicants'].includes(req.body.studentId)) {
       body.message = 'already applied';
       res.json(body);

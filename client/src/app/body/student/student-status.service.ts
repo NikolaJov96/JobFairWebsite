@@ -118,6 +118,7 @@ export class StudentStatusService {
     const postData = new FormData();
     for (const key in body) {
       if (key === 'pdf' || key === 'coverLetterPdf') { continue; }
+      if (body[key] === null) { body[key] = ''; }
       postData.append(key, body[key]);
     }
     if (body.coverLetterPdf) {
