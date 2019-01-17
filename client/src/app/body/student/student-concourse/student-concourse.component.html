@@ -15,7 +15,7 @@
         Upload PDF
       </mat-checkbox>
     </div>
-    <mat-form-field *ngIf="!applyForm.value.coverLetterType">
+    <mat-form-field *ngIf="!applyForm.value.coverLetterPdf">
       <textarea
         matInput
         placeholder="Cover letter"
@@ -23,6 +23,15 @@
         rows="5">
       </textarea>
     </mat-form-field>
+    <div *ngIf="applyForm.value.coverLetterPdf">
+      <div>
+        <button mat-stroked-button type="button" (click)="pdfPicker.click()">Pick pdf</button>
+        <input type="file" #pdfPicker (change)="onLetterUpload($event)">
+      </div>
+      <div class="image-preview" *ngIf="letterPDF && letterPDF != null && applyForm.get('pdf').valid">
+        Letter uploaded
+      </div>
+    </div>
     <button mat-raised-button color="accent" [disabled]="!applyForm.valid" type="submit">Apply</button>
   </form>
 </mat-card>

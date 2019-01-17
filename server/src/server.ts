@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import fs from 'fs';
 import { addDummyData } from './dbDummyData';
 import { User } from './models/user';
 import { UserType } from './/models/userType';
@@ -38,9 +39,20 @@ const imageStorage = multer.diskStorage({
   }
 });
 
+const pdfStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'pdfs');
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(' ').join('-');
+    cb(null, name + '-' + Date.now() + '.pdf');
+  }
+});
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/images", express.static(path.join('images')));
+app.use("/pdfs", express.static(path.join('pdfs')));
 
 mongoose.connect('mongodb://localhost:27017/job_fair');
 
@@ -353,7 +365,7 @@ router.route('/job-types').get((req, res) => {
   });
 });
 
-router.route('/apply').post((req, res) => {
+router.route('/apply').post(multer({ storage: pdfStorage }).single('pdf'), (req: express.Request & { file: any }, res) => {
   const body: ApiResponse = {
     status: 'error',
     message: '',
@@ -361,16 +373,30 @@ router.route('/apply').post((req, res) => {
   };
   Concourse.findById(req.body.conId, (err, con) => {
     if (handleError(err, res)) { return; }
+    if (con == null) {
+      body.status = 'error';
+      body.message = 'invalid concourse';
+      res.json(body);
+      return;
+    }
     if (con['applicants'].includes(req.body.studentId)) {
       body.message = 'already applied';
       res.json(body);
     } else {
+      const url = req.protocol + '://' + req.get('host');
+      let fileName = 'cover-letter' + Date.now() + '.txt';
+      if (req.file && req.file.filename && req.file.filename.length > 0) {
+        fileName = req.file.filename;
+      }
       const applicant = {
         student: req.body.studentId,
-        coverLetterExtension: req.body.coverLetterExtension,
+        coverLetterExtension: req.body.coverLetterPdf,
+        filePath: url + '/pdfs/' + fileName,
       }
-      if (req.body.coverLetterExtension === 'txt') {
-        // save to file
+      if (req.body.coverLetterPdf === 'txt') {
+        fs.writeFile('pdfs/' + fileName, req.body.coverLetterText, function(err) {
+          if (handleError(err, res)) { return; }
+        }); 
       }
       con['applicants'].push(applicant);
       con.save((err) => {
@@ -422,7 +448,6 @@ router.route('/cv').post((req, res) => {
         stu.cvUploaded = true;
         stu.cv = req.body.cv;
         student.set('stu', stu);
-        console.log(student.get('stu.cv'));
         User.updateOne({ _id: student._id }, { stu: stu }, (err) => {
           if (handleError(err, res)) { return; }
           body.status = 'success';

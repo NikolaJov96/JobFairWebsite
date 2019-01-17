@@ -4,7 +4,7 @@ import { StudentStatusService } from '../student-status.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ConcourseEntity, JobType, CompanyConcoursesEntity } from 'src/app/interfaces';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
+import { checkPDF } from '../../pdf.validator';
 
 @Component({
   selector: 'app-student-concourse',
@@ -16,6 +16,7 @@ export class StudentConcourseComponent implements OnInit {
   applyForm = new FormGroup({
     coverLetterPdf: new FormControl(),
     coverLetterText: new FormControl(),
+    pdf: new FormControl(null, { validators: [], asyncValidators: [] }),
   });
 
   com: CompanyConcoursesEntity;
@@ -25,6 +26,7 @@ export class StudentConcourseComponent implements OnInit {
     color: 'black',
     text: 'Apply to this concourse!',
   };
+  letterPDF = null;
 
   constructor(
     private navProviderService: NavProviderService,
@@ -49,24 +51,32 @@ export class StudentConcourseComponent implements OnInit {
   }
 
   onApply() {
-    if (this.applyForm.invalid) { return; }
-    const body = {
-      coverLetterExtension: 'txt',
-      content: this.applyForm.value.coverLetterText,
-    };
-    if (this.applyForm.value.coverLetterPdf) {
-      body['coverLetterExtension'] = 'pdf';
-      // constent: pdf file
+    if (this.applyForm.invalid) {
+      this.message = { color: 'red', text: 'invalid apply form' };
+      return;
     }
-    this.studentStatusService.apply(body).subscribe(
+    this.studentStatusService.apply(this.applyForm.value).subscribe(
       (status => {
         if (status[0] === 'success') {
           this.router.navigate(['student/overview-coms']);
+        } else if (status[0] === 'error') {
+          this.message = { color: 'red', text: status[1] };
         } else {
           this.message = { color: 'balck', text: status[1] };
         }
       })
     );
+  }
+
+  onLetterUpload(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.applyForm.patchValue({ pdf: file });
+    this.applyForm.get('pdf').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.letterPDF = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
 
   onBack() {

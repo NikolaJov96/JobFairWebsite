@@ -110,9 +110,25 @@ export class StudentStatusService {
 
   apply(body): Subject<Array<string>> {
     const subject = new Subject<Array<string>>();
-    body.conId = this.selectedCon._id;
-    body.studentId = this.student._id;
-    this.http.post(URL + '/apply', body).subscribe((res: ApiResponse) => {
+    if (!this.student.stu.cvUploaded) {
+      setTimeout(() => subject.next(['error', 'cv not uploaded']), 1000);
+      return subject;
+    }
+    const pdf = body.pdf;
+    const postData = new FormData();
+    for (const key in body) {
+      if (key === 'pdf' || key === 'coverLetterPdf') { continue; }
+      postData.append(key, body[key]);
+    }
+    if (body.coverLetterPdf) {
+      postData.append('pdf', pdf, 'cover-letter');
+      postData.append('coverLetterPdf', 'pdf');
+    } else {
+      postData.append('coverLetterPdf', 'txt');
+    }
+    postData.append('conId', this.selectedCon._id);
+    postData.append('studentId', this.student._id);
+    this.http.post(URL + '/apply', postData).subscribe((res: ApiResponse) => {
       subject.next([res.status, res.message]);
     });
     return subject;
@@ -127,6 +143,7 @@ export class StudentStatusService {
     this.http.post(URL + '/cv', body).subscribe((res: ApiResponse) => {
       if (res.status === 'success') {
         this.student.stu.cv = body.cv;
+        this.student.stu.cvUploaded = true;
       }
       subject.next([res.status, res.message]);
     });

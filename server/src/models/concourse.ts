@@ -12,6 +12,7 @@ export const ConcourseSchema = new mongoose.Schema({
   applicants: [{
     student: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     coverLetterExtension: { type: String },
+    filePath: { type: String },
     accepted: { type: Boolean },
   }],
 });
