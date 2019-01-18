@@ -83,8 +83,15 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Offered packags</ng-template>
-      <button mat-button color="primary" (click)="s3Dummy()">Dummy</button>
-      <mat-card *ngIf="thirdStep == null">Uploaded info</mat-card>
+      <div>
+        <div>
+          <button mat-stroked-button type="button" (click)="pdfPicker2.click()">Pick json</button>
+          <input [hidden]="'true'" type="file" #pdfPicker2 (change)="onSecondJson($event)">
+        </div>
+        <div *ngIf="!thirdStepValid">
+          <p [style.color]="'red'">Bad json file</p>
+        </div>
+      </div>
       <mat-card *ngIf="thirdStep != null">
         <mat-card>
           <p>Packages:</p>

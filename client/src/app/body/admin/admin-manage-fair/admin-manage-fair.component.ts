@@ -171,7 +171,6 @@ export class AdminManageFairComponent implements OnInit {
     const file = (event.target as HTMLInputElement).files[0];
     this.imagesForm.controls['additional'].value[id] = file;
     this.imagesForm.controls['additional']['controls'][id].updateValueAndValidity();
-    console.log(this.imagesForm.controls['additional']['controls'][id]);
     const reader = new FileReader();
     reader.onload = () => {
       this.additionalImages[id] = reader.result;
@@ -191,83 +190,37 @@ export class AdminManageFairComponent implements OnInit {
     this.additionalImages.splice(id, 1);
   }
 
-  s3Dummy() {
-    this.thirdStep = {
-      Packages: [
-        {
-          Title: 'Generalni pokrovitelj',
-          Content: [ 'Stand 4x velicine', 'Logo i 2 strane u boji u brosuri', 'Logo na promo majicama trostruke velicine'],
-          VideoPromotion: 15,
-          NoLessons: 2,
-          NoWorkchops: 1,
-          NoPresentation: 0,
-          Price: 30000,
-          MaxCompanies: '1'
-        },
-        {
-          Title: 'Zlatni pokrovitelj',
-          Content: [ 'Stand 3x velicine', 'Logo i 2 strane u boji u brosuri', 'Logo na promo majicama 3x velicine'],
-          VideoPromotion: 10,
-          NoLessons: 1,
-          NoWorkchops: 1,
-          NoPresentation: 1,
-          Price: 25000,
-          MaxCompanies: '1'
-        },
-        {
-          Title: 'Srebrni pokrovitelj',
-          Content: [ 'Stand 2x velicine', 'Logo i 2 strane u boji u brosuri', 'Logo na promo majicama 2x velicine'],
-          VideoPromotion: 5,
-          NoLessons: 1,
-          NoWorkchops: 0,
-          NoPresentation: 1,
-          Price: 20000,
-          MaxCompanies: '2'
-        },
-        {
-          Title: 'Bronzani pokrovitelj',
-          Content: [ 'Stand 2x velicine', 'Logo i 1 strane u boji u brosuri', 'Logo na promo majicama standardne velicine'],
-          VideoPromotion: 3,
-          NoLessons: 1,
-          NoWorkchops: 0,
-          NoPresentation: 0,
-          Price: 15000,
-          MaxCompanies: '3'
-        },
-        {
-          Title: 'Standardni paket',
-          Content: [ 'Stand 1x velicine', 'Logo i osnovne info u brosuri'],
-          VideoPromotion: 0,
-          NoLessons: 0,
-          NoWorkchops: 0,
-          NoPresentation: 0,
-          Price: 10000,
-          MaxCompanies: '-'
-        }
-      ],
-      Additional: [
-        {
-          Title: 'Flajer u brosuri',
-          Price: 4000
-        },
-        {
-          Title: 'Prednja unutrasnja korica brosure',
-          Price: 2000
-        },
-        {
-          Title: 'Dodatna strana u boji u brosuri',
-          Price: 3000
-        },
-        {
-          Title: 'Doplata za brendiranje standa',
-          Price: 5000
-        },
-        {
-          Title: 'Dodatna rezentacija kompanije u trajanju 45min',
-          Price: 10000
-        }
-      ]
-    };
+  onSecondJson() {
+    const file = (event.target as HTMLInputElement).files[0];
+    const fileReader = new FileReader();
+    this.thirdStep = null;
+    fileReader.addEventListener('loadend', () => {
+      const text = (fileReader.result as string);
+      try {
+        this.thirdStep = JSON.parse(text);
+        const err: Error = { name: 'bad json', message: '' };
+        if (this.thirdStep.Packages == null) { throw err; }
+        this.thirdStep.Packages.forEach(Package => {
+          if (Package.Title == null) { throw err; }
+          if (Package.Content == null) { throw err; }
+          if (Package.VideoPromotion == null) { throw err; }
+          if (Package.NoLessons == null) { throw err; }
+          if (Package.NoWorkchops == null) { throw err; }
+          if (Package.Price == null) { throw err; }
+          if (Package.MaxCompanies == null) { throw err; }
+        });
+        if (this.thirdStep.Additional == null) { throw err; }
+        this.thirdStep.Additional.forEach(Location => {
+          if (Location.Title == null) { throw err; }
+          if (Location.Price == null) { throw err; }
+        });
+        this.thirdStepValid = true;
+      } catch (err) {
+        this.thirdStepValid = false;
+        this.thirdStep = null;
+      }
+    });
+    fileReader.readAsText(file);
   }
 
   toAcceptDummy() {
