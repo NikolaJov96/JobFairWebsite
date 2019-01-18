@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { AdminStatusService } from '../admin-status.service';
 import { Router } from '@angular/router';
+import { checkImage } from '../../image.validator';
 
 interface FirstStepInterface {
   Fairs: Array<{
@@ -52,8 +53,16 @@ export class AdminManageFairComponent implements OnInit {
     companyEnd: new FormControl('', [Validators.required]),
   });
 
+  imagesForm = new FormGroup({
+    logo: new FormControl(null, { validators: [], asyncValidators: [checkImage] }),
+    additional: new FormArray([]),
+  });
+
   firstStepValid = true;
   firstStep: FirstStepInterface = null;
+
+  logoImage = null;
+  additionalImages = [];
 
   thirdStepValid = true;
   thirdStep: ThirdStepInterface = null;
@@ -147,8 +156,39 @@ export class AdminManageFairComponent implements OnInit {
     fileReader.readAsText(file);
   }
 
-  s2Dummy() {
+  onLogoPick(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.imagesForm.patchValue({logo: file});
+    this.imagesForm.get('logo').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.logoImage = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
 
+  onAdditionalPick(event: Event, id: number) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.imagesForm.controls['additional'].value[id] = file;
+    this.imagesForm.controls['additional']['controls'][id].updateValueAndValidity();
+    console.log(this.imagesForm.controls['additional']['controls'][id]);
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.additionalImages[id] = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  addImage() {
+    (<FormArray>this.imagesForm.controls.additional).push(
+        new FormControl('', { validators: [Validators.required], asyncValidators: [checkImage] })
+    );
+    this.additionalImages.push(null);
+  }
+
+  removeImage(id: number) {
+    (<FormArray>this.imagesForm.controls.additional).removeAt(id);
+    this.additionalImages.splice(id, 1);
   }
 
   s3Dummy() {

@@ -5,7 +5,7 @@
       <ng-template matStepLabel>Basic information</ng-template>
       <div>
         <div>
-          <button mat-stroked-button type="button" (click)="pdfPicker.click()">Pick pdf</button>
+          <button mat-stroked-button type="button" (click)="pdfPicker.click()">Pick json</button>
           <input [hidden]="'true'" type="file" #pdfPicker (change)="onFirstJson($event)">
         </div>
         <div *ngIf="!firstStepValid">
@@ -43,9 +43,38 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>More details</ng-template>
-      <button mat-button color="primary" (click)="s2Dummy()">Dummy</button>
-      <mat-card>Logo</mat-card>
-      <mat-card>A few images???</mat-card>
+      <form [formGroup]="imagesForm" novalidate>
+        <mat-card>
+          <div>
+            <button mat-stroked-button type="button" (click)="logoPicker.click()">Pick logo</button>
+            <input type="file" #logoPicker (change)="onLogoPick($event)">
+          </div>
+          <div class="image-preview" *ngIf="logoImage && logoImage != null && imagesForm.get('logo').valid">
+            <img [src]="logoImage" [alt]="'Logo'">
+          </div>
+        </mat-card>
+        <mat-card formArrayName="additional">
+          <div *ngFor="let wrk of imagesForm.controls['additional'].controls; let i = index;">
+            <mat-card>
+              <div>
+                <button mat-stroked-button type="button" (click)="additionalPicker.click()">Pick image</button>
+                <input type="file" #additionalPicker (change)="onAdditionalPick($event, i)">
+              </div>
+              <div
+                class="image-preview"
+                *ngIf="additionalImages[i] && additionalImages[i] != null">
+                <img [src]="additionalImages[i]" [alt]="'Logo'">
+              </div>
+              <button mat-raised-button type="button" color="primary" (click)="removeImage(i)">
+                Remove
+              </button>
+            </mat-card>
+          </div>
+          <button mat-raised-button type="button" color="primary" (click)="addImage()">
+            Add additional image
+          </button>
+        </mat-card>
+      </form>
       <mat-card>A full timetable???????</mat-card>
       <div>
         <button mat-raised-button color="primary" matStepperPrevious>Back</button>

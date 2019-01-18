@@ -1,8 +1,11 @@
 import { AbstractControl } from '@angular/forms';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, of } from 'rxjs';
 
 export const checkImage = (control: AbstractControl): Promise<{[key: string]: any}> | Observable<{[key: string]: any}> => {
   const file = control.value as File;
+  if (file == null) {
+    return of(null);
+  }
   const fileReader = new FileReader();
   const frObs = Observable.create((observer: Observer<{[key: string]: any}>) => {
     fileReader.addEventListener('loadend', () => {
