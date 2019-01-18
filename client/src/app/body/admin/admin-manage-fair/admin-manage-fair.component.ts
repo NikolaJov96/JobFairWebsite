@@ -54,7 +54,7 @@ export class AdminManageFairComponent implements OnInit {
   });
 
   imagesForm = new FormGroup({
-    logo: new FormControl(null, { validators: [], asyncValidators: [checkImage] }),
+    logo: new FormControl(null, { validators: [Validators.required], asyncValidators: [checkImage] }),
     additional: new FormArray([]),
   });
 
@@ -66,6 +66,7 @@ export class AdminManageFairComponent implements OnInit {
 
   thirdStepValid = true;
   thirdStep: ThirdStepInterface = null;
+  confirmMessage = '';
 
   appliedComs: Array<{
     name: string;
@@ -98,7 +99,33 @@ export class AdminManageFairComponent implements OnInit {
   }
 
   confirmInit() {
+    if (this.firstStep == null) {
+      this.confirmMessage = 'invalid first step';
+      setTimeout(() => this.confirmMessage = '', 4000);
+      return;
+    }
+    if (this.imagesForm.invalid) {
+      this.confirmMessage = 'invalid second step';
+      setTimeout(() => this.confirmMessage = '', 4000);
+      return;
+    }
+    if (this.thirdStep == null) {
+      this.confirmMessage = 'invalid third step';
+      setTimeout(() => this.confirmMessage = '', 4000);
+      return;
+    }
+    const data = {
+      Fairs: this.firstStep.Fairs,
+      Locations: this.firstStep.Locations,
+      Packages: this.thirdStep.Packages,
+      Additional: this.thirdStep.Additional,
+      images: this.imagesForm.value,
+    };
+    this.adminStatusService.newFair(data).subscribe(
+      status => {
 
+      }
+    )
   }
 
   onAcceptCom(i: number, stand: number) {

@@ -54,4 +54,14 @@ export class AdminStatusService {
     return subject;
   }
 
+  newFair(data): Subject<Array<any>> {
+    const postData = new FormData();
+
+    const subject = new Subject<any>();
+    this.http.post(URL + '/fair', data).subscribe((res: ApiResponse) => {
+      subject.next(res.status);
+    });
+    return subject;
+  }
+
 }

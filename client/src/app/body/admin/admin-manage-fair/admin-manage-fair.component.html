@@ -127,6 +127,7 @@
       <div>
         <button mat-raised-button color="primary" matStepperPrevious>Back</button>
         <button mat-raised-button color="accent" (click)="confirmInit()">Confirm</button>
+        <span [style.color]="'red'">{{ confirmMessage }}</span>
       </div>
     </mat-step>
   </mat-horizontal-stepper></mat-card>
