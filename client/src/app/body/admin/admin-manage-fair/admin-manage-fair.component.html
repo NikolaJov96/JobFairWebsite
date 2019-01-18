@@ -3,8 +3,15 @@
   <mat-card><mat-horizontal-stepper linear #stepper>
     <mat-step>
       <ng-template matStepLabel>Basic information</ng-template>
-      <button mat-button color="primary" (click)="s1Dummy()">Dummy</button>
-      <mat-card *ngIf="firstStep == null">Uploaded info</mat-card>
+      <div>
+        <div>
+          <button mat-stroked-button type="button" (click)="pdfPicker.click()">Pick pdf</button>
+          <input [hidden]="'true'" type="file" #pdfPicker (change)="onFirstJson($event)">
+        </div>
+        <div *ngIf="!firstStepValid">
+          <p [style.color]="'red'">Bad json file</p>
+        </div>
+      </div>
       <mat-card *ngIf="firstStep != null">
         <mat-card *ngFor="let elem of firstStep.Fairs">
           <p>Fairs:</p>
@@ -30,7 +37,8 @@
         </mat-card>
       </mat-card>
       <div>
-        <button mat-raised-button color="primary" matStepperNext>Next</button>
+        <button mat-raised-button color="primary" matStepperNext
+        [disabled]="firstStep == null || !firstStepValid">Next</button>
       </div>
     </mat-step>
     <mat-step>

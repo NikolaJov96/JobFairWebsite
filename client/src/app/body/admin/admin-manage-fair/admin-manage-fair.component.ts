@@ -3,6 +3,41 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AdminStatusService } from '../admin-status.service';
 import { Router } from '@angular/router';
 
+interface FirstStepInterface {
+  Fairs: Array<{
+    Fair: string;
+    StartDate: Date;
+    EndDate: Date;
+    StartTime: string;
+    EndTime: string;
+    Place: string;
+    About: string;
+  }>;
+  Locations: Array<{
+    Place: string;
+    Location: Array<{
+      Name: string;
+    }>;
+  }>;
+}
+
+interface ThirdStepInterface  {
+  Packages: Array<{
+    Title: string,
+    Content: Array<string>,
+    VideoPromotion: number,
+    NoLessons: number,
+    NoWorkchops: number,
+    NoPresentation: number,
+    Price: number,
+    MaxCompanies: string,
+  }>;
+  Additional: Array<{
+    Title: string,
+    Price: number,
+  }>;
+}
+
 @Component({
   selector: 'app-admin-manage-fair',
   templateUrl: './admin-manage-fair.component.html',
@@ -17,40 +52,11 @@ export class AdminManageFairComponent implements OnInit {
     companyEnd: new FormControl('', [Validators.required]),
   });
 
-  firstStep: {
-    Fairs: Array<{
-      Fair: string;
-      StartDate: Date;
-      EndDate: Date;
-      StartTime: string;
-      EndTime: string;
-      Place: string;
-      About: string;
-    }>,
-    Locations: Array<{
-      Place: string;
-      Location: Array<{
-        Name: string;
-      }>
-    }>
-  } = null;
+  firstStepValid = true;
+  firstStep: FirstStepInterface = null;
 
-  thirdStep: {
-    Packages: Array<{
-      Title: string,
-      Content: Array<string>,
-      VideoPromotion: number,
-      NoLessons: number,
-      NoWorkchops: number,
-      NoPresentation: number,
-      Price: number,
-      MaxCompanies: string,
-    }>,
-    Additional: Array<{
-      Title: string,
-      Price: number,
-    }>,
-  } = null;
+  thirdStepValid = true;
+  thirdStep: ThirdStepInterface = null;
 
   appliedComs: Array<{
     name: string;
@@ -105,32 +111,40 @@ export class AdminManageFairComponent implements OnInit {
     );
   }
 
-  s1Dummy() {
-    this.firstStep = {
-      Fairs: [
-      {
-        Fair: 'JobFair2019',
-        StartDate: new Date('01/03/2019'),
-        EndDate: new Date('03/03/2019'),
-        StartTime: '09:00:00',
-        EndTime: '17:00:00',
-        Place: 'ETF Beograd',
-        About: 'Kreiraj svoju buducnost!'
-        }
-      ],
-      Locations: [
-      {
-        Place: 'ETF Beograd',
-        Location: [
-          { Name: 'Amfiteatar 56' },
-          { Name: 'Amfiteatar 65' },
-          { Name: 'Laboratorija 60' },
-          { Name: 'Svecana sala - Arhitektura' },
-          { Name: 'Ucionica 310' },
-          { Name: 'Ucionica 311' }
-        ]
+  onFirstJson(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    const fileReader = new FileReader();
+    this.firstStep = null;
+    fileReader.addEventListener('loadend', () => {
+      const text = (fileReader.result as string);
+      try {
+        this.firstStep = JSON.parse(text);
+        const err: Error = { name: 'bad json', message: '' };
+        if (this.firstStep.Fairs == null) { throw err; }
+        this.firstStep.Fairs.forEach(Fair => {
+          if (Fair.Fair == null) { throw err; }
+          if (Fair.StartDate == null) { throw err; }
+          if (Fair.EndDate == null) { throw err; }
+          if (Fair.StartTime == null) { throw err; }
+          if (Fair.EndTime == null) { throw err; }
+          if (Fair.Place == null) { throw err; }
+          if (Fair.About == null) { throw err; }
+        });
+        if (this.firstStep.Locations == null) { throw err; }
+        this.firstStep.Locations.forEach(Location => {
+          if (Location.Place == null) { throw err; }
+          if (Location.Location == null) { throw err; }
+          Location['Location'].forEach(Loc => {
+            if (Loc.Name == null) { throw err; }
+          });
+        });
+        this.firstStepValid = true;
+      } catch (err) {
+        this.firstStepValid = false;
+        this.firstStep = null;
       }
-    ]};
+    });
+    fileReader.readAsText(file);
   }
 
   s2Dummy() {
