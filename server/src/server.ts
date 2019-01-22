@@ -529,6 +529,40 @@ router.route('/fair').post(multer({ storage: imageStorage }).any(), (req: expres
   });
 });
 
+router.route('/com-apply').post((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  Fair.findOne({}, {}, { sort: { 'EndDate': -1 } }, (err, fair) => {
+    if (handleError(err, res)) { return; }
+    const now = new Date();
+    if (fair == null || fair.get('EndDate') < now) {
+      body.status = 'success';
+      body.message = 'no current fair';
+      res.json(body);
+    } else {
+      const applications = fair.get('appliedCompanies');
+      applications.push({
+        company: req.body.comId,
+        package: req.body.package,
+        additional: req.body.additional,
+        accepted: false,
+        rejected: false,
+        commnet: '',
+      });
+      fair.set('appliedCompanies', applications);
+      Fair.updateOne({ _id: fair._id }, fair, err => {
+        if (handleError(err, res)) { return; }
+        body.message = 'success';
+        body.data = fair;
+        res.json(body);
+      });
+    }
+  });
+});
+
 router.route('/deadlines').get((req, res) => {
   const body: ApiResponse = {
     status: 'error',

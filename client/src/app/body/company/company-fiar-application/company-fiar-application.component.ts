@@ -42,7 +42,6 @@ export class CompanyFiarApplicationComponent implements OnInit {
     this.companyStatusService.getFair().subscribe(
       (fair => {
         this.fair = fair;
-        console.log(fair);
         if (fair == null) {
           this.fariAppState = FairAppState.NO_FAIR;
         } else {
@@ -73,6 +72,14 @@ export class CompanyFiarApplicationComponent implements OnInit {
     this.applyForm.value['options'].forEach((opt, i) => {
       if (opt) { price += this.fair.Additional[i].Price; }
     });
+    this.companyStatusService.apply(this.applyForm.value).subscribe(
+      status => {
+        if (status[0] === 'success') {
+          this.fair = status[1];
+          this.fariAppState = FairAppState.WAITING_FOR_RESPONSE;
+        }
+      }
+    );
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '400px',
       data: { price: price }

@@ -88,6 +88,7 @@ export class StudentOverviewComponent implements OnInit {
         if (con.host !== comCopy._id) { return; }
         if (type !== null && !type.includes('' + con.jobType)) { return; }
         if (conName !== null && !con.name.toLowerCase().includes(conName.toLowerCase())) { return; }
+        if (new Date() > new Date(con.toDate)) { return; }
         comCopy.com.concourses.push(con);
       });
     });

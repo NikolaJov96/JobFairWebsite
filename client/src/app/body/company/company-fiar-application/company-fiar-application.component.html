@@ -27,7 +27,7 @@
     <button mat-raised-button color="accent" [disabled]="!applyForm.valid" type="submit">Apply</button>
   </form>
 </mat-card>
-<mat-card *ngIf="fariAppState === appStates.NO_FAIR">Ther is no active fair.</mat-card>
+<mat-card *ngIf="fariAppState === appStates.NO_FAIR">Ther is no active fairs.</mat-card>
 <mat-card *ngIf="fariAppState === appStates.WAITING_FOR_RESPONSE">Applied, waiting for admin response.</mat-card>
 <mat-card *ngIf="fariAppState === appStates.ACCEPTED">Your applicaton has been accepted!</mat-card>
 <mat-card *ngIf="fariAppState === appStates.DENIED">Your application has been denied!</mat-card>

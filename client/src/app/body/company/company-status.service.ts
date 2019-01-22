@@ -88,4 +88,24 @@ export class CompanyStatusService {
     return subject;
   }
 
+  apply(data): Subject<Array<any>> {
+    const subject = new Subject<Array<any>>();
+    data.comId = this.com._id;
+    data.additional = [];
+    data.options.forEach((add, i) => {
+      if (add) {
+        data.additional.push(i);
+      }
+    });
+    delete data.options;
+    this.http.post(URL + '/com-apply', data).subscribe((res: ApiResponse) => {
+      if (res.status === 'success') {
+          subject.next([res.status, res.data]);
+      } else {
+        subject.next(['error']);
+      }
+    });
+    return subject;
+  }
+
 }
