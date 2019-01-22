@@ -209,7 +209,7 @@
         <mat-panel-title>{{ apl.company.com.name }}</mat-panel-title>
       </mat-expansion-panel-header>
       <p>
-        Package: {{ fair.Packages[0].Title }}<br>
+        Package: {{ fair.Packages[apl.package].Title }}<br>
         Options:
         <span *ngFor="let opt of apl.additional; let last = last;">
           {{ fair.Additional[opt].Title }}{{ last ? '': ', ' }}

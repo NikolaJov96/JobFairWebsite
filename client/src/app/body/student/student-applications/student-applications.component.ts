@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ConcourseUsersEntity, ConcourseEntity } from 'src/app/interfaces';
+import { ConcourseUsersEntity, ConcourseEntity, UserEntity } from 'src/app/interfaces';
 import { StudentStatusService } from '../student-status.service';
 import { Router } from '@angular/router';
-import { MatExpansionPanel } from '@angular/material';
 
 @Component({
   selector: 'app-student-applications',
@@ -13,6 +12,7 @@ export class StudentApplicationsComponent implements OnInit {
 
   concourses: Array<ConcourseEntity> = null;
   concDetail: ConcourseUsersEntity = null;
+  student: UserEntity = null;
 
   constructor(private studentStatusService: StudentStatusService,
     private router: Router) { }
@@ -22,6 +22,7 @@ export class StudentApplicationsComponent implements OnInit {
       this.router.navigate(['/guest/login']);
       return;
     }
+    this.student = this.studentStatusService.getStudent();
     this.studentStatusService.getCons().subscribe(
       (status => {
         this.concourses = [];

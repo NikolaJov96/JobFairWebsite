@@ -567,12 +567,11 @@ router.route('/com-apply').post((req, res) => {
         additional: req.body.additional,
         accepted: false,
         rejected: false,
-        commnet: '',
       });
       fair.set('appliedCompanies', applications);
       Fair.updateOne({ _id: fair._id }, fair, err => {
         if (handleError(err, res)) { return; }
-        body.message = 'success';
+        body.status = 'success';
         body.data = fair;
         res.json(body);
       });

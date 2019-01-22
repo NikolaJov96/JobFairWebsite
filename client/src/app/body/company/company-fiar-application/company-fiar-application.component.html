@@ -34,7 +34,7 @@
   <p *ngIf="statusMessage.length > 0">{{ statusMessage }}</p>
 </mat-card>
 <mat-card *ngIf="fariAppState === appStates.DENIED">
-  <p>Your application has been denied!</p>
+  <p>Your application has been rejected!</p>
   <p *ngIf="statusMessage.length > 0">{{ statusMessage }}</p>
 </mat-card>
 <mat-card *ngIf="fariAppState === appStates.APPLICATIONS_CLOSED">Fair applicatins are closed or not opened yet!</mat-card>

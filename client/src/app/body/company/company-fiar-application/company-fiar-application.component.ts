@@ -128,8 +128,8 @@ export class CompanyFiarApplicationComponent implements OnInit {
     <p>{{ data.package }}</p>
     <p>
       <span *ngFor="let add of data.add">
-        {{ add }}
-      </span><br>
+        {{ add }}<br>
+      </span>
     </p>
     <h1 mat-dialog-title>Application price is {{ data.price }}din</h1>
     <div mat-dialog-actions>

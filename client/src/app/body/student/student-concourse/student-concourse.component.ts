@@ -51,8 +51,6 @@ export class StudentConcourseComponent implements OnInit {
   }
 
   onApply() {
-    console.log(this.applyForm.value.coverLetterPdf);
-    console.log(this.applyForm.controls.pdf);
     if (this.applyForm.invalid) {
       this.message = { color: 'red', text: 'invalid apply form' };
       return;

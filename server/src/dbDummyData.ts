@@ -16,11 +16,15 @@ export function addDummyData() {
   DeadlineDate.find((err, deadlineDates) => {
     if (err) { console.log(err); return; }
     if (deadlineDates.length !== 1) {
+      const now = new Date();
+      now.setMonth(now.getMonth() - 2);
+      const then = new Date();
+      then.setMonth(then.getMonth() + 2);
       new DeadlineDate({
-        studentStart: new Date(),
-        studentEnd: new Date(),
-        companyStart: new Date(),
-        companyEnd: new Date(),
+        studentStart: now,
+        studentEnd: then,
+        companyStart: now,
+        companyEnd: then,
       }).save();
     }
   });
@@ -47,17 +51,55 @@ export function addDummyData() {
       UserType.find({ name: 'student' }, '_id', (err, id) => {
         if (err) { console.log(err); return; }
         new User({
-          username: 'student',
+          username: 's1',
           password: 'qweQWE123#',
-          email: 'student@mail.com',
+          email: 's1@mail.com',
           type: id[0]._id,
           imagePath: '',
           stu: {
-            firstName: 'Johin',
-            lastName: 'Smith',
-            phone: 123456789,
-            year: 4,
+            firstName: 's1FirstName',
+            lastName: 's1LastName',
+            phone: 1111111111,
+            year: 1,
             graduated: false,
+            applications: [],
+            cvUploaded: false,
+            cv: null,
+          },
+          com: null, 
+          adm: null, 
+        }).save();
+        new User({
+          username: 's2',
+          password: 'qweQWE123#',
+          email: 's2@mail.com',
+          type: id[0]._id,
+          imagePath: '',
+          stu: {
+            firstName: 's2FirstName',
+            lastName: 's2LastName',
+            phone: 2222222222,
+            year: 2,
+            graduated: false,
+            applications: [],
+            cvUploaded: false,
+            cv: null,
+          },
+          com: null, 
+          adm: null, 
+        }).save();
+        new User({
+          username: 's3',
+          password: 'qweQWE123#',
+          email: 's3@mail.com',
+          type: id[0]._id,
+          imagePath: '',
+          stu: {
+            firstName: 's3FirstName',
+            lastName: 's3LastName',
+            phone: 333333333,
+            year: 4,
+            graduated: true,
             applications: [],
             cvUploaded: false,
             cv: null,
@@ -71,21 +113,67 @@ export function addDummyData() {
         Industry.find({ name: 'IT' }, '_id', (err, industryId) => {
           if (err) { console.log(err); return; }
           new User({
-            username: 'company',
+            username: 'c1',
             password: 'asdASD123#',
-            email: 'company@mail.com',
+            email: 'c1@mail.com',
             type: userId[0]._id,
             imagePath: '',
             stu: null,
             com: {
-              name: 'The best company',
-              city: 'Atlatida',
-              director: 'Poseidon',
-              taxNumber: '20.000mi',
+              name: 'Com1',
+              city: 'City1',
+              director: 'Dir1',
+              taxNumber: '111111',
               employees: 1,
-              website: 'www.thebestcompany.com',
+              website: 'www.c1.com',
               industry: industryId[0]._id,
-              field: 'Swimming equipment',
+              field: 'c1Field',
+              concourses: [],
+            }, 
+            adm: null, 
+          }).save();
+        });
+        Industry.find({ name: 'Teleco' }, '_id', (err, industryId) => {
+          if (err) { console.log(err); return; }
+          new User({
+            username: 'c2',
+            password: 'asdASD123#',
+            email: 'c2@mail.com',
+            type: userId[0]._id,
+            imagePath: '',
+            stu: null,
+            com: {
+              name: 'Com2',
+              city: 'City2',
+              director: 'Dir2',
+              taxNumber: '222222',
+              employees: 2,
+              website: 'www.c2.com',
+              industry: industryId[0]._id,
+              field: 'c2Field',
+              concourses: [],
+            }, 
+            adm: null, 
+          }).save();
+        });
+        Industry.find({ name: 'Energy' }, '_id', (err, industryId) => {
+          if (err) { console.log(err); return; }
+          new User({
+            username: 'c3',
+            password: 'asdASD123#',
+            email: 'c3@mail.com',
+            type: userId[0]._id,
+            imagePath: '',
+            stu: null,
+            com: {
+              name: 'Com3',
+              city: 'City3',
+              director: 'Dir3',
+              taxNumber: '333333',
+              employees: 3,
+              website: 'www.c3.com',
+              industry: industryId[0]._id,
+              field: 'c3Field',
               concourses: [],
             }, 
             adm: null, 
@@ -95,7 +183,7 @@ export function addDummyData() {
       UserType.find({ name: 'admin' }, '_id', (err, id) => {
         if (err) { console.log(err); return; }
         new User({
-          username: 'admin',
+          username: 'a',
           password: 'zxcZXC123#',
           email: 'admin@mail.com',
           type: id[0]._id,
@@ -103,9 +191,9 @@ export function addDummyData() {
           stu: null,
           com: null, 
           adm: {
-            firstName: 'Robin',
-            lastName: 'Hood',
-            phone: 987654321,
+            firstName: 'adminFirstName',
+            lastName: 'adminLastName',
+            phone: 9999999999,
           }, 
         }).save();
       });

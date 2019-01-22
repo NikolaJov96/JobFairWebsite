@@ -11,18 +11,22 @@
     </mat-expansion-panel-header>
 
     <p *ngIf="concDetail != null && concDetail.concluded">Accepted:
-      <span *ngFor="let stu of concDetail.applicants; let last = last;">
+      <span *ngFor="let stu of concDetail.applicants; let first = first;">
         <span *ngIf="stu.accepted">
-          {{ stu.student.stu.firstName + ' ' + stu.student.stu.lastName }}
-          {{ last ? '' : ', ' }}
+          {{ first ? '' : ', ' }}
+          <span [style.color]="student._id === stu.student._id ? 'green' : 'black'">
+            {{ stu.student.stu.firstName + ' ' + stu.student.stu.lastName }}
+          </span>
         </span>
       </span>
     </p>
     <p *ngIf="concDetail != null && concDetail.concluded">Declined:
-      <span *ngFor="let stu of concDetail.applicants; let last = last;">
+      <span *ngFor="let stu of concDetail.applicants; let first = first;">
         <span *ngIf="!stu.accepted">
-          {{ stu.student.stu.firstName + ' ' + stu.student.stu.lastName }}
-          {{ last ? '' : ', ' }}
+          {{ first ? '' : ', ' }}
+          <span [style.color]="student._id === stu.student._id ? 'red' : 'black'">
+            {{ stu.student.stu.firstName + ' ' + stu.student.stu.lastName }}
+          </span>
         </span>
       </span>
     </p>
