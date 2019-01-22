@@ -5,6 +5,8 @@ import { CompanyStatusService } from '../company-status.service';
 import { Router } from '@angular/router';
 
 interface DialogData {
+  package: string;
+  add: Array<string>;
   price: string;
 }
 
@@ -69,9 +71,18 @@ export class CompanyFiarApplicationComponent implements OnInit {
 
   onApply() {
     let price = this.fair.Packages[this.applyForm.value['package']].Price;
+    const dialogData = {
+      package: this.fair.Packages[this.applyForm.value['package']].Title,
+      add: [],
+      price: 0,
+    };
     this.applyForm.value['options'].forEach((opt, i) => {
-      if (opt) { price += this.fair.Additional[i].Price; }
+      if (opt) {
+        price += this.fair.Additional[i].Price;
+        dialogData.add.push(this.fair.Additional[i].Title);
+      }
     });
+    dialogData.price = price;
     this.companyStatusService.apply(this.applyForm.value).subscribe(
       status => {
         if (status[0] === 'success') {
@@ -81,8 +92,8 @@ export class CompanyFiarApplicationComponent implements OnInit {
       }
     );
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      data: { price: price }
+      width: '500px',
+      data: dialogData,
     });
   }
 
@@ -91,6 +102,12 @@ export class CompanyFiarApplicationComponent implements OnInit {
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   template: `
+    <p>{{ data.package }}</p>
+    <p>
+      <span *ngFor="let add of data.add">
+        {{ add }}
+      </span><br>
+    </p>
     <h1 mat-dialog-title>Application price is {{ data.price }}din</h1>
     <div mat-dialog-actions>
       <button mat-button cdkFocusInitial (click)="onCLose()">Ok</button>
