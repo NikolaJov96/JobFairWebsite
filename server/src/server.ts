@@ -2,8 +2,8 @@ import path from 'path';
 import express from 'express';
 import session from 'express-session'
 import cors from 'cors';
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
+import bodyParser, { json } from 'body-parser';
+import mongoose, { mongo } from 'mongoose';
 import fs from 'fs';
 import { addDummyData } from './dbDummyData';
 import { User } from './models/user';
@@ -487,12 +487,29 @@ router.route('/fair').get((req, res) => {
     if (fair == null || fair.get('EndDate') < now) {
       body.status = 'success';
       body.message = 'no current fair';
+      res.json(body);
     } else {
-      body.status = 'success';
-      body.message = 'current fair';
-      body.data = fair;
+      const coms = [];
+      const appliedCompanies = fair.get('appliedCompanies');
+      appliedCompanies.forEach(apl => 
+        coms.push(mongoose.Types.ObjectId(apl.company))
+        );
+      User.find({ _id: { $in: coms } }, (err, comObjs) => {
+        if (handleError(err, res)) { return; }
+        if (comObjs.length !== coms.length) {
+          body.status = 'error';
+          body.message = 'not all companies found ' + comObjs.length + ' ' + coms.length;
+          res.json(body);
+        } else {
+          comObjs.forEach((apl, i) => appliedCompanies[i].company = apl);
+          fair.set('appliedCompanies', appliedCompanies);
+          body.status = 'success';
+          body.message = 'current fair';
+          body.data = fair;
+          res.json(body);
+        }
+      });
     }
-    res.json(body);
   });
 });
 
@@ -559,6 +576,80 @@ router.route('/com-apply').post((req, res) => {
         body.data = fair;
         res.json(body);
       });
+    }
+  });
+});
+
+router.route('/accept-com').post((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  Fair.findOne({}, {}, { sort: { 'EndDate': -1 } }, (err, fair) => {
+    if (handleError(err, res)) { return; }
+    const now = new Date();
+    if (fair == null || fair.get('EndDate') < now) {
+      body.status = 'error';
+      body.message = 'no current fair';
+      res.json(body);
+    } else {
+      const appliedCompanies = fair.get('appliedCompanies');
+      let succ = false;
+      appliedCompanies.forEach((apl, i) => {
+        if (String(apl.company) === req.body.comId) {
+          succ = true;
+          appliedCompanies[i].accepted = true;
+          appliedCompanies[i].stand = req.body.stand;
+        }
+      });
+      if (succ) {
+        fair.set('appliedCompanies', appliedCompanies);
+        Fair.updateOne({ _id: fair._id }, fair, err => {
+          if (handleError(err, res)) { return; }
+          body.status = 'success';
+          res.json(body);
+        });
+      } else {
+        res.json(body);
+      }
+    }
+  });
+});
+
+router.route('/reject-com').post((req, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  Fair.findOne({}, {}, { sort: { 'EndDate': -1 } }, (err, fair) => {
+    if (handleError(err, res)) { return; }
+    const now = new Date();
+    if (fair == null || fair.get('EndDate') < now) {
+      body.status = 'error';
+      body.message = 'no current fair';
+      res.json(body);
+    } else {
+      const appliedCompanies = fair.get('appliedCompanies');
+      let succ = false;
+      appliedCompanies.forEach((apl, i) => {
+        if (String(apl.company) === req.body.comId) {
+          succ = true;
+          appliedCompanies[i].rejected = true;
+          appliedCompanies[i].comment = req.body.comment;
+        }
+      });
+      if (succ) {
+        fair.set('appliedCompanies', appliedCompanies);
+        Fair.updateOne({ _id: fair._id }, fair, err => {
+          if (handleError(err, res)) { return; }
+          body.status = 'success';
+          res.json(body);
+        });
+      } else {
+        res.json(body);
+      }
     }
   });
 });

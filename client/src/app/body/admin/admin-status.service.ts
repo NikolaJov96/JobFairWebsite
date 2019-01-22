@@ -73,4 +73,34 @@ export class AdminStatusService {
     return subject;
   }
 
+  acceptCom(fair, apl, stand): Subject<string> {
+    const subject = new Subject<string>();
+    const data = {
+      comId: apl.company._id,
+      stand: stand,
+    };
+    this.http.post(URL + '/accept-com', data).subscribe((res: ApiResponse) => {
+      subject.next(res.status);
+      if (status === 'success') {
+        apl.accepted = true;
+      }
+    });
+    return subject;
+  }
+
+  rejectCom(fair, apl, commnet): Subject<string> {
+    const subject = new Subject<string>();
+    const data = {
+      comId: apl.company._id,
+      comment: commnet,
+    };
+    this.http.post(URL + '/reject-com', data).subscribe((res: ApiResponse) => {
+      subject.next(res.status);
+      if (status === 'success') {
+        apl.rejected = true;
+      }
+    });
+    return subject;
+  }
+
 }

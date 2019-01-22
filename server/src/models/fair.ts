@@ -35,6 +35,7 @@ export const FairSchema = new mongoose.Schema({
     package: { type: Number },
     additional: [{ type: Number }],
     accepted: { type: Boolean },
+    stand: { type: Number },
     rejected: { type: Boolean },
     comment: { type: String },
   }],

@@ -202,31 +202,40 @@
 <div *ngIf="fair != null">
   <mat-card>
     Manage the fair!
-    <button mat-button color="primary" (click)="toAcceptDummy()">Dummy</button>
   </mat-card>
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let com of appliedComs; let i = index;">
+    <mat-expansion-panel *ngFor="let apl of fair.appliedCompanies; let i = index;">
       <mat-expansion-panel-header>
-        <mat-panel-title>{{ com.name }}</mat-panel-title>
+        <mat-panel-title>{{ apl.company.com.name }}</mat-panel-title>
       </mat-expansion-panel-header>
       <p>
-        Package: {{ com.package }}<br>
+        Package: {{ fair.Packages[0].Title }}<br>
         Options:
-        <span *ngFor="let opt of com.options; let last = last;">
-          {{ opt }}{{ last ? '': ', ' }}
+        <span *ngFor="let opt of apl.additional; let last = last;">
+          {{ fair.Additional[opt].Title }}{{ last ? '': ', ' }}
         </span>
       </p>
-      <button mat-raised-button color="accent" (click)="openedForm = i;">Accept</button>
-      <button mat-raised-button color="warn" (click)="onRejectCom(i)">Reject</button><br>
-      <mat-card *ngIf="openedForm === i">
+      <div *ngIf="apl.accepted === false && apl.rejected === false">
+        <button mat-raised-button color="accent" (click)="openedFormAcc = i;">Accept</button>
+        <button mat-raised-button color="warn" (click)="openedFormRej = i;">Reject</button><br>
+      </div>
+      <p [style.color]="'green'" *ngIf="apl.accepted === true">Accepted</p>
+      <p [style.color]="'red'" *ngIf="apl.rejected === true">Rejected</p>
+      <mat-card *ngIf="openedFormAcc === i">
         <mat-form-field>
           <input matInput type="number" placeholder="Stand number" #stand>
         </mat-form-field>
-        <button mat-raised-button color="accent" (click)="onAcceptCom(i, stand)">Accept</button>
+        <button mat-raised-button color="accent" (click)="onAcceptCom(apl, stand.value)">Accept</button>
+      </mat-card>
+      <mat-card *ngIf="openedFormRej === i">
+        <mat-form-field [style.width]="'100%'">
+          <input matInput type="text" placeholder="Rejection commnet" #commnet>
+        </mat-form-field>
+        <button mat-raised-button color="warn" (click)="onRejectCom(apl, commnet.value)">Reject</button>
       </mat-card>
     </mat-expansion-panel>
   </mat-accordion>
-  <mat-card *ngIf="appliedComs == null || appliedComs.length === 0">No companies waiting for application approval!</mat-card>
+  <mat-card *ngIf="fair.appliedCompanies == null || fair.appliedCompanies.length === 0">No companies waiting for application approval!</mat-card>
 </div>
 
 <mat-card>

@@ -108,4 +108,16 @@ export class CompanyStatusService {
     return subject;
   }
 
+  getDeadlineDates(): Subject<Array<Date>> {
+    const subject = new Subject<Array<Date>>();
+    this.http.get(URL + '/deadlines').subscribe((res: ApiResponse) => {
+      if (res.status === 'success') {
+        subject.next(res.data);
+      } else {
+        subject.next(null);
+      }
+    });
+    return subject;
+  }
+
 }

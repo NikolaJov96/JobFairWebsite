@@ -10,7 +10,7 @@ interface DialogData {
   price: string;
 }
 
-enum FairAppState { UNKNOWN, NO_FAIR, NOT_APPLIED, WAITING_FOR_RESPONSE, DENIED, ACCEPTED }
+enum FairAppState { UNKNOWN, NO_FAIR, NOT_APPLIED, WAITING_FOR_RESPONSE, DENIED, ACCEPTED, APPLICATIONS_CLOSED }
 
 @Component({
   selector: 'app-company-fiar-application',
@@ -31,6 +31,7 @@ export class CompanyFiarApplicationComponent implements OnInit {
   fariAppState: FairAppState = FairAppState.UNKNOWN;
 
   fair = null;
+  deadlines = null;
 
   constructor(private dialog: MatDialog,
     private companyStatusService: CompanyStatusService,
@@ -64,9 +65,27 @@ export class CompanyFiarApplicationComponent implements OnInit {
               }
             }
           });
+          if (this.deadlines != null) {
+            this.checkDeadlines();
+          }
         }
       })
     );
+    this.companyStatusService.getDeadlineDates().subscribe(
+      deadlines => {
+        this.deadlines = deadlines;
+        if (this.fair != null && deadlines != null) {
+          this.checkDeadlines();
+        }
+      }
+    );
+  }
+
+  checkDeadlines() {
+    const now = new Date();
+    if (now < new Date(this.deadlines.companyStart) || now > new Date(this.deadlines.companyEnd)) {
+      this.fariAppState = FairAppState.APPLICATIONS_CLOSED;
+    }
   }
 
   onApply() {

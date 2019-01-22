@@ -68,14 +68,9 @@ export class AdminManageFairComponent implements OnInit {
   thirdStep: ThirdStepInterface = null;
   confirmMessage = '';
 
-  appliedComs: Array<{
-    name: string;
-    package: string;
-    options: Array<string>;
-  }> = null;
-
   deadlineUpdateMessage = '';
-  openedForm = -1;
+  openedFormAcc = -1;
+  openedFormRej = -1;
   fair = null;
 
   constructor(private router: Router,
@@ -128,12 +123,26 @@ export class AdminManageFairComponent implements OnInit {
     );
   }
 
-  onAcceptCom(i: number, stand: number) {
-    // jump to place assignment
+  onAcceptCom(apl: any, stand: number) {
+    this.adminStatusService.acceptCom(this.fair, apl, stand).subscribe(
+      status => {
+        if (status === 'success') {
+          this.openedFormAcc = -1;
+          apl.accepted = true;
+        }
+      }
+    );
   }
 
-  onRejectCom(i: number) {
-
+  onRejectCom(apl: any, comment: string) {
+    this.adminStatusService.rejectCom(this.fair, apl, comment).subscribe(
+      status => {
+        if (status === 'success') {
+          this.openedFormRej = -1;
+          apl.rejected = true;
+        }
+      }
+    );
   }
 
   onDatesChange() {
@@ -248,14 +257,6 @@ export class AdminManageFairComponent implements OnInit {
       }
     });
     fileReader.readAsText(file);
-  }
-
-  toAcceptDummy() {
-    this.appliedComs = [
-      { name: 'asd', package: '1a', options: [ 'dfg', 'sdf' ] },
-      { name: 'qwe', package: '2a', options: [ 'dfg', 'hjkl' ] },
-      { name: 'azxc', package: '1b', options: [ 'hjkl', 'sdf' ] },
-    ];
   }
 
 }
