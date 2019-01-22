@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CompanyStatusService } from '../company-status.service';
 import { Router } from '@angular/router';
+import { copyStyles } from '@angular/animations/browser/src/util';
 
 interface DialogData {
   package: string;
@@ -32,6 +33,7 @@ export class CompanyFiarApplicationComponent implements OnInit {
 
   fair = null;
   deadlines = null;
+  statusMessage = '';
 
   constructor(private dialog: MatDialog,
     private companyStatusService: CompanyStatusService,
@@ -55,11 +57,13 @@ export class CompanyFiarApplicationComponent implements OnInit {
           });
           this.fariAppState = FairAppState.NOT_APPLIED;
           fair.appliedCompanies.forEach(apl => {
-            if (apl.company === this.companyStatusService.getCom()._id) {
+            if (String(apl.company._id) === String(this.companyStatusService.getCom()._id)) {
               if (apl.accepted === true) {
                 this.fariAppState = FairAppState.ACCEPTED;
+                this.statusMessage = 'Assigned stand: ' + apl.stand;
               } else if (apl.rejected === true) {
                 this.fariAppState = FairAppState.DENIED;
+                this.statusMessage = 'Explanation: ' + apl.comment;
               } else {
                 this.fariAppState = FairAppState.WAITING_FOR_RESPONSE;
               }
