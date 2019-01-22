@@ -1,4 +1,3 @@
-<button mat-raised-button (click)="ckangeFiarState()">Fair state</button>
 <mat-card *ngIf="fariAppState === appStates.NOT_APPLIED">
   Not applied, apply now!
   <form [formGroup]="applyForm" (ngSubmit)="onApply()" novalidate>

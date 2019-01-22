@@ -51,8 +51,19 @@ export class CompanyFiarApplicationComponent implements OnInit {
               new FormControl()
             );
           });
+          this.fariAppState = FairAppState.NOT_APPLIED;
+          fair.appliedCompanies.forEach(apl => {
+            if (apl.company === this.companyStatusService.getCom()._id) {
+              if (apl.accepted === true) {
+                this.fariAppState = FairAppState.ACCEPTED;
+              } else if (apl.rejected === true) {
+                this.fariAppState = FairAppState.DENIED;
+              } else {
+                this.fariAppState = FairAppState.WAITING_FOR_RESPONSE;
+              }
+            }
+          });
         }
-        // this.fariAppState = FairAppState.ACCEPTED;
       })
     );
   }
@@ -68,32 +79,12 @@ export class CompanyFiarApplicationComponent implements OnInit {
     });
   }
 
-  ckangeFiarState() {
-    switch (this.fariAppState) {
-      case FairAppState.ACCEPTED:
-        this.fariAppState = FairAppState.DENIED;
-        break;
-      case FairAppState.DENIED:
-        this.fariAppState = FairAppState.NOT_APPLIED;
-        break;
-      case FairAppState.NOT_APPLIED:
-        this.fariAppState = FairAppState.UNKNOWN;
-        break;
-      case FairAppState.UNKNOWN:
-        this.fariAppState = FairAppState.WAITING_FOR_RESPONSE;
-        break;
-      case FairAppState.WAITING_FOR_RESPONSE:
-        this.fariAppState = FairAppState.ACCEPTED;
-        break;
-    }
-  }
-
 }
 
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   template: `
-    <h1 mat-dialog-title>Application price is &#36;{{ data.price }}din</h1>
+    <h1 mat-dialog-title>Application price is {{ data.price }}din</h1>
     <div mat-dialog-actions>
       <button mat-button cdkFocusInitial (click)="onCLose()">Ok</button>
     </div>
