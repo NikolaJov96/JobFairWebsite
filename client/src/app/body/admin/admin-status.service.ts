@@ -61,6 +61,7 @@ export class AdminStatusService {
       postData.append(key, JSON.stringify(data[key]));
     }
     postData.append('logo', data.images.logo, 'fiar-logo');
+    postData.append('timetable', JSON.stringify(data.images.timetable));
     let id = 0;
     data.images.additional.forEach(additioanlImage => {
       postData.append('additional[]', additioanlImage, 'fair-additional' + id);

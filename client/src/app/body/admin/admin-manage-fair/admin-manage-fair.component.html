@@ -74,17 +74,6 @@
             Add additional image
           </button>
         </mat-card>
-
-
-
-
-
-
-
-
-
-
-
         <mat-card formArrayName="timetable">
           <mat-card>Timetable</mat-card>
           <div *ngFor="let wrk of imagesForm.controls['timetable'].controls; let i = index;">
@@ -96,7 +85,7 @@
               </mat-form-field>
               <br>
               <mat-form-field>
-                <input matInput type="number" min="8" max="20" formControlName="hour" placeholder="Hour">
+                <input matInput type="number" min="8" max="20" formControlName="hour" placeholder="Hours">
               </mat-form-field>
               <mat-form-field>
                 <mat-select placeholder="Event type" formControlName="type">
@@ -108,21 +97,21 @@
               <mat-form-field>
                 <mat-select placeholder="Location" formControlName="location">
                   <mat-option
-                    *ngFor="let loc of firstStep.Locations; let i = index;"
-                    value="{{ i }}">
-                    loc.Place
+                    *ngFor="let loc of firstStep.Locations; let j = index;"
+                    value="{{ j }}">
+                    {{ loc.Place }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field *ngIf="firstStep.Locations[imagesForm.controls['location']] != null">
-                  <mat-select placeholder="Place" formControlName="Place">
-                    <mat-option
-                      *ngFor="let place of firstStep.Locations[imagesForm.controls['location'].value].Location; let i = index;"
-                      value="{{ i }}">
-                      place.Name
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+              <mat-form-field *ngIf="imagesForm.controls['timetable'].controls[i].controls['location'].value != ''">
+                <mat-select placeholder="Place" formControlName="place">
+                  <mat-option
+                    *ngFor="let place of firstStep.Locations[imagesForm.controls['timetable'].controls[i].controls['location'].value].Location; let j = index;"
+                    value="{{ j }}">
+                    {{ place.Name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
               <button mat-raised-button type="button" color="primary" (click)="removeEvent(i)">
                 Remove
               </button>
@@ -132,18 +121,6 @@
             Add event
           </button>
         </mat-card>
-
-
-
-
-
-
-
-
-
-
-
-
       </form>
       <div>
         <button mat-raised-button color="primary" matStepperPrevious>Back</button>
@@ -234,7 +211,18 @@
           </div>
         </div>
       </mat-card>
-      <mat-card>A full timetable???????</mat-card>
+      <mat-card>
+        <mat-card>Timetable</mat-card>
+        <div *ngFor="let wrk of imagesForm.controls['timetable'].controls; let i = index;">
+          <mat-card *ngIf="wrk.valid">
+            Date: {{ wrk.value.date | date }}<br>
+            Hours: {{ wrk.value.hour }}<br>
+            Type: {{ wrk.value.type }}<br>
+            Location: {{ firstStep.Locations[wrk.value.location].Place }}<br>
+            Room: {{ firstStep.Locations[wrk.value.location].Location[wrk.value.place].Name }}<br>
+          </mat-card>
+        </div>
+      </mat-card>
       <mat-card *ngIf="thirdStep != null">
         <mat-card>
           <p>Packages:</p>
