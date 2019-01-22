@@ -76,4 +76,16 @@ export class CompanyStatusService {
     return subject;
   }
 
+  getFair(): Subject<any> {
+    const subject = new Subject<any>();
+    this.http.get(URL + '/fair').subscribe((res: ApiResponse) => {
+      if (res.status === 'success') {
+        subject.next(res.data);
+      } else {
+        subject.next(null);
+      }
+    });
+    return subject;
+  }
+
 }

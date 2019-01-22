@@ -1,18 +1,26 @@
 <button mat-raised-button (click)="ckangeFiarState()">Fair state</button>
-<mat-card *ngIf="fariAppState === appStates.NOT_APPLIED">Not applied, apply now!</mat-card>
 <mat-card *ngIf="fariAppState === appStates.NOT_APPLIED">
+  Not applied, apply now!
   <form [formGroup]="applyForm" (ngSubmit)="onApply()" novalidate>
     <mat-form-field>
       <mat-select placeholder="Package" formControlName="package">
-        <mat-option *ngFor="let pac of packages" value="{{ pac.value }}">{{ pac.name }}</mat-option>
+        <mat-option *ngFor="let pac of fair.Packages; let i = index;" value="{{ i }}">{{ pac.Title }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-card style="margin-top: 0;"><p>Package description:</p><p>
-      {{ packages[applyForm.controls['package'].value] != null ? packages[applyForm.controls['package'].value].desc  : '' }}
+    <mat-card style="margin-top: 0;"><p>Package description:</p><p *ngIf="fair.Packages[applyForm.controls['package'].value] != null">
+      Content: {{ fair.Packages[applyForm.controls['package'].value].Content }}<br>
+      Number of video promotions: {{ fair.Packages[applyForm.controls['package'].value].VideoPromotion }}<br>
+      Number of lessons: {{ fair.Packages[applyForm.controls['package'].value].NoLessons }}<br>
+      Number of workchops: {{ fair.Packages[applyForm.controls['package'].value].NoWorkchops }}<br>
+      Number of presentations: {{ fair.Packages[applyForm.controls['package'].value].NoPresentation }}<br>
+      Price: {{ fair.Packages[applyForm.controls['package'].value].Price }}din
     </p></mat-card>
     <div formArrayName="options">
-      <div *ngFor="let apl of applyForm.controls['options'].controls; let i = index;">
-        <mat-checkbox formControlName="{{ i }}"> {{ options[i].name }}
+      <div *ngFor="let add of fair.Additional; let i = index;">
+        <mat-checkbox formControlName="{{ i }}">
+          <span *ngIf="fair.Additional != null">
+            {{ fair.Additional[i].Title }} - {{ fair.Additional[i].Price }}din
+          </span>
         </mat-checkbox>
         <br>
       </div>
@@ -20,6 +28,7 @@
     <button mat-raised-button color="accent" [disabled]="!applyForm.valid" type="submit">Apply</button>
   </form>
 </mat-card>
+<mat-card *ngIf="fariAppState === appStates.NO_FAIR">Ther is no active fair.</mat-card>
 <mat-card *ngIf="fariAppState === appStates.WAITING_FOR_RESPONSE">Applied, waiting for admin response.</mat-card>
 <mat-card *ngIf="fariAppState === appStates.ACCEPTED">Your applicaton has been accepted!</mat-card>
 <mat-card *ngIf="fariAppState === appStates.DENIED">Your application has been denied!</mat-card>

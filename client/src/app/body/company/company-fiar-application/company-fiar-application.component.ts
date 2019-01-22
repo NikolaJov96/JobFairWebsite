@@ -8,7 +8,7 @@ interface DialogData {
   price: string;
 }
 
-enum FairAppState { UNKNOWN, NOT_APPLIED, WAITING_FOR_RESPONSE, DENIED, ACCEPTED }
+enum FairAppState { UNKNOWN, NO_FAIR, NOT_APPLIED, WAITING_FOR_RESPONSE, DENIED, ACCEPTED }
 
 @Component({
   selector: 'app-company-fiar-application',
@@ -28,6 +28,8 @@ export class CompanyFiarApplicationComponent implements OnInit {
   options: Array<{ name: string, selected: boolean, }> = null;
   fariAppState: FairAppState = FairAppState.UNKNOWN;
 
+  fair = null;
+
   constructor(private dialog: MatDialog,
     private companyStatusService: CompanyStatusService,
     private router: Router) { }
@@ -37,25 +39,32 @@ export class CompanyFiarApplicationComponent implements OnInit {
       this.router.navigate(['/guest/login']);
       return;
     }
-    this.packages = [
-      { value: 0, name: 'p1', desc: 'd1' },
-      { value: 1, name: 'p2', desc: 'd2' },
-      { value: 2, name: 'p3', desc: 'd3' },
-    ];
-    this.options = [
-      { name: 'o1', selected: false, },
-      { name: 'o2', selected: false, },
-    ];
-    const opts = <FormArray>this.applyForm.controls['options'];
-    this.options.forEach(() => {
-      opts.push(new FormControl());
-    });
+    this.companyStatusService.getFair().subscribe(
+      (fair => {
+        this.fair = fair;
+        console.log(fair);
+        if (fair == null) {
+          this.fariAppState = FairAppState.NO_FAIR;
+        } else {
+          fair.Additional.forEach((add) => {
+            (<FormArray>this.applyForm.controls.options).push(
+              new FormControl()
+            );
+          });
+        }
+        // this.fariAppState = FairAppState.ACCEPTED;
+      })
+    );
   }
 
   onApply() {
+    let price = this.fair.Packages[this.applyForm.value['package']].Price;
+    this.applyForm.value['options'].forEach((opt, i) => {
+      if (opt) { price += this.fair.Additional[i].Price; }
+    });
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '400px',
-      data: { price: '1234653' }
+      data: { price: price }
     });
   }
 
@@ -84,7 +93,7 @@ export class CompanyFiarApplicationComponent implements OnInit {
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   template: `
-    <h1 mat-dialog-title>Application price is &#36;{{ data.price }}</h1>
+    <h1 mat-dialog-title>Application price is &#36;{{ data.price }}din</h1>
     <div mat-dialog-actions>
       <button mat-button cdkFocusInitial (click)="onCLose()">Ok</button>
     </div>
