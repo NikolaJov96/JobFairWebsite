@@ -33,11 +33,13 @@ export const FairSchema = new mongoose.Schema({
   appliedCompanies:[{
     company: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     package: { type: Number },
-    additional: [{ Number }],
+    additional: [{ type: Number }],
     accepted: { type: Boolean },
     rejected: { type: Boolean },
     comment: { type: String },
-  }]
+  }],
+  logoPath: { type: String },
+  additionalPaths: [{ type: String }]
 });
 
 export const Fair = mongoose.model('Fair', FairSchema);

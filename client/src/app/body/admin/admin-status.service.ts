@@ -56,10 +56,19 @@ export class AdminStatusService {
 
   newFair(data): Subject<Array<any>> {
     const postData = new FormData();
-
+    for (const key in data) {
+      if (key === 'images') { continue; }
+      postData.append(key, JSON.stringify(data[key]));
+    }
+    postData.append('logo', data.images.logo, 'fiar-logo');
+    let id = 0;
+    data.images.additional.forEach(additioanlImage => {
+      postData.append('additional[]', additioanlImage, 'fair-additional' + id);
+      id++;
+    });
     const subject = new Subject<any>();
-    this.http.post(URL + '/fair', data).subscribe((res: ApiResponse) => {
-      subject.next(res.status);
+    this.http.post(URL + '/fair', postData).subscribe((res: ApiResponse) => {
+      subject.next([res.status, res.data]);
     });
     return subject;
   }

@@ -123,9 +123,9 @@ export class AdminManageFairComponent implements OnInit {
     };
     this.adminStatusService.newFair(data).subscribe(
       status => {
-
+        if (status[0] === 'success') { this.fair = status[1]; }
       }
-    )
+    );
   }
 
   onAcceptCom(i: number, stand: number) {
@@ -196,7 +196,7 @@ export class AdminManageFairComponent implements OnInit {
 
   onAdditionalPick(event: Event, id: number) {
     const file = (event.target as HTMLInputElement).files[0];
-    this.imagesForm.controls['additional'].value[id] = file;
+    this.imagesForm.controls['additional']['controls'][id].patchValue(file);
     this.imagesForm.controls['additional']['controls'][id].updateValueAndValidity();
     const reader = new FileReader();
     reader.onload = () => {

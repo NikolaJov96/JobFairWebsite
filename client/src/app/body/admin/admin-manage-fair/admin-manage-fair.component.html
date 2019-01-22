@@ -63,7 +63,7 @@
               <div
                 class="image-preview"
                 *ngIf="additionalImages[i] && additionalImages[i] != null">
-                <img [src]="additionalImages[i]" [alt]="'Logo'">
+                <img [src]="additionalImages[i]" [alt]="'fair-additional'">
               </div>
               <button mat-raised-button type="button" color="primary" (click)="removeImage(i)">
                 Remove
@@ -78,7 +78,8 @@
       <mat-card>A full timetable???????</mat-card>
       <div>
         <button mat-raised-button color="primary" matStepperPrevious>Back</button>
-        <button mat-raised-button color="primary" matStepperNext>Next</button>
+        <button mat-raised-button color="primary" matStepperNext
+        [disabled]="imagesForm.invalid">Next</button>
       </div>
     </mat-step>
     <mat-step>
@@ -118,12 +119,77 @@
       </mat-card>
       <div>
         <button mat-raised-button color="primary" matStepperPrevious>Back</button>
-        <button mat-raised-button color="primary" matStepperNext>Next</button>
+        <button mat-raised-button color="primary" matStepperNext
+        [disabled]="thirdStep == null || !thirdStepValid">Next</button>
       </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Confirmation</ng-template>
-      <mat-card>All of the info</mat-card>
+      <mat-card *ngIf="firstStep != null">
+        <mat-card *ngFor="let elem of firstStep.Fairs">
+          <p>Fairs:</p>
+          <p>
+            Fair: {{ elem.Fair }}<br>
+            StartDate: {{ elem.StartDate | date: 'dd/MM/yyyy' }}<br>
+            EndDate: {{ elem.EndDate | date: 'dd/MM/yyyy' }} <br>
+            StartTime: {{ elem.StartTime }}<br>
+            EndTime: {{ elem.EndTime }}<br>
+            Place: {{ elem.Place }} <br>
+            About: {{ elem.About }}
+          </p>
+        </mat-card>
+        <mat-card *ngFor="let elem of firstStep.Locations">
+          <p>Locations:</p>
+          <p>
+            Place: {{ elem.Place }}<br>
+            Location:
+            <span *ngFor="let name of elem.Location; let last = last;">
+              {{ name.Name }}{{ last ? '': ', ' }}
+            </span>
+          </p>
+        </mat-card>
+      </mat-card>
+      <mat-card>
+        Fair logo:
+        <div class="image-preview" *ngIf="logoImage && logoImage != null && imagesForm.get('logo').valid">
+          <img [src]="logoImage" [alt]="'Logo'">
+        </div>
+      </mat-card>
+      <mat-card>
+        Additional pictures:
+        <div *ngFor="let wrk of imagesForm.controls['additional'].controls; let i = index;">
+          <div
+            class="image-preview"
+            *ngIf="additionalImages[i] && additionalImages[i] != null">
+            <img [src]="additionalImages[i]" [alt]="'fair-additional'">
+          </div>
+        </div>
+      </mat-card>
+      <mat-card>A full timetable???????</mat-card>
+      <mat-card *ngIf="thirdStep != null">
+        <mat-card>
+          <p>Packages:</p>
+          <p *ngFor="let elem of thirdStep.Packages">
+            Title: {{ elem.Title }}<br>
+            Content:
+            <span *ngFor="let name of elem.Content; let last = last;">
+              {{ name }}{{ last ? '': ', ' }}
+            </span><br>
+            VideoPromotion: {{ elem.VideoPromotion }} <br>
+            NoLessons: {{ elem.NoLessons }}<br>
+            NoWorkshops: {{ elem.NoWorkchops }}<br>
+            Price: {{ elem.Price }} <br>
+            MaxCompanies: {{ elem.MaxCompanies }}
+          </p>
+        </mat-card>
+        <mat-card>
+          <p>Additional:</p>
+          <p *ngFor="let elem of thirdStep.Additional">
+            Title: {{ elem.Title }}<br>
+            Price: {{ elem.Price }}
+          </p>
+        </mat-card>
+      </mat-card>
       <div>
         <button mat-raised-button color="primary" matStepperPrevious>Back</button>
         <button mat-raised-button color="accent" (click)="confirmInit()">Confirm</button>
@@ -133,7 +199,7 @@
   </mat-horizontal-stepper></mat-card>
 </div>
 
-<div *ngIf="fair!=null">
+<div *ngIf="fair != null">
   <mat-card>
     Manage the fair!
     <button mat-button color="primary" (click)="toAcceptDummy()">Dummy</button>

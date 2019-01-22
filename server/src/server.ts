@@ -496,6 +496,39 @@ router.route('/fair').get((req, res) => {
   });
 });
 
+router.route('/fair').post(multer({ storage: imageStorage }).any(), (req: express.Request & { file: any } & { files: Array<any> }, res) => {
+  const body: ApiResponse = {
+    status: 'error',
+    message: '',
+    data: null,
+  };
+  const url = req.protocol + '://' + req.get('host');
+  for (const element in req.body) {
+    req.body[element] = JSON.parse(req.body[element]);
+  };
+  req.body.additionalPaths = [];
+  let logoPassed = false;
+  req.files.forEach(file => {
+    if (logoPassed)
+    {
+      req.body.additionalPaths.push(url + '/images/' + file.filename);
+    }
+    else 
+    {
+      logoPassed = true;
+      req.body.logoPath = url + '/images/' + file.filename;
+    }
+  });
+  req.body.appliedCompanies = [];
+  new Fair(req.body).save((err, fair) => {
+    if (handleError(err, res)) { return; }
+    body.status = 'success';
+    body.message = 'fair created';
+    body.data = fair;
+    res.json(body);
+  });
+});
+
 router.route('/deadlines').get((req, res) => {
   const body: ApiResponse = {
     status: 'error',
