@@ -537,6 +537,7 @@ router.route('/fair').post(multer({ storage: imageStorage }).any(), (req: expres
     }
   });
   req.body.appliedCompanies = [];
+  req.body.EndDate = req.body.Fairs[0].EndDate;
   new Fair(req.body).save((err, fair) => {
     if (handleError(err, res)) { return; }
     body.status = 'success';

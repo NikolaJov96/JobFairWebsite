@@ -74,8 +74,77 @@
             Add additional image
           </button>
         </mat-card>
+
+
+
+
+
+
+
+
+
+
+
+        <mat-card formArrayName="timetable">
+          <mat-card>Timetable</mat-card>
+          <div *ngFor="let wrk of imagesForm.controls['timetable'].controls; let i = index;">
+            <mat-card formGroupName="{{ i }}">
+              <mat-form-field style="margin-right: 1rem;">
+                <input matInput [matDatepicker]="wfPicker" formControlName="date" placeholder="Date">
+                <mat-datepicker-toggle matSuffix [for]="wfPicker"></mat-datepicker-toggle>
+                <mat-datepicker #wfPicker></mat-datepicker>
+              </mat-form-field>
+              <br>
+              <mat-form-field>
+                <input matInput type="number" min="8" max="20" formControlName="hour" placeholder="Hour">
+              </mat-form-field>
+              <mat-form-field>
+                <mat-select placeholder="Event type" formControlName="type">
+                  <mat-option value="{{ 'lecture' }}">lecture</mat-option>
+                  <mat-option value="{{ 'presentation' }}">presentation</mat-option>
+                  <mat-option value="{{ 'workshop' }}">workshop</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-select placeholder="Location" formControlName="location">
+                  <mat-option
+                    *ngFor="let loc of firstStep.Locations; let i = index;"
+                    value="{{ i }}">
+                    loc.Place
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field *ngIf="firstStep.Locations[imagesForm.controls['location']] != null">
+                  <mat-select placeholder="Place" formControlName="Place">
+                    <mat-option
+                      *ngFor="let place of firstStep.Locations[imagesForm.controls['location'].value].Location; let i = index;"
+                      value="{{ i }}">
+                      place.Name
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              <button mat-raised-button type="button" color="primary" (click)="removeEvent(i)">
+                Remove
+              </button>
+            </mat-card>
+          </div>
+          <button mat-raised-button type="button" color="primary" (click)="addEvent()">
+            Add event
+          </button>
+        </mat-card>
+
+
+
+
+
+
+
+
+
+
+
+
       </form>
-      <mat-card>A full timetable???????</mat-card>
       <div>
         <button mat-raised-button color="primary" matStepperPrevious>Back</button>
         <button mat-raised-button color="primary" matStepperNext

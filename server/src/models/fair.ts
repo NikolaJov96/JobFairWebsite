@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 export const FairSchema = new mongoose.Schema({
+  EndDate: { type: Date },
   Fairs: [{
     Fair: { type: String },
     StartDate: { type: Date },
@@ -30,7 +31,7 @@ export const FairSchema = new mongoose.Schema({
     Title: { type: String },
     Price: { type: Number },
   }],
-  appliedCompanies:[{
+  appliedCompanies: [{
     company: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     package: { type: Number },
     additional: [{ type: Number }],
@@ -38,6 +39,13 @@ export const FairSchema = new mongoose.Schema({
     stand: { type: Number },
     rejected: { type: Boolean },
     comment: { type: String },
+  }],
+  timetable: [{
+    date: { type: Date },
+    hour: { type: Number },
+    type: { type: String },
+    location: { type: Number },
+    place: { type: Number },
   }],
   logoPath: { type: String },
   additionalPaths: [{ type: String }]

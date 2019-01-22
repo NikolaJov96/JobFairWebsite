@@ -56,6 +56,7 @@ export class AdminManageFairComponent implements OnInit {
   imagesForm = new FormGroup({
     logo: new FormControl(null, { validators: [Validators.required], asyncValidators: [checkImage] }),
     additional: new FormArray([]),
+    timetable: new FormArray([]),
   });
 
   firstStepValid = true;
@@ -257,6 +258,22 @@ export class AdminManageFairComponent implements OnInit {
       }
     });
     fileReader.readAsText(file);
+  }
+
+  addEvent() {
+    (<FormArray>this.imagesForm.controls.timetable).push(
+      new FormGroup({
+        date: new FormControl('', [Validators.required]),
+        hour: new FormControl('10', [Validators.required]),
+        type: new FormControl('', [Validators.required]),
+        location: new FormControl('', [Validators.required]),
+        place: new FormControl('', [Validators.required]),
+      })
+    );
+  }
+
+  removeEvent(id: number) {
+    (<FormArray>this.imagesForm.controls.education).removeAt(id);
   }
 
 }
