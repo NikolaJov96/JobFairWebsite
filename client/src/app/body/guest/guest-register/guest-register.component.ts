@@ -23,7 +23,7 @@ export class GuestRegisterComponent implements OnInit {
     phone: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
     year: new FormControl('', [Validators.required]),
-    graduated: new FormControl('', [Validators.required]),
+    graduated: new FormControl('', []),
     image: new FormControl(null, { validators: [Validators.required], asyncValidators: [checkImage] }),
   }, [passNoMatch()]);
 
