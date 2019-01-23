@@ -1,7 +1,7 @@
 import { AbstractControl } from '@angular/forms';
 import { Observable, Observer, of } from 'rxjs';
 
-export const checkImage = (control: AbstractControl): Promise<{[key: string]: any}> | Observable<{[key: string]: any}> => {
+export const checkImageSize = (control: AbstractControl): Promise<{[key: string]: any}> | Observable<{[key: string]: any}> => {
   const file = control.value as File;
   if (file == null) {
     return of(null);
@@ -31,11 +31,24 @@ export const checkImage = (control: AbstractControl): Promise<{[key: string]: an
           break;
       }
       if (isValid) {
-        observer.next(null);
+        const urlReader = new FileReader();
+        urlReader.addEventListener('loadend', () => {
+          const image = new Image;
+          image.onload = () => {
+            if (image.width < 100 || image.width > 300 || image.height < 100 || image.height > 300) {
+              observer.next({ invalidImage: true });
+            } else {
+              observer.next(null);
+            }
+            observer.complete();
+          };
+          image.src = (urlReader.result as string);
+        });
+        urlReader.readAsDataURL(file);
       } else {
         observer.next({ invalidImage: true });
+        observer.complete();
       }
-      observer.complete();
     });
     fileReader.readAsArrayBuffer(file);
   });

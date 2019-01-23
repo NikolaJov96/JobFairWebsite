@@ -32,6 +32,7 @@
 <mat-card *ngIf="fariAppState === appStates.ACCEPTED">
   <p>Your applicaton has been accepted!</p>
   <p *ngIf="statusMessage.length > 0">{{ statusMessage }}</p>
+  <canvas class="img" width="200" height="200"></canvas>
 </mat-card>
 <mat-card *ngIf="fariAppState === appStates.DENIED">
   <p>Your application has been rejected!</p>

@@ -6,6 +6,7 @@ import { Industry } from 'src/app/interfaces';
 import { GuestStatusService } from '../guest-status.service';
 import { Router } from '@angular/router';
 import { checkImage } from '../../image.validator';
+import { checkImageSize } from '../../image-size.validator.';
 
 @Component({
   selector: 'app-guest-register',
@@ -24,7 +25,7 @@ export class GuestRegisterComponent implements OnInit {
     email: new FormControl('', [Validators.required]),
     year: new FormControl('', [Validators.required]),
     graduated: new FormControl('', []),
-    image: new FormControl(null, { validators: [Validators.required], asyncValidators: [checkImage] }),
+    image: new FormControl(null, { validators: [Validators.required], asyncValidators: [checkImageSize] }),
   }, [passNoMatch()]);
 
   companyForm = new FormGroup({
@@ -40,7 +41,7 @@ export class GuestRegisterComponent implements OnInit {
     website: new FormControl('', [Validators.required]),
     industry: new FormControl('', [Validators.required]),
     field: new FormControl('', [Validators.required]),
-    image: new FormControl(null, { validators: [Validators.required], asyncValidators: [checkImage] }),
+    image: new FormControl(null, { validators: [Validators.required], asyncValidators: [checkImageSize] }),
   }, [passNoMatch()]);
 
   adminForm = new FormGroup({
@@ -51,7 +52,7 @@ export class GuestRegisterComponent implements OnInit {
     lastName: new FormControl('', [Validators.required]),
     phone: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
-    image: new FormControl(null, { validators: [Validators.required], asyncValidators: [checkImage] }),
+    image: new FormControl(null, { validators: [Validators.required], asyncValidators: [checkImageSize] }),
   }, [passNoMatch()]);
 
   studentImage = null;

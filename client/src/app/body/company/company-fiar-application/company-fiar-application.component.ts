@@ -34,6 +34,7 @@ export class CompanyFiarApplicationComponent implements OnInit {
   fair = null;
   deadlines = null;
   statusMessage = '';
+  stand = -1;
 
   constructor(private dialog: MatDialog,
     private companyStatusService: CompanyStatusService,
@@ -60,7 +61,9 @@ export class CompanyFiarApplicationComponent implements OnInit {
             if (String(apl.company._id) === String(this.companyStatusService.getCom()._id)) {
               if (apl.accepted === true) {
                 this.fariAppState = FairAppState.ACCEPTED;
-                this.statusMessage = 'Assigned stand: ' + apl.stand;
+                this.statusMessage = 'Assigned stand: ';
+                this.stand = apl.stand;
+                setTimeout(() => this.reloadDrawing(), 100);
               } else if (apl.rejected === true) {
                 this.fariAppState = FairAppState.DENIED;
                 this.statusMessage = 'Explanation: ' + apl.comment;
@@ -118,6 +121,38 @@ export class CompanyFiarApplicationComponent implements OnInit {
       width: '500px',
       data: dialogData,
     });
+  }
+
+  reloadDrawing() {
+    const canvas = document.getElementsByClassName('img')[0];
+    const context = (<HTMLCanvasElement>canvas).getContext('2d');
+    const source = new Image();
+    source.onload = () => {
+      context.drawImage(source, 0, 0);
+      if (this.stand >= 0) {
+        let x = 0;
+        let y = 0;
+        if (this.stand < 4) {
+          x = 3;
+          y = 40 + 40 * this.stand + 3;
+        } else if (this.stand < 8) {
+          x = 163;
+          y = 40 + 40 * (this.stand - 4) + 3;
+        } else {
+          x = 40 + 40 * (this.stand - 8) + 3;
+          y = 3;
+        }
+        context.beginPath();
+        context.moveTo(x, y);
+        context.lineTo(x + 34, y + 34);
+        context.stroke();
+        context.beginPath();
+        context.moveTo(x + 34, y);
+        context.lineTo(x, y + 34);
+        context.stroke();
+      }
+    };
+    source.src = './assets/stands.jpg';
   }
 
 }

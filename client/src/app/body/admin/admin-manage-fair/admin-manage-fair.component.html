@@ -273,16 +273,21 @@
         </span>
       </p>
       <div *ngIf="apl.accepted === false && apl.rejected === false">
-        <button mat-raised-button color="accent" (click)="openedFormAcc = i;">Accept</button>
-        <button mat-raised-button color="warn" (click)="openedFormRej = i;">Reject</button><br>
+        <button mat-raised-button color="accent" (click)="openedFormAcc = i; accRejToggled();">Accept</button>
+        <button mat-raised-button color="warn" (click)="openedFormRej = i; accRejToggled();">Reject</button><br>
       </div>
       <p [style.color]="'green'" *ngIf="apl.accepted === true">Accepted</p>
       <p [style.color]="'red'" *ngIf="apl.rejected === true">Rejected</p>
       <mat-card *ngIf="openedFormAcc === i">
-        <mat-form-field>
-          <input matInput type="number" placeholder="Stand number" #stand>
-        </mat-form-field>
-        <button mat-raised-button color="accent" (click)="onAcceptCom(apl, stand.value)">Accept</button>
+        <p>
+          Pick your place:
+          <span *ngIf="selectedStand >= 0">{{ selectedStand }}</span>
+        </p>
+        <canvas
+          class="img"
+          width="200" height="200"
+          (click)="imgClicked($event)"></canvas><br>
+        <button mat-raised-button color="accent" (click)="onAcceptCom(apl)" [disabled]="selectedStand < 0">Accept</button>
       </mat-card>
       <mat-card *ngIf="openedFormRej === i">
         <mat-form-field [style.width]="'100%'">

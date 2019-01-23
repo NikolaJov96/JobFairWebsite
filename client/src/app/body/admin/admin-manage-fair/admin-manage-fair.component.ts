@@ -73,6 +73,7 @@ export class AdminManageFairComponent implements OnInit {
   openedFormAcc = -1;
   openedFormRej = -1;
   fair = null;
+  selectedStand = -1;
 
   constructor(private router: Router,
     private adminStatusService: AdminStatusService) { }
@@ -124,12 +125,16 @@ export class AdminManageFairComponent implements OnInit {
     );
   }
 
-  onAcceptCom(apl: any, stand: number) {
-    this.adminStatusService.acceptCom(this.fair, apl, stand).subscribe(
+  onAcceptCom(apl: any) {
+    if (this.selectedStand < 0) {
+      return;
+    }
+    this.adminStatusService.acceptCom(this.fair, apl, this.selectedStand).subscribe(
       status => {
         if (status === 'success') {
           this.openedFormAcc = -1;
           apl.accepted = true;
+          apl.stand = this.selectedStand;
         }
       }
     );
@@ -274,6 +279,111 @@ export class AdminManageFairComponent implements OnInit {
 
   removeEvent(id: number) {
     (<FormArray>this.imagesForm.controls.education).removeAt(id);
+  }
+
+  accRejToggled() {
+    this.selectedStand = -1;
+    setTimeout(
+      () => {
+        const imgs = document.getElementsByClassName('img');
+        for (let i = 0; i < imgs.length; i++) {
+          this.reloadDrawing(imgs[i]);
+        }
+      }, 50);
+  }
+
+  imgClicked(event: MouseEvent) {
+    const x = event.offsetX;
+    const y = event.offsetY;
+    if (x > 1 && x < 39 && y > 40) {
+      const temp = (y - 40) % 40;
+      if (temp === 0 || temp === 39) { return; }
+      this.selectedStand = Math.floor((y - 40) / 40);
+    } else if (x > 160 && x < 200 && y > 40) {
+      const temp = (y - 40) % 40;
+      if (temp === 0 || temp === 39) { return; }
+      this.selectedStand = Math.floor((y - 40) / 40 + 4);
+    } else if (y > 1 && y < 40 && x > 40 && x < 160) {
+      const temp = (x - 40) % 40;
+      if (temp === 0 || temp === 39) { return; }
+      this.selectedStand = Math.floor((x - 40) / 40 + 8);
+    } else {
+      this.selectedStand = -1;
+    }
+    let valid = true;
+    this.fair.appliedCompanies.forEach(apl => {
+      if (apl.stand === this.selectedStand) {
+        valid = false;
+      }
+    });
+    if (!valid) {
+      this.selectedStand = -1;
+    } else {
+      this.reloadDrawing(event.target);
+    }
+  }
+
+  reloadDrawing(canvas) {
+    const context = canvas.getContext('2d');
+    const source = new Image();
+    source.onload = () => {
+      context.drawImage(source, 0, 0);
+      this.fair.appliedCompanies.forEach(apl => {
+        if (apl.accepted) {
+          let x = 0;
+          let y = 0;
+          if (apl.stand < 4) {
+            x = 3;
+            y = 40 + 40 * apl.stand + 3;
+          } else if (apl.stand < 8) {
+            x = 163;
+            y = 40 + 40 * (apl.stand - 4) + 3;
+          } else {
+            x = 40 + 40 * (apl.stand - 8) + 3;
+            y = 3;
+          }
+          context.beginPath();
+          context.moveTo(x, y);
+          context.lineTo(x + 34, y + 34);
+          context.strokeStyle = '#0000FF';
+          context.lineWidth = 2;
+          context.stroke();
+          context.beginPath();
+          context.moveTo(x + 34, y);
+          context.lineTo(x, y + 34);
+          context.strokeStyle = '#0000FF';
+          context.lineWidth = 2;
+          context.stroke();
+        }
+      });
+      if (this.selectedStand >= 0) {
+        let x = 0;
+        let y = 0;
+        if (this.selectedStand < 4) {
+          x = 3;
+          y = 40 + 40 * this.selectedStand + 3;
+        } else if (this.selectedStand < 8) {
+          x = 163;
+          y = 40 + 40 * (this.selectedStand - 4) + 3;
+        } else {
+          x = 40 + 40 * (this.selectedStand - 8) + 3;
+          y = 3;
+        }
+        context.beginPath();
+        context.moveTo(x, y);
+        context.lineTo(x + 34, y + 34);
+        context.strokeStyle = '#00FF00';
+        context.lineWidth = 2;
+        context.stroke();
+        context.beginPath();
+        context.moveTo(x + 34, y);
+        context.lineTo(x, y + 34);
+        context.strokeStyle = '#00FF00';
+        context.lineWidth = 2;
+        context.stroke();
+      }
+    };
+    source.src = './assets/stands.jpg';
   }
 
 }
